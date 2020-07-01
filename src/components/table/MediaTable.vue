@@ -39,7 +39,7 @@
     <v-dialog v-model="showDialog" width="600">
       <image-form
         :action="uploadAction"
-        @form:cancel="showDialog = false"
+        @form:cancel="handleFormCancel"
         :item="selectedItem"
       />
     </v-dialog>
@@ -49,6 +49,7 @@
 <script>
 import AdvanceTable from './AdvanceTable'
 import ImageForm from '@/components/form/ImageForm'
+import { deleteImageById } from '@/api/service'
 export default {
   name: 'MediaTable',
   props: {
@@ -140,10 +141,20 @@ export default {
       this.selectedItem = item
       this.showDialog = true
     },
-    handleDeleteItem() {},
+    handleDeleteItem(item) {
+      if (window.confirm('Are you sure to delete this ?')) {
+        deleteImageById(item.id).then(() => {
+          this.fetchRecord(this.id)
+        })
+      }
+    },
     handleCreate() {
       this.selectedItem = null
       this.showDialog = true
+    },
+    handleFormCancel() {
+      this.showDialog = false
+      this.fetchRecord(this.id)
     }
   }
 }

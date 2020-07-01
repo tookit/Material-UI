@@ -83,3 +83,10 @@ export function updateImageById(id, data) {
     data: data
   })
 }
+
+export function deleteImageById(id, data) {
+  return request({
+    url: `/media/image/${id}`,
+    method: 'delete'
+  })
+}

@@ -4,10 +4,7 @@ import { publicRoute, protectedRoute } from './config'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 const routes = publicRoute.concat(protectedRoute)
-import { getCookie } from '@/utils'
-const cookie = getCookie('csrf_access_token')
 import store from '@/store'
-console.log(store.getters.getAccessToken)
 Vue.use(Router)
 const router = new Router({
   mode: 'hash',

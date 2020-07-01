@@ -140,6 +140,7 @@ export default {
       this.selectedItem = item
       this.showDialog = true
     },
+    handleDeleteItem() {},
     handleCreate() {
       this.selectedItem = null
       this.showDialog = true

@@ -34,24 +34,30 @@
     </template>
 
     <template v-else>
-      <uploader :options="options" class="uploader" style="height:400px">
-        <uploader-unsupport></uploader-unsupport>
-        <uploader-drop>
-          <p>Drop files here to upload or</p>
-          <uploader-btn>select files</uploader-btn>
-          <uploader-btn :attrs="attrs">select images</uploader-btn>
-          <uploader-btn :directory="true">select folder</uploader-btn>
-        </uploader-drop>
-        <uploader-list></uploader-list>
-      </uploader>
+      <v-card>
+        <v-toolbar tile flat>
+          <v-toolbar-title>Upload Image</v-toolbar-title>
+          <v-spacer />
+          <v-btn @click="$emit('form:cancel')" icon>
+            <v-icon>mdi-close</v-icon></v-btn
+          >
+        </v-toolbar>
+        <v-card-text>
+          <v-dropzone class="v-dropzone" :option="option"> </v-dropzone>
+        </v-card-text>
+      </v-card>
     </template>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
 import { updateImageById } from '@/api/service'
+import VDropzone from '@/components/dropzone'
 export default {
   name: 'ImageForm',
+  components: {
+    VDropzone
+  },
   props: {
     item: Object,
     action: String
@@ -72,9 +78,9 @@ export default {
   },
   computed: {
     ...mapGetters(['getAccessToken']),
-    options() {
+    option() {
       return {
-        target: this.action,
+        url: this.action,
         headers: {
           Authorization: 'Bearer ' + this.getAccessToken
         },
@@ -85,7 +91,6 @@ export default {
   watch: {
     item: {
       handler(item) {
-        console.log(item)
         if (item) {
           this.formModel = {
             custom_properties: item.custom_properties
@@ -107,4 +112,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped lang="scss">
+.v-dropzone {
+  border: 2px dashed #0087f7;
+}
+</style>

@@ -1,0 +1,49 @@
+// src/styles/variables.scss
+
+// Elephant Theme
+//$elephant-dark-background: #515a6e;
+$elephant-dark-background: #233049;
+$elephant-light-background: #f0f0f0;
+
+// Globals
+$body-font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$border-radius-root: 2px;
+$font-size-root: 14px;
+
+// v-input
+$input-font-size: 14px !default;
+$input-icon-height: 16px !default;
+$input-icon-width: 16px !default;
+$input-icon-min-width: 16px !default;
+$input-slot-margin-bottom: 6px !default;
+
+// v-text-field
+$text-field-dense-padding: 2px 0 2px !default;
+$text-field-outlined-fieldset-border: 1px solid currentColor !default;
+$text-field-filled-full-width-outlined-single-line-slot-min-height: 32px !default;
+//$text-field-solo-dense-control-min-height: 24px !default
+
+// Headings
+$headings: (
+  'subtitle-1': (
+    'size': 14px
+  )
+);
+
+$material-light: (
+  'background': $elephant-light-background,
+  'text-fields': (
+    'outlined': #c5c5c5,
+    'outlined-hover': #b5b5b5
+  )
+);
+
+$material-dark: (
+  'app-bar': $elephant-dark-background,
+  'toolbar': $elephant-dark-background,
+  'navigation-drawer': $elephant-dark-background,
+  'text-fields': (
+    'outlined': #656e7f,
+    'outlined-hover': #70757f
+  )
+);

@@ -1,0 +1,65 @@
+$color-pack: true
+@import '~vuetify/src/styles/main.sass'
+body
+  font-family: $body-font-family
+  font-size: $font-size-root
+  font-weight: 400 // $font-weights.regular
+  line-height: $line-height-root
+h1
+  font-size: 48px
+  font-weight: 100 // $font-weights.thin
+  letter-spacing: -1.5
+
+h2
+  font-size: 36px
+  font-weight: 300 // $font-weights.light
+  letter-spacing: -0.5
+
+h3
+  font-size: 24px
+  font-weight: 300 // $font-weights.light
+  letter-spacing: normal
+
+h4
+  font-size: 20px
+  font-weight: 300 // $font-weights.light
+  letter-spacing: normal
+h5
+  font-size: 16px
+  font-weight: 400 // $font-weights.regular
+  letter-spacing: normal
+
+.app-bar
+  .v-toolbar__extension
+    background: #eee
+    box-shadow: 0 10px 30px 0 rgba(82,63,105,.08)
+.global-search.v-input
+  .v-input__control
+    .v-input__slot
+      box-shadow: 0 0 0 !important
+.v-menu__content
+  border-radius: 0 !important
+
+.rule-table
+  tr
+    cursor: pointer !important
+.json-tree-indent
+  display: inline-block
+  width: 5px
+
+.v-data-table__selected
+  td:first-child
+    border-left: 2px solid #1a76d1
+
+.detail-drawer
+  .v-navigation-drawer__content
+    overflow-y: hidden
+
+.v-menu__content
+    border-radius: 2px !important
+mark
+  background-color: #ff0
+
+.v-list-item--active
+  border-left:2px solid #1a76d1
+

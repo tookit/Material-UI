@@ -44,17 +44,19 @@
                 v-model="formModel.description"
                 outlined
                 placeholder="Description"
-                label="description"
+                label="Description"
               />
             </v-col>
             <v-col :cols="12">
-              <v-textarea
+              <v-jodit v-model="formModel.specs" />
+              <!-- <v-textarea
                 outlined
                 :rows="10"
-                label="sppecs"
+                id="editor"
+                label="Specs"
                 placeholder="Specs"
                 v-model="formModel.specs"
-              />
+              /> -->
             </v-col>
           </v-row>
         </v-container>
@@ -72,10 +74,12 @@
 <script>
 import VTreeSelect from '@/components/tree-select/VTreeSelect'
 import { mapGetters } from 'vuex'
+import VJodit from '@/components/jodit'
 export default {
   name: 'ProductGeneral',
   components: {
-    VTreeSelect
+    VTreeSelect,
+    VJodit
   },
   props: {
     item: Object
@@ -106,7 +110,7 @@ export default {
         description: null,
         slug: null,
         reference_url: null,
-        specs: null,
+        specs: '',
         categories: []
       }
     }
@@ -143,7 +147,7 @@ export default {
           description: null,
           slug: null,
           reference_url: null,
-          specs: null,
+          specs: '',
           categories: []
         }
       }

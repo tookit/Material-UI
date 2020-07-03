@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <v-card-title>{{ formTitle }}</v-card-title>
     <v-card-text>
       <v-form>
         <v-container fluid>
@@ -9,19 +8,19 @@
               <v-text-field
                 v-model="formModel.name"
                 outlined
-                label="name"
+                label="Name"
                 name="name"
-                placeholder="name"
-              ></v-text-field>
+                placeholder="Name"
+              />
             </v-col>
             <v-col :cols="6">
               <v-text-field
                 v-model="formModel.slug"
                 readonly
-                label="slug"
+                label="Slug"
                 outlined
-                placeholder="slug"
-              ></v-text-field>
+                placeholder="Slug"
+              />
             </v-col>
             <v-col :cols="12">
               <v-text-field
@@ -30,30 +29,15 @@
                 outlined
                 label="Reference"
                 placeholder="Reference"
-              ></v-text-field>
-            </v-col>
-            <v-col :cols="12">
-              <v-tree-select
-                :items="getProductCategories"
-                :selected-items="formModel.categories"
-                @change="handleCategoriesChange"
               />
             </v-col>
+            <v-col :cols="12"> </v-col>
             <v-col :cols="12">
               <v-textarea
                 v-model="formModel.description"
                 outlined
                 placeholder="Description"
-                label="description"
-              />
-            </v-col>
-            <v-col :cols="12">
-              <v-textarea
-                outlined
-                :rows="10"
-                label="sppecs"
-                placeholder="Specs"
-                v-model="formModel.specs"
+                label="Description"
               />
             </v-col>
           </v-row>
@@ -70,13 +54,10 @@
 </template>
 
 <script>
-import VTreeSelect from '@/components/tree-select/VTreeSelect'
 import { mapGetters } from 'vuex'
 export default {
   name: 'FromProductCategory',
-  components: {
-    VTreeSelect
-  },
+  components: {},
   props: {
     item: Object
   },
@@ -88,8 +69,7 @@ export default {
         description: null,
         slug: null,
         reference_url: null,
-        specs: null,
-        categories: []
+        parent_id: null
       }
     }
   },
@@ -110,14 +90,8 @@ export default {
   methods: {
     assignModel(data) {
       if (data) {
-        this.formModel = {
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          slug: data.slug,
-          reference_url: data.reference_url,
-          specs: data.specs,
-          categories: data.categories
+        for (let key in this.formModel) {
+          this.formModel[key] = data[key] || null
         }
       } else {
         this.formModel = {
@@ -125,27 +99,28 @@ export default {
           description: null,
           slug: null,
           reference_url: null,
-          specs: null,
-          categories: []
+          parent_id: null
         }
       }
     },
     handleSubmit() {
       this.loading = true
 
-      if (this.formModel.id) {
+      if (this.item) {
         this.$store
-          .dispatch('updateProduct', {
-            id: this.formModel.id,
+          .dispatch('updateProductCategory', {
+            id: this.item.id,
             data: this.formModel
           })
           .then(() => {
             this.loading = false
           })
       } else {
-        this.$store.dispatch('createProduct', this.formModel).then(() => {
-          this.loading = false
-        })
+        this.$store
+          .dispatch('createProductCategory', this.formModel)
+          .then(() => {
+            this.loading = false
+          })
       }
     },
     handleCategoriesChange(categories) {
@@ -156,7 +131,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('fetchProductCategoryTree')
+    // this.$store.dispatch('fetchProductCategoryTree')
   }
 }
 </script>

@@ -8,6 +8,7 @@
           label="Category"
           placeholder="Category"
           v-on="on"
+          append-icon="mdi-chevron-down"
           v-model="inputValue"
           v-bind="attrs"
         ></v-text-field>

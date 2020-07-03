@@ -48,6 +48,7 @@
               />
             </v-col>
             <v-col :cols="12">
+              <label for="">Specs</label>
               <v-jodit v-model="formModel.specs" />
               <!-- <v-textarea
                 outlined

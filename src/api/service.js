@@ -39,6 +39,13 @@ export function fetchImagesByProductId(id) {
   })
 }
 
+export function fetchImageByCategoryId(id) {
+  return request({
+    url: `/mall/category/${id}/image`,
+    method: 'get'
+  })
+}
+
 export function fetchCategoryTree() {
   return request({
     url: '/mall/category/tree',

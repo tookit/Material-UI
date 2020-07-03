@@ -112,9 +112,7 @@ export default {
     },
     handleProfile() {}
   },
-  created() {
-    console.log(this.$router)
-  }
+  created() {}
 }
 </script>
 <style lang="scss" scoped></style>

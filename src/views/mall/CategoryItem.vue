@@ -1,123 +1,52 @@
 <template>
   <div class="page-mall-category view">
-    <v-form>
-      <v-container fluid>
-        <v-row>
-          <v-col cols="8">
-            <v-card>
-              <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-subheader>General</v-subheader>
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-text-field
-                      v-model="formModel.name"
-                      outlined
-                      name="name"
-                      placeholder="Name"
-                      label="Name"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-text-field
-                      v-model="formModel.slug"
-                      outlined
-                      name="slug"
-                      placeholder="Slug"
-                      label="Slug"
-                    />
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-text-field
-                      v-model="formModel.description"
-                      outlined
-                      name="description"
-                      placeholder="Description"
-                      label="Description"
-                    />
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-switch
-                      v-model="formModel.is_active"
-                      outlined
-                      name="name"
-                      placeholder="Name"
-                      label="Active"
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-subheader>SEO</v-subheader>
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-text-field
-                      v-model="formModel.meta_title"
-                      outlined
-                      name="meta_title"
-                      placeholder="Meta title"
-                      label="Meta title"
-                    />
-                  </v-col>
-                  <v-col :cols="6">
-                    <v-text-field
-                      v-model="formModel.meta_keyword"
-                      outlined
-                      placeholder="Keyword"
-                      label="Meta Keyword"
-                    />
-                  </v-col>
-                  <v-col :cols="12">
-                    <v-textarea
-                      v-model="formModel.meta_description"
-                      outlined
-                      placeholder="Meta description"
-                      label="Meta description"
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <v-btn
-                      :loading="loading"
-                      color="primary"
-                      @click="handleSubmit"
-                      >Save</v-btn
-                    >
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card>
-          </v-col>
-          <v-col cols="4">
-            <v-card>
-              <v-card-title>Featured Image</v-card-title>
-              <v-card-text>
-                <v-dropzone class="v-dropzone" :option="option"> </v-dropzone>
-                <div v-if="images" class="mt-3">
-                  <v-avatar
-                    size="90"
-                    tile
-                    v-for="media in images"
-                    :key="media.uuid"
-                  >
-                    <img :src="media.url" />
-                  </v-avatar>
-                </div>
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
+    <v-container fluid>
+      <v-row>
+        <v-col>
+          <v-tabs class="route-tab" v-model="defaultTab">
+            <v-tab
+              v-for="(item, key) in tabs"
+              :key="key"
+              :href="'#' + item.value"
+            >
+              {{ item.text }}
+            </v-tab>
+          </v-tabs>
+          <v-tabs-items v-model="defaultTab">
+            <v-tab-item key="general" value="general">
+              <form-product-category :item="item" />
+            </v-tab-item>
+            <v-tab-item key="media" value="media">
+              <media-table
+                :id="id"
+                :data-source="fetchImages"
+                :upload-action="uploadAction"
+              />
+            </v-tab-item>
+            <v-tab-item key="seo" value="seo">
+              <seo-form :item="item" :loading="loading" />
+            </v-tab-item>
+          </v-tabs-items>
+        </v-col>
+      </v-row>
+    </v-container>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import VDropzone from '@/components/dropzone'
+import FormProductCategory from '@/components/form/product/FormProductCategory'
+import SeoForm from '@/components/form/SeoForm'
+import MediaTable from '@/components/table/MediaTable'
+import { fetchImageByCategoryId } from '@/api/service'
 export default {
   props: {
     id: [Number, String]
   },
-  components: { VDropzone },
+  components: {
+    SeoForm,
+    MediaTable,
+    FormProductCategory
+  },
   data() {
     return {
       defaultTab: 'general',
@@ -135,33 +64,14 @@ export default {
           value: 'seo'
         }
       ],
-      formModel: {
-        name: null,
-        slug: null,
-        description: null,
-        is_active: false,
-        meta_title: null,
-        meta_keyword: null,
-        meta_description: null
-      },
       loading: false,
       item: null,
-      images: [],
-      attrs: {
-        accept: 'image/*'
-      }
+      images: []
     }
   },
   computed: {
-    ...mapGetters(['getAccessToken']),
-    option() {
-      return {
-        url: `/api/mall/category/${this.id}/image`,
-        headers: {
-          Authorization: 'Bearer ' + this.getAccessToken
-        },
-        testChunks: false
-      }
+    uploadAction() {
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/mall/category/${this.id}/image`
     }
   },
   watch: {
@@ -173,41 +83,15 @@ export default {
     }
   },
   methods: {
-    handleSubmit() {
-      this.loading = true
-      if (this.formModel.id) {
-        this.$store
-          .dispatch('updateProductCategory', {
-            id: this.formModel.id,
-            data: this.formModel
-          })
-          .then(() => {
-            this.loading = false
-          })
-      } else {
-        this.$store
-          .dispatch('createProductCategory', this.formModel)
-          .then(() => {
-            this.loading = false
-          })
-      }
-    },
     fetchRecord(id) {
       this.loading = true
       this.$store.dispatch('getProductCategoryById', id).then(({ data }) => {
-        this.formModel = {
-          id: data.id,
-          name: data.name,
-          slug: data.slug,
-          description: data.description,
-          is_active: data.is_active,
-          meta_title: data.meta_title,
-          meta_keyword: data.meta_keyword,
-          meta_description: data.meta_description
-        }
-        this.images = data.media
+        this.item = data
         this.loading = false
       })
+    },
+    fetchImages() {
+      return fetchImageByCategoryId(this.id)
     }
   }
 }

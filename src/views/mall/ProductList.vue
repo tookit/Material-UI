@@ -1,5 +1,5 @@
 <template>
-  <div class="page-product" style="min-height: 90vh">
+  <div class="page-product-list">
     <v-container>
       <v-row>
         <v-col>
@@ -11,11 +11,11 @@
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
-            <template v-slot:item.featured_img="{ item }">
+            <template v-slot:item.media="{ item }">
               <v-img
+                v-if="item.media.length > 0"
                 class="ma-3"
-                v-if="item.featured_img"
-                :src="item.featured_img"
+                :src="item.media[0].url"
                 width="50"
                 height="50"
               />
@@ -24,6 +24,9 @@
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
                 {{ c.name }}
               </v-chip>
+            </template>
+            <template v-slot:item.is_active="{ item }">
+              <v-switch v-model="item.is_active" />
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
@@ -78,7 +81,7 @@ export default {
         },
         {
           text: 'Image',
-          value: 'featured_img'
+          value: 'media'
         },
         {
           text: 'Name',
@@ -87,6 +90,10 @@ export default {
         {
           text: 'Category',
           value: 'categories'
+        },
+        {
+          text: 'Active',
+          value: 'is_active'
         },
         {
           text: 'Action',

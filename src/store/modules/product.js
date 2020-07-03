@@ -36,9 +36,9 @@ const actions = {
   },
 
   fetchProductCategoryTree({ commit }) {
-    return fetchCategoryTree().then(({ data }) => {
-      commit('SET_PRODUCT_CATEGORY', data)
-      return data
+    return fetchCategoryTree().then((resp) => {
+      commit('SET_PRODUCT_CATEGORY', resp)
+      return resp
     })
   },
 
@@ -80,8 +80,8 @@ const actions = {
   }
 }
 const mutations = {
-  SET_PRODUCT_CATEGORY(state, payload) {
-    state.categories = payload
+  SET_PRODUCT_CATEGORY(state, { data }) {
+    state.categories = data
   }
 }
 

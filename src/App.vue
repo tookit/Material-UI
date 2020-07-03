@@ -1,11 +1,9 @@
 <template>
   <v-app>
     <transition name="fade" mode="out-in">
-      <keep-alive include="graph" v-if="$route.meta.keepAlive">
-        <router-view></router-view>
-      </keep-alive>
-      <router-view v-else></router-view>
+      <router-view></router-view>
     </transition>
+
     <!-- theme setting -->
     <!-- <v-btn small fab dark fixed top="top" right="right" class="setting-fab" color="primary" @click="openThemeSettings">
       <v-icon>mdi-cog</v-icon>
@@ -89,9 +87,8 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
-.setting-fab
-  top: 50% !important
-  right: 0 !important
-  border-radius: 0
+<style lang="scss" scoped>
+.page-wrapper {
+  min-height: calc(50% - 500px);
+}
 </style>

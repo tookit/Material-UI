@@ -5,7 +5,7 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <template v-slot:item.url="{ item }">
-        <a :href="item.url" class="glightbox">
+        <a :href="item.url" class="glightbox" target="blank">
           <img class="ma-2" :src="item.url" height="50" width="50" />
         </a>
       </template>
@@ -53,7 +53,9 @@ import { deleteImageById } from '@/api/service'
 export default {
   name: 'MediaTable',
   props: {
-    id: [Number, String]
+    id: [Number, String],
+    dataSource: [Promise, Function],
+    uploadAction: [String]
   },
   components: {
     AdvanceTable,
@@ -114,28 +116,22 @@ export default {
       ]
     }
   },
-  computed: {
-    uploadAction() {
-      return `/api/mall/item/${this.id}/image`
-    }
-  },
+  computed: {},
   watch: {
     id: {
-      handler(id) {
-        this.fetchRecord(id)
+      handler() {
+        this.fetchRecord()
       },
       immediate: true
     }
   },
   methods: {
-    fetchRecord(id) {
+    fetchRecord() {
       this.loading = true
-      this.$store
-        .dispatch('fetchImageByProductId', id)
-        .then(({ data, meta }) => {
-          this.items = data
-          this.loading = false
-        })
+      this.dataSource().then(({ data }) => {
+        this.loading = false
+        this.items = data
+      })
     },
     handleEditItem(item) {
       this.selectedItem = item
@@ -144,7 +140,7 @@ export default {
     handleDeleteItem(item) {
       if (window.confirm('Are you sure to delete this ?')) {
         deleteImageById(item.id).then(() => {
-          this.fetchRecord(this.id)
+          this.fetchRecord()
         })
       }
     },
@@ -156,7 +152,8 @@ export default {
       this.showDialog = false
       this.fetchRecord(this.id)
     }
-  }
+  },
+  created() {}
 }
 </script>
 

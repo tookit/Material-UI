@@ -7,7 +7,6 @@
             :items="items"
             :headers="headers"
             :loading="loading"
-            :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
@@ -105,13 +104,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchProductCategories']),
+    ...mapActions(['fetchProductCategoryTree']),
     fetchRecord(query) {
       this.loading = true
-      this.fetchProductCategories(query).then(({ data, meta }) => {
+      this.fetchProductCategoryTree(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
-        this.serverItemsLength = meta.total
+        // this.serverItemsLength = meta.total
       })
     },
     handleViewItem(item) {

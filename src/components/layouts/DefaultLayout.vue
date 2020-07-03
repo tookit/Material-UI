@@ -1,10 +1,12 @@
 <template>
   <div class="app dashboard">
     <app-drawer class="app--drawer" ref="drawer" />
-    <!-- <router-view class="sidebar" name="sidebar" /> -->
     <app-toolbar class="app--toolbar" />
     <v-main>
-      <router-view />
+      <div class="white">
+        <v-breadcrumbs :items="breadcrumbs" />
+      </div>
+      <router-view class="route-wrapper" />
       <!-- App Footer -->
       <v-footer class="pa-3 app--footer">
         <span>Netpune UI &copy; {{ new Date().getFullYear() }}</span>
@@ -32,12 +34,25 @@ export default {
   data() {
     return {}
   },
+  computed: {
+    breadcrumbs() {
+      return this.$route.matched.map((route) => {
+        return {
+          text: route.meta.title,
+          to: route.path
+        }
+      })
+    }
+  },
   methods: {},
-  created() {}
+  created() {
+    console.log(this.$route, this.$router)
+  }
 }
 </script>
 
-<style lang="sass" scoped>
-.page-wrapper
-  min-height: calc(100vh - 64px - 48px )
+<style lang="scss" scoped>
+.route-wrapper {
+  min-height: calc(100vh - 64px);
+}
 </style>

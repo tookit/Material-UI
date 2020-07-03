@@ -1,5 +1,5 @@
 <template>
-  <div class="page-mall-category view">
+  <div class="page-mall-item view">
     <v-container fluid>
       <v-row>
         <v-col>
@@ -14,10 +14,14 @@
           </v-tabs>
           <v-tabs-items v-model="defaultTab">
             <v-tab-item key="general" value="general">
-              <product-general :item="item" :loading="loading" />
+              <form-product :item="item" :loading="loading" />
             </v-tab-item>
             <v-tab-item key="media" value="media">
-              <media-table :items="images" :id="id" />
+              <media-table
+                :items="images"
+                :id="id"
+                :data-source="fetchImages"
+              />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
               <seo-form :item="item" :loading="loading" />
@@ -30,7 +34,7 @@
 </template>
 
 <script>
-import ProductGeneral from '@/components/form/product/ProductGeneral'
+import FormProduct from '@/components/form/product/FormProduct'
 import SeoForm from '@/components/form/SeoForm'
 import MediaTable from '@/components/table/MediaTable'
 export default {
@@ -40,7 +44,7 @@ export default {
   components: {
     SeoForm,
     MediaTable,
-    ProductGeneral
+    FormProduct
   },
   data() {
     return {
@@ -64,6 +68,11 @@ export default {
       images: []
     }
   },
+  computed: {
+    uploadAction() {
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/mall/category/${this.id}/image`
+    }
+  },
   watch: {
     id: {
       handler(id) {
@@ -79,6 +88,9 @@ export default {
         this.item = data
         this.loading = false
       })
+    },
+    fetchImages() {
+      return this.$store.dispatch('fetchImageByProductId', this.id)
     }
   }
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import router from './router/'
 import store from './store/'
-import './registerServiceWorker'
+// import './registerServiceWorker'
 import './plugins/storage'
 //import './iconfont'
 import './theme/default.sass'

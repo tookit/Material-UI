@@ -2,8 +2,9 @@ import axios from 'axios'
 import store from '@/store'
 // create axios
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API, // api base_url
-  timeout: 150000 // 请求超时时间
+  baseURL: process.env.VUE_APP_BASE_API_HOST + '/api/', // api base_url
+  timeout: 10000, // 请求超时时间,
+  headers: { 'Access-Control-Allow-Origin': '*' }
 })
 
 const err = (error) => {
@@ -42,6 +43,7 @@ const err = (error) => {
 
 // request interceptor
 service.interceptors.request.use((config) => {
+  config.headers['Access-Control-Allow-Origin'] = '*'
   config.headers['Content-Type'] = 'application/json'
   config.headers['Authorization'] = 'Bearer ' + store.getters.getAccessToken
   return config

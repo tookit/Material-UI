@@ -90,16 +90,7 @@
             <v-card>
               <v-card-title>Featured Image</v-card-title>
               <v-card-text>
-                <uploader :options="options" class="uploader-example">
-                  <uploader-unsupport></uploader-unsupport>
-                  <uploader-drop>
-                    <p>Drop files here to upload or</p>
-                    <uploader-btn>select files</uploader-btn>
-                    <uploader-btn :attrs="attrs">select images</uploader-btn>
-                    <uploader-btn :directory="true">select folder</uploader-btn>
-                  </uploader-drop>
-                  <uploader-list></uploader-list>
-                </uploader>
+                <v-dropzone class="v-dropzone" :option="option"> </v-dropzone>
                 <div v-if="images" class="mt-3">
                   <v-avatar
                     size="90"
@@ -121,11 +112,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import VDropzone from '@/components/dropzone'
 export default {
   props: {
     id: [Number, String]
   },
-  components: {},
+  components: { VDropzone },
   data() {
     return {
       defaultTab: 'general',
@@ -162,12 +154,11 @@ export default {
   },
   computed: {
     ...mapGetters(['getAccessToken']),
-    options() {
+    option() {
       return {
-        target: `/api/mall/category/${this.id}/image`,
+        url: `/api/mall/category/${this.id}/image`,
         headers: {
           Authorization: 'Bearer ' + this.getAccessToken
-          // 'Content-Type': 'application/json'
         },
         testChunks: false
       }

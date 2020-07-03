@@ -1,6 +1,6 @@
 <template>
   <div class="app-bar">
-    <v-app-bar flat dark app extended>
+    <v-app-bar flat dark app>
       <v-spacer></v-spacer>
       <v-toolbar-items class="align-center">
         <v-menu offset-y origin="center center" transition="scale-transition">
@@ -35,9 +35,6 @@
           </v-list>
         </v-menu>
       </v-toolbar-items>
-      <div slot="extenstion">
-        <v-breadcrumbs></v-breadcrumbs>
-      </div>
     </v-app-bar>
   </div>
 </template>
@@ -115,7 +112,9 @@ export default {
     },
     handleProfile() {}
   },
-  created() {}
+  created() {
+    console.log(this.$router)
+  }
 }
 </script>
 <style lang="scss" scoped></style>

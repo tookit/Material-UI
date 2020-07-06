@@ -160,12 +160,34 @@ export const protectedRoute = [
             }
           },
           {
-            path: '/mall/slider',
-            name: 'mall.slider',
+            path: '/cms/slider',
+            name: 'cms.slider',
             component: () => import('@/views/cms/Slider.vue'),
             meta: {
               title: 'Slider',
               hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/slider/item/:id',
+            name: 'cms.slider.edit',
+            props: true,
+            component: () => import('@/views/cms/SliderItem.vue'),
+            meta: {
+              title: 'Edit Slider',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/slider/create',
+            name: 'cms.slider.create',
+            props: true,
+            component: () => import('@/views/cms/SliderItem.vue'),
+            meta: {
+              title: 'Create Slider',
+              hiddenInMenu: true,
               icon: 'mdi-view'
             }
           }

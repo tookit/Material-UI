@@ -107,10 +107,33 @@ export function fetchNews(query) {
   })
 }
 
+export function getSilderById(id) {
+  return request({
+    url: `/cms/slider/${id}`,
+    method: 'get'
+  })
+}
+
 export function fetchSlider(query) {
   return request({
     url: '/cms/slider',
     method: 'get',
     params: query
+  })
+}
+
+export function createSlider(data) {
+  return request({
+    url: `/cms/slider`,
+    method: 'post',
+    data: data
+  })
+}
+
+export function updateSlider(id, data) {
+  return request({
+    url: `/cms/slider/${id}`,
+    method: 'put',
+    data: data
   })
 }

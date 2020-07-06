@@ -11,7 +11,10 @@
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
-            <template v-slot:item.media="{ item }">
+            <v-btn slot="toolbar" icon @click="handleCreate">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <!-- <template v-slot:item.media="{ item }">
               <v-img
                 v-if="item.media.length > 0"
                 class="ma-3"
@@ -19,7 +22,7 @@
                 width="50"
                 height="50"
               />
-            </template>
+            </template> -->
             <template v-slot:item.categories="{ item }">
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
                 {{ c.name }}
@@ -88,10 +91,6 @@ export default {
           value: 'name'
         },
         {
-          text: 'Category',
-          value: 'categories'
-        },
-        {
           text: 'Active',
           value: 'is_active'
         },
@@ -131,6 +130,11 @@ export default {
         this.serverItemsLength = meta.total
       })
     },
+    handleCreate() {
+      this.$router.push({
+        path: `/cms/slider/create`
+      })
+    },
     handleViewItem(item) {
       this.$router.push({
         path: `/cms/slider/${item.id}`
@@ -138,7 +142,7 @@ export default {
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/cms/slider/${item.id}`
+        path: `/cms/slider/item/${item.id}`
       })
     },
     handleDeleteItem() {},

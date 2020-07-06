@@ -107,7 +107,7 @@ export const protectedRoute = [
             props: true,
             component: () => import('@/views/mall/ProductItem.vue'),
             meta: {
-              title: 'Product Item',
+              title: 'Edit Prouduct',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }
@@ -128,8 +128,44 @@ export const protectedRoute = [
             props: true,
             component: () => import('@/views/mall/CategoryItem.vue'),
             meta: {
-              title: 'Product Category Item',
+              title: 'Edit Product Category',
               hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          }
+        ]
+      },
+      {
+        path: '/cms',
+        name: 'cms.index',
+        meta: {
+          group: 'cms',
+          title: 'CMS',
+          hiddenInMenu: false,
+          icon: 'mdi-newspaper'
+        },
+        component: RouterWrapper,
+        redirect: {
+          path: '/cms/news'
+        },
+        children: [
+          {
+            path: '/cms/news',
+            name: 'cms.news',
+            component: () => import('@/views/cms/News.vue'),
+            meta: {
+              title: 'Company News',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/mall/slider',
+            name: 'mall.slider',
+            component: () => import('@/views/cms/Slider.vue'),
+            meta: {
+              title: 'Slider',
+              hiddenInMenu: false,
               icon: 'mdi-view'
             }
           }

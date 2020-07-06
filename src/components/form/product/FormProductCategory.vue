@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-card-text>
+      <v-cascader outlined :items="items" item-tex="name" item-value="name" />
       <v-form>
         <v-container fluid>
           <v-row>
@@ -55,14 +56,25 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import VCascader from '@/components/cascader'
 export default {
   name: 'FromProductCategory',
-  components: {},
+  components: { VCascader },
   props: {
     item: Object
   },
   data() {
     return {
+      items: [
+        {
+          text: 'Cat',
+          children: [
+            {
+              text: 'cat2'
+            }
+          ]
+        }
+      ],
       loading: false,
       formModel: {
         name: null,

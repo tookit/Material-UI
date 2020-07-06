@@ -97,3 +97,20 @@ export function deleteImageById(id, data) {
     method: 'delete'
   })
 }
+
+// cms
+export function fetchNews(query) {
+  return request({
+    url: '/cms/post',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchSlider(query) {
+  return request({
+    url: '/cms/slider',
+    method: 'get',
+    params: query
+  })
+}

@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <v-card-title>{{ formTitle }}</v-card-title>
     <v-card-text>
       <v-form>
         <v-container fluid>

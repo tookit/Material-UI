@@ -205,7 +205,6 @@ export default baseMixins.extend().extend({
           'assert: staticList should not be called if slots are used'
         )
       }
-
       return this.$createElement(VSelectList, this.listData)
     },
 
@@ -533,6 +532,7 @@ export default baseMixins.extend().extend({
           attrs: {
             role: undefined
           },
+
           props,
           on: {
             input: (val) => {
@@ -543,7 +543,12 @@ export default baseMixins.extend().extend({
           },
           ref: 'menu'
         },
-        [this.genList()]
+        [
+          this.$createElement('div', { staticClass: 'cascader' }, [
+            this.genList(),
+            this.genList()
+          ])
+        ]
       )
     },
 

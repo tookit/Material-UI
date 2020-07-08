@@ -152,7 +152,7 @@ export const protectedRoute = [
           {
             path: '/cms/news',
             name: 'cms.news',
-            component: () => import('@/views/cms/News.vue'),
+            component: () => import('@/views/cms/NewsList.vue'),
             meta: {
               title: 'Company News',
               hiddenInMenu: false,
@@ -162,7 +162,7 @@ export const protectedRoute = [
           {
             path: '/cms/slider',
             name: 'cms.slider',
-            component: () => import('@/views/cms/Slider.vue'),
+            component: () => import('@/views/cms/SliderList.vue'),
             meta: {
               title: 'Slider',
               hiddenInMenu: false,

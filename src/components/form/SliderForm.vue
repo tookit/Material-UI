@@ -23,7 +23,7 @@
             </v-col>
             <v-col :cols="12">
               <v-textarea
-                v-model="formModel.descriptioin"
+                v-model="formModel.description"
                 outlined
                 placeholder="Description"
                 label="Description"
@@ -54,7 +54,7 @@ export default {
       formModel: {
         name: null,
         url: null,
-        descriptioin: null
+        description: null
       }
     }
   },
@@ -95,8 +95,9 @@ export default {
             this.loading = false
           })
       } else {
-        this.$store.dispatch('createSlider', this.formModel).then(() => {
+        this.$store.dispatch('createSlider', this.formModel).then((resp) => {
           this.loading = false
+          // this.$router.push({})
         })
       }
     }

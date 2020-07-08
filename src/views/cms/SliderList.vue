@@ -14,22 +14,25 @@
             <v-btn slot="toolbar" icon @click="handleCreate">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
-            <!-- <template v-slot:item.media="{ item }">
+            <template v-slot:item.media="{ item }">
               <v-img
                 v-if="item.media.length > 0"
                 class="ma-3"
                 :src="item.media[0].url"
-                width="50"
-                height="50"
+                width="100"
+                height="90"
               />
-            </template> -->
+            </template>
             <template v-slot:item.categories="{ item }">
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
                 {{ c.name }}
               </v-chip>
             </template>
             <template v-slot:item.is_active="{ item }">
-              <v-switch v-model="item.is_active" />
+              <v-switch
+                v-model="item.is_active"
+                @change="handleItemStatus(item)"
+              />
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
@@ -87,7 +90,7 @@ export default {
           value: 'media'
         },
         {
-          text: 'Name',
+          text: 'Title',
           value: 'name'
         },
         {
@@ -145,7 +148,21 @@ export default {
         path: `/cms/slider/item/${item.id}`
       })
     },
-    handleDeleteItem() {},
+    handleItemStatus(val) {
+      this.$store
+        .dispatch('updateSlider', {
+          id: val.id,
+          data: { is_active: val.is_active }
+        })
+        .then(() => {})
+    },
+    handleDeleteItem(item) {
+      if (window.confirm('Are you sure to delete this')) {
+        this.$store.dispatch('deleteSliderById', item.id).then(() => {
+          this.fetchRecord()
+        })
+      }
+    },
     handlePageChanged(page) {
       this.fetchRecord({
         page: page

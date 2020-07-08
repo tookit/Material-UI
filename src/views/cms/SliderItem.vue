@@ -5,8 +5,8 @@
         <v-col cols="8">
           <slider-form :item="item" />
         </v-col>
-        <v-col cols="4">
-          <!-- <image-form /> -->
+        <v-col cols="4" v-if="id">
+          <image-form :action="uploadAction" />
         </v-col>
       </v-row>
     </v-container>
@@ -22,12 +22,17 @@ export default {
     id: [Number, String]
   },
   components: {
-    SliderForm
-    // ImageForm
+    SliderForm,
+    ImageForm
   },
   data() {
     return {
       item: null
+    }
+  },
+  computed: {
+    uploadAction() {
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/cms/slider/${this.id}/image`
     }
   },
   watch: {

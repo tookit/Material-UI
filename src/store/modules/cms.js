@@ -2,6 +2,7 @@ import {
   fetchNews,
   fetchSlider,
   getSilderById,
+  deleteSilderById,
   createSlider,
   updateSlider
 } from '@/api/service'
@@ -27,6 +28,11 @@ const actions = {
 
   getSliderById({ commit }, id) {
     return getSilderById(id).then((resp) => {
+      return resp
+    })
+  },
+  deleteSliderById({ commit }, id) {
+    return deleteSilderById(id).then((resp) => {
       return resp
     })
   },

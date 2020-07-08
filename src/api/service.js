@@ -137,3 +137,10 @@ export function updateSlider(id, data) {
     data: data
   })
 }
+
+export function deleteSilderById(id) {
+  return request({
+    url: `/cms/slider/${id}`,
+    method: 'delete'
+  })
+}

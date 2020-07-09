@@ -11,7 +11,7 @@
           <v-list-item tag="li" :key="item.id" :value="item">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-icon v-if="item.children && item.children.length > 0">
-              <v-icon>mdi-chevron-down</v-icon>
+              <v-icon>mdi-chevron-right</v-icon>
             </v-list-item-icon>
           </v-list-item>
         </template>
@@ -23,6 +23,7 @@
         class="flex"
         :depth="depth + 1"
         :items="selectedItem.children"
+        v-model="value"
       />
     </template>
   </div>
@@ -36,12 +37,26 @@ export default {
     depth: {
       type: [Number],
       default: 1
-    }
+    },
+    value: [Array]
   },
   components: { VCascaderList },
   data() {
     return {
       selectedItem: null
+    }
+  },
+
+  watch: {
+    value: {
+      handler(val) {
+        const selectedId = val[this.depth - 1]
+        this.selectedItem = this.items.find((item) => {
+          return item.id === selectedId
+        })
+        this.handleChange(this.selectedItem)
+      },
+      immediate: true
     }
   },
   methods: {

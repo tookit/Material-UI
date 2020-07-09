@@ -8,6 +8,7 @@
               <v-cascader
                 outlined
                 :items="getProductCategories"
+                v-model="formModel.parent_id"
                 item-tex="name"
                 item-value="name"
               />
@@ -124,6 +125,7 @@ export default {
       if (data) {
         for (let key in this.formModel) {
           this.formModel[key] = data[key] || null
+          this.formModel.parent_id = 2202
         }
       } else {
         this.formModel = {

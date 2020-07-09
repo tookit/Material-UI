@@ -31,6 +31,7 @@
     "glightbox": "^3.0.0",
     "jodit": "^3.4.11",
     "lodash": "^4.17.15",
+    "nested-sets-tree": "^2.0.0",
     "npm": "^6.14.5",
     "nprogress": "^0.2.0",
     "register-service-worker": "^1.6.2",

@@ -479,7 +479,7 @@ export default baseMixins.extend().extend({
       return render
     },
 
-    genList() {
+    genList(items) {
       // If there's no slots, we can use a cached VNode to improve performance
       if (
         this.$slots['no-data'] ||
@@ -490,6 +490,9 @@ export default baseMixins.extend().extend({
       } else {
         return this.staticList
       }
+    },
+    genChildrenList(items) {
+      return this.$createElement(VSelectList, this.listData)
     },
 
     genListWithSlot() {
@@ -544,8 +547,7 @@ export default baseMixins.extend().extend({
           ref: 'menu'
         },
         [
-          this.$createElement('div', { staticClass: 'cascader' }, [
-            this.genList(),
+          this.$createElement('div', { staticClass: 'v-cascader' }, [
             this.genList()
           ])
         ]
@@ -804,6 +806,7 @@ export default baseMixins.extend().extend({
     },
 
     selectItem(item) {
+      console.log(this.listData)
       if (!this.multiple) {
         this.setValue(this.returnObject ? item : this.getValue(item))
         // this.isMenuActive = false

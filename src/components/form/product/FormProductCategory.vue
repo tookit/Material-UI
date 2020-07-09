@@ -1,7 +1,12 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-cascader outlined :items="items" item-tex="name" item-value="name" />
+      <v-cascader
+        outlined
+        :items="getProductCategories"
+        item-tex="name"
+        item-value="name"
+      />
       <v-form>
         <v-container fluid>
           <v-row>
@@ -56,7 +61,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import VCascader from '@/components/cascader'
+import VCascader from '@/components/cascader/'
 export default {
   name: 'FromProductCategory',
   components: { VCascader },
@@ -67,10 +72,23 @@ export default {
     return {
       items: [
         {
-          text: 'Cat',
+          text: 'cat-1',
           children: [
             {
-              text: 'cat2'
+              text: 'cat-1-1',
+              children: [
+                {
+                  text: 'cat-1-1-1'
+                }
+              ]
+            }
+          ]
+        },
+        {
+          text: 'cat-2',
+          children: [
+            {
+              text: 'cat-2-2'
             }
           ]
         }
@@ -143,9 +161,7 @@ export default {
     }
   },
   created() {
-    // this.$store.dispatch('fetchProductCategoryTree')
+    this.$store.dispatch('fetchProductCategoryTree')
   }
 }
 </script>
-
-<style></style>

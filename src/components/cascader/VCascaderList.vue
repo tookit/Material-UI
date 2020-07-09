@@ -18,7 +18,12 @@
       </v-list-item-group>
     </v-list>
     <template v-if="selectedItem && selectedItem.children">
-      <v-cascader-list class="flex" :items="selectedItem.children" />
+      <v-cascader-list
+        v-if="selectedItem.children.length > 0"
+        class="flex"
+        :depth="depth + 1"
+        :items="selectedItem.children"
+      />
     </template>
   </div>
 </template>
@@ -27,7 +32,11 @@ import VCascaderList from './VCascaderList'
 export default {
   name: 'VCascaderList',
   props: {
-    items: Array
+    items: Array,
+    depth: {
+      type: [Number],
+      default: 1
+    }
   },
   components: { VCascaderList },
   data() {
@@ -36,7 +45,9 @@ export default {
     }
   },
   methods: {
-    handleChange() {}
+    handleChange(item) {
+      window._CASCADER.$emit('change', { item: item, depth: this.depth })
+    }
   }
 }
 </script>

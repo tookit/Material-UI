@@ -1,15 +1,17 @@
 <template>
   <v-card>
     <v-card-text>
-      <v-cascader
-        outlined
-        :items="getProductCategories"
-        item-tex="name"
-        item-value="name"
-      />
       <v-form>
         <v-container fluid>
           <v-row>
+            <v-col cols="12">
+              <v-cascader
+                outlined
+                :items="getProductCategories"
+                item-tex="name"
+                item-value="name"
+              />
+            </v-col>
             <v-col :cols="6">
               <v-text-field
                 v-model="formModel.name"

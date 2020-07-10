@@ -63,8 +63,8 @@ export default {
           [],
           'name'
         ).join(' / ')
-      },
-      immediate: true
+      }
+      // immediate: true
     }
   },
   methods: {

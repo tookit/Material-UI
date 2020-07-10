@@ -22,7 +22,7 @@
           >
         </v-toolbar>
         <v-divider></v-divider>
-        <v-card-text>
+        <v-card-text style="max-height:300px;overflow:auto">
           <v-treeview
             v-model="selection"
             @input="handleInput"
@@ -42,6 +42,19 @@
 </template>
 
 <script>
+function findAllParent(tree, func, path = [], key = 'id') {
+  if (!tree) return []
+  for (const data of tree) {
+    path.push(data[key])
+    if (func(data)) return path
+    if (data.children) {
+      const findChildren = findAllParent(data.children, func, path, key)
+      if (findChildren.length) return findChildren
+    }
+    path.pop()
+  }
+  return []
+}
 export default {
   name: 'v-tree-select',
   props: {
@@ -63,9 +76,14 @@ export default {
       }
     },
     inputValue() {
-      return this.selection.map((item) => {
-        return item.name
-      })
+      return this.selection.length > 0
+        ? findAllParent(
+            this.items,
+            (data) => data.id === this.selection[0].id,
+            [],
+            'name'
+          ).join(' / ')
+        : ''
     }
   },
   methods: {

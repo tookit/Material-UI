@@ -10,6 +10,7 @@
                 :items="getProductCategories"
                 v-model="formModel.parent_id"
                 item-tex="name"
+                @change="handleChange"
                 item-value="name"
               />
             </v-col>
@@ -162,6 +163,11 @@ export default {
       this.formModel.category_ids = categories.map((item) => {
         return item.id
       })
+    },
+    handleChange(val) {
+      // if (val.item && val.item.id) {
+      //   this.formModel.parent_id = val.item.id
+      // }
     }
   },
   created() {

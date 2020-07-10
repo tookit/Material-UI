@@ -2,7 +2,6 @@
   <v-menu offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
-        name="parent_id"
         label="Parent Category"
         placeholder="Parent Category"
         hide-details
@@ -15,24 +14,16 @@
       />
     </template>
     <v-card class="v-cascader d-flex sheet">
-      <v-cascader-list :depth="1" :items="items" v-model="selectedValue" />
+      <v-cascader-list
+        :items="items"
+        v-model="selectedValue"
+        @change="handleChange"
+      />
     </v-card>
   </v-menu>
 </template>
 <script>
-function findAllParent(tree, func, path = [], key = 'id') {
-  if (!tree) return []
-  for (const data of tree) {
-    path.push(data[key])
-    if (func(data)) return path
-    if (data.children) {
-      const findChildren = findAllParent(data.children, func, path, key)
-      if (findChildren.length) return findChildren
-    }
-    path.pop()
-  }
-  return []
-}
+import { findAllParent } from '@/utils'
 import VCascaderList from './VCascaderList.vue'
 export default {
   name: 'VCascader',
@@ -69,7 +60,8 @@ export default {
   },
   methods: {
     handleChange({ item, depth }) {
-      this.selectedItems[depth - 1] = item
+      console.log('cascader chanage', item, depth)
+      this.selectedItems[depth] = item
     },
     computeInputValue() {
       const items = this.selectedItems.filter((item) => {
@@ -78,19 +70,7 @@ export default {
       this.inputValue = items.map((item) => item.name).join(' / ')
     }
   },
-  mounted() {
-    window._CASCADER = this
-  },
-  created() {
-    this.$on('change', ({ item, depth }) => {
-      if (depth === 1) {
-        this.selectedItems = []
-      } else if (depth === 2) {
-        delete this.selectedItems[depth + 1]
-      }
-      this.selectedItems[depth - 1] = item
-      this.computeInputValue()
-    })
-  }
+  mounted() {},
+  created() {}
 }
 </script>

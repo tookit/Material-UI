@@ -6,7 +6,7 @@
       tag="ul"
       dense
     >
-      <v-list-item-group v-model="selectedItem" @change="handleChange">
+      <v-list-item-group v-model="selectedItem" @change="selecteItem">
         <template v-for="item in items">
           <v-list-item tag="li" :key="item.id" :value="item">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
@@ -23,6 +23,7 @@
         class="flex"
         :depth="depth + 1"
         :items="selectedItem.children"
+        @change="handleChange"
         v-model="value"
       />
     </template>
@@ -36,7 +37,7 @@ export default {
     items: Array,
     depth: {
       type: [Number],
-      default: 1
+      default: 0
     },
     value: [Array]
   },
@@ -48,20 +49,14 @@ export default {
   },
 
   watch: {
-    value: {
-      handler(val) {
-        const selectedId = val[this.depth - 1]
-        this.selectedItem = this.items.find((item) => {
-          return item.id === selectedId
-        })
-        this.handleChange(this.selectedItem)
-      },
-      immediate: true
-    }
+    value: {}
   },
   methods: {
+    selecteItem(item) {
+      this.$emit('change', { item, depth: this.depth })
+    },
     handleChange(item) {
-      window._CASCADER.$emit('change', { item: item, depth: this.depth })
+      this.$emit('change', item)
     }
   }
 }

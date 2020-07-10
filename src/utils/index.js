@@ -94,6 +94,20 @@ const clearCookie = () => {
     document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT'
   }
 }
+// tree helper
+const findAllParent = (tree, func, path = [], key = 'id') => {
+  if (!tree) return []
+  for (const data of tree) {
+    path.push(data[key])
+    if (func(data)) return path
+    if (data.children) {
+      const findChildren = findAllParent(data.children, func, path, key)
+      if (findChildren.length) return findChildren
+    }
+    path.pop()
+  }
+  return []
+}
 export {
   randomElement,
   toggleFullScreen,
@@ -102,5 +116,6 @@ export {
   kebab,
   getCookie,
   clearCookie,
-  snakeToPascal
+  snakeToPascal,
+  findAllParent
 }

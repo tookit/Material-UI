@@ -16,58 +16,54 @@
     <v-card class="v-cascader d-flex sheet">
       <v-cascader-list
         :items="items"
-        v-model="selectedValue"
+        v-model="selectedItems"
         @change="handleChange"
       />
     </v-card>
   </v-menu>
 </template>
 <script>
-import { findAllParent } from '@/utils'
 import VCascaderList from './VCascaderList.vue'
 export default {
   name: 'VCascader',
   props: {
     items: Array,
-    value: [Number, String]
+    value: Array
   },
   components: { VCascaderList },
-  computed: {},
-  data() {
-    return {
-      inputValue: '',
-      selectedValue: [],
-      selectedItems: []
+  computed: {
+    inputValue() {
+      return this.selectedItems
     }
   },
   watch: {
     value: {
       handler(val) {
-        this.selectedValue = findAllParent(
-          this.items,
-          (data) => data.id === val,
-          []
-        )
-        this.inputValue = findAllParent(
-          this.items,
-          (data) => data.id === val,
-          [],
-          'name'
-        ).join(' / ')
+        if (val) {
+          this.selectedItems = val
+        }
       }
-      // immediate: true
+    }
+  },
+  data() {
+    return {
+      selectedItems: this.value
     }
   },
   methods: {
     handleChange({ item, depth }) {
-      console.log('cascader chanage', item, depth)
+      switch (depth) {
+        case 0:
+          this.selectedItems = []
+          break
+        case 1:
+          this.selectedItems[2] = 0
+          break
+        default:
+          break
+      }
       this.selectedItems[depth] = item
-    },
-    computeInputValue() {
-      const items = this.selectedItems.filter((item) => {
-        return item
-      })
-      this.inputValue = items.map((item) => item.name).join(' / ')
+      this.$emit('change', this.selectedItems)
     }
   },
   mounted() {},

@@ -8,7 +8,7 @@
     >
       <v-list-item-group v-model="selectedItem" @change="selecteItem">
         <template v-for="item in items">
-          <v-list-item tag="li" :key="item.id" :value="item">
+          <v-list-item tag="li" :key="item.id" :value="item.id">
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-icon v-if="item.children && item.children.length > 0">
               <v-icon>mdi-chevron-right</v-icon>
@@ -17,14 +17,14 @@
         </template>
       </v-list-item-group>
     </v-list>
-    <template v-if="selectedItem && selectedItem.children">
+    <template v-if="selectedItem">
       <v-cascader-list
-        v-if="selectedItem.children.length > 0"
+        v-if="selectedChildren"
         class="flex"
         :depth="depth + 1"
-        :items="selectedItem.children"
+        :items="selectedChildren"
         @change="handleChange"
-        v-model="value"
+        :value="value"
       />
     </template>
   </div>
@@ -47,9 +47,19 @@ export default {
       selectedItem: null
     }
   },
-
+  computed: {
+    selectedChildren() {
+      const item = this.items.find((item) => item.id === this.selectedItem)
+      return item ? item.children : []
+    }
+  },
   watch: {
-    value: {}
+    value: {
+      handler(val) {
+        this.selectedItem = val[this.depth]
+      },
+      immediate: true
+    }
   },
   methods: {
     selecteItem(item) {

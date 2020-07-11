@@ -6,9 +6,14 @@
       tag="ul"
       dense
     >
-      <v-list-item-group v-model="selectedItem" @change="selecteItem">
+      <v-list-item-group v-model="selectedItem">
         <template v-for="item in items">
-          <v-list-item tag="li" :key="item.id" :value="item.id">
+          <v-list-item
+            tag="li"
+            :key="item.id"
+            :value="item.id"
+            @click="selectItem(item)"
+          >
             <v-list-item-title>{{ item.name }}</v-list-item-title>
             <v-list-item-icon v-if="item.children && item.children.length > 0">
               <v-icon>mdi-chevron-right</v-icon>
@@ -39,7 +44,10 @@ export default {
       type: [Number],
       default: 0
     },
-    value: [Array]
+    value: {
+      type: Array,
+      default: () => []
+    }
   },
   components: { VCascaderList },
   data() {
@@ -56,14 +64,14 @@ export default {
   watch: {
     value: {
       handler(val) {
-        this.selectedItem = val[this.depth]
+        this.selectedItem = val.length > 0 ? val[this.depth] : null
       },
       immediate: true
     }
   },
   methods: {
-    selecteItem(item) {
-      this.$emit('change', { item, depth: this.depth })
+    selectItem({ id, name }) {
+      this.$emit('change', { id, depth: this.depth, name })
     },
     handleChange(item) {
       this.$emit('change', item)

@@ -23,17 +23,21 @@
   </v-menu>
 </template>
 <script>
+import flattern from '@/utils/flattern'
 import VCascaderList from './VCascaderList.vue'
 export default {
   name: 'VCascader',
   props: {
     items: Array,
-    value: Array
+    value: {
+      type: Array,
+      default: () => []
+    }
   },
   components: { VCascaderList },
   computed: {
-    inputValue() {
-      return this.selectedItems
+    categories() {
+      return flattern(this.items, { initNode: (node) => node })
     }
   },
   watch: {
@@ -47,23 +51,29 @@ export default {
   },
   data() {
     return {
-      selectedItems: this.value
+      selectedItems: this.value,
+      inputValue: '',
+      selectedNames: []
     }
   },
   methods: {
-    handleChange({ item, depth }) {
+    handleChange({ id, depth, name }) {
       switch (depth) {
         case 0:
           this.selectedItems = []
+          this.selectedNames = []
           break
         case 1:
           this.selectedItems[2] = 0
+          this.selectedNames[2] = ''
           break
         default:
           break
       }
-      this.selectedItems[depth] = item
+      this.selectedItems[depth] = id
+      this.selectedNames[depth] = name
       this.$emit('change', this.selectedItems)
+      this.inputValue = this.selectedNames.join(' / ')
     }
   },
   mounted() {},

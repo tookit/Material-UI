@@ -104,7 +104,12 @@ export default {
         for (let key in this.formModel) {
           this.formModel[key] = data[key] || null
         }
-        this.formModel.categories = [58, 2035, 2039]
+        this.formModel.categories = findAllParent(
+          this.getProductCategories,
+          (data) => data.id === this.formModel.parent_id,
+          [],
+          'id'
+        )
       } else {
         this.formModel = {
           name: null,
@@ -136,6 +141,7 @@ export default {
       }
     },
     handleCategoryChange(val) {
+      console.log(val)
       this.formModel.categories = val
     }
   },

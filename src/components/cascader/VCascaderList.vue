@@ -57,7 +57,10 @@ export default {
   },
   computed: {
     selectedChildren() {
-      const item = this.items.find((item) => item.id === this.selectedItem)
+      const item = this.items.find((item) => {
+        // console.log(item.id, this.selectedItem)
+        return item.id == this.selectedItem
+      })
       return item ? item.children : []
     }
   },

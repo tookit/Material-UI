@@ -32,9 +32,9 @@
               ></v-text-field>
             </v-col>
             <v-col :cols="12">
-              <v-tree-select
+              <v-cascader
                 :items="getProductCategories"
-                :selected-items="formModel.categories"
+                v-model="formModel.categories"
                 @change="handleCategoriesChange"
               />
             </v-col>
@@ -72,14 +72,15 @@
 </template>
 
 <script>
-import VTreeSelect from '@/components/tree-select/VTreeSelect'
 import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
+import VCascader from '@/components/cascader/'
+import { findAllParent } from '@/utils'
 export default {
   name: 'ProductGeneral',
   components: {
-    VTreeSelect,
-    VJodit
+    VJodit,
+    VCascader
   },
   props: {
     item: Object
@@ -139,7 +140,15 @@ export default {
           slug: data.slug,
           reference_url: data.reference_url,
           specs: data.specs,
-          categories: data.categories
+          categories:
+            data.categories.length > 0
+              ? findAllParent(
+                  this.getProductCategories,
+                  (item) => item.id === data.categories[0].id,
+                  [],
+                  'id'
+                )
+              : []
         }
       } else {
         this.formModel = {

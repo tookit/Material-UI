@@ -38,6 +38,13 @@ export default {
   computed: {
     categories() {
       return flattern(this.items, { initNode: (node) => node })
+    },
+    inputValue() {
+      const names = this.selectedItems.map((id) => {
+        const node = this.categories.find((cat) => cat.id === id)
+        return node.name
+      })
+      return names.join(' / ')
     }
   },
   watch: {
@@ -52,7 +59,6 @@ export default {
   data() {
     return {
       selectedItems: this.value,
-      inputValue: '',
       selectedNames: []
     }
   },
@@ -73,7 +79,6 @@ export default {
       this.selectedItems[depth] = id
       this.selectedNames[depth] = name
       this.$emit('change', this.selectedItems)
-      this.inputValue = this.selectedNames.join(' / ')
     }
   },
   mounted() {},

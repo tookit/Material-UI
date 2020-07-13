@@ -11,6 +11,9 @@
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
+            <v-btn slot="toolbar" icon @click="handleCreateItem">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
             <template v-slot:item.media="{ item }">
               <v-img
                 v-if="item.media.length > 0"
@@ -131,14 +134,19 @@ export default {
         this.serverItemsLength = meta.total
       })
     },
+    handleCreateItem() {
+      this.$router.push({
+        path: `/mall/product/create`
+      })
+    },
     handleViewItem(item) {
       this.$router.push({
-        path: `/mall/product/${item.id}`
+        path: `/mall/product/item/${item.id}`
       })
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/mall/product/${item.id}`
+        path: `/mall/product/item/${item.id}`
       })
     },
     handleDeleteItem() {},

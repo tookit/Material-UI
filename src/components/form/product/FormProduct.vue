@@ -1,5 +1,5 @@
 <template>
-  <v-card>
+  <v-card :loading="loading">
     <v-card-text>
       <v-form>
         <v-container fluid>
@@ -8,8 +8,8 @@
               <v-text-field
                 v-model="formModel.name"
                 outlined
-                label="name"
-                name="name"
+                label="Name"
+                name="Name"
                 placeholder="name"
               ></v-text-field>
             </v-col>
@@ -49,14 +49,6 @@
             <v-col :cols="12">
               <label for="">Specs</label>
               <v-jodit v-model="formModel.specs" />
-              <!-- <v-textarea
-                outlined
-                :rows="10"
-                id="editor"
-                label="Specs"
-                placeholder="Specs"
-                v-model="formModel.specs"
-              /> -->
             </v-col>
           </v-row>
         </v-container>
@@ -77,7 +69,7 @@ import VJodit from '@/components/jodit'
 import VCascader from '@/components/cascader/'
 import { findAllParent } from '@/utils'
 export default {
-  name: 'ProductGeneral',
+  name: 'FormProduct',
   components: {
     VJodit,
     VCascader

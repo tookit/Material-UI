@@ -7,6 +7,7 @@
             <v-tab
               v-for="(item, key) in tabs"
               :key="key"
+              v-show="showTab(item)"
               :href="'#' + item.value"
             >
               {{ item.text }}
@@ -24,7 +25,7 @@
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
-              <seo-form :item="item" :loading="loading" />
+              <seo-form :meta="item.meta" :loading="loading" />
             </v-tab-item>
           </v-tabs-items>
         </v-col>
@@ -76,7 +77,9 @@ export default {
   watch: {
     id: {
       handler(id) {
-        this.fetchRecord(id)
+        if (id) {
+          this.fetchRecord(id)
+        }
       },
       immediate: true
     }
@@ -91,6 +94,13 @@ export default {
     },
     fetchImages() {
       return this.$store.dispatch('fetchImageByProductId', this.id)
+    },
+    showTab({ value }) {
+      if (this.id) {
+        return true
+      } else {
+        return value === 'general'
+      }
     }
   }
 }

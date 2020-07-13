@@ -3,7 +3,14 @@ import { Jodit } from 'jodit'
 export default {
   name: 'v-jodit',
   props: {
-    option: Object,
+    option: {
+      type: Object,
+      default: () => {
+        return {
+          height: 600
+        }
+      }
+    },
     value: { type: String, required: true, default: 'placeholder' }
   },
 

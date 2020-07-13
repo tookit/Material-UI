@@ -2,9 +2,7 @@
   <v-card class="advance-table" tile :flat="flat">
     <v-data-table
       tile
-      :single-expand="true"
       :expanded.sync="expanded"
-      :show-expand="true"
       ref="table"
       single-select
       @keyup.down="handleKeydown"

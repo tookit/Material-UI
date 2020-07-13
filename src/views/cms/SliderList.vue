@@ -15,13 +15,20 @@
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <template v-slot:item.media="{ item }">
-              <v-img
-                v-if="item.media.length > 0"
-                class="ma-3"
-                :src="item.media[0].url"
-                width="100"
-                height="90"
-              />
+              <a
+                :href="item.media[0].url"
+                class="glightbox"
+                target="blank"
+                @click.stop="handleViewImage"
+              >
+                <v-img
+                  v-if="item.media.length > 0"
+                  class="ma-3 glightbox"
+                  :src="item.media[0].url"
+                  width="100"
+                  height="90"
+                />
+              </a>
             </template>
             <template v-slot:item.categories="{ item }">
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
@@ -68,6 +75,7 @@
 </template>
 
 <script>
+import GLightbox from 'glightbox'
 import AdvanceTable from '@/components/table/AdvanceTable'
 import { mapActions } from 'vuex'
 export default {
@@ -166,6 +174,12 @@ export default {
     handlePageChanged(page) {
       this.fetchRecord({
         page: page
+      })
+    },
+    handleViewImage(item) {
+      console.log(item)
+      var lightboxDescription = GLightbox({
+        selector: '.glightbox'
       })
     }
   },

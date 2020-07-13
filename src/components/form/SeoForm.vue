@@ -16,7 +16,7 @@
             </v-col>
             <v-col :cols="6">
               <v-text-field
-                v-model="formModel.metaKeyword"
+                v-model="formModel.meta_keywords"
                 outlined
                 placeholder="Keyword"
                 label="Meta Keyword"
@@ -45,13 +45,14 @@
 export default {
   name: 'SeoForm',
   props: {
-    item: Object
+    meta: Object,
+    action: Function
   },
   data() {
     return {
       formModel: {
         meta_title: null,
-        metaKeyword: null,
+        meta_keywords: null,
         meta_description: null
       }
     }

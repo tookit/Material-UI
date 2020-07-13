@@ -102,7 +102,18 @@ export const protectedRoute = [
             }
           },
           {
-            path: '/mall/product/:id',
+            path: '/mall/product/create',
+            name: 'mall.product.create',
+            props: true,
+            component: () => import('@/views/mall/ProductItem.vue'),
+            meta: {
+              title: 'Create Product',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/mall/product/item/:id',
             name: 'mall.product.item',
             props: true,
             component: () => import('@/views/mall/ProductItem.vue'),

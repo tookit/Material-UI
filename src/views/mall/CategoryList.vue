@@ -1,9 +1,9 @@
 <template>
-  <div class="page-product-category" style="min-height: 90vh">
+  <div class="page-product-category">
     <v-container>
       <v-row>
         <v-col>
-          <v-card>
+          <v-card :loading="loading">
             <v-card-text>
               <v-treeview
                 v-model="tree"

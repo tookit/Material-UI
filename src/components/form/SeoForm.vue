@@ -36,7 +36,9 @@
     </v-card-text>
     <v-card-actions class="py-3">
       <v-spacer></v-spacer>
-      <v-btn tile color="primary">save</v-btn>
+      <v-btn :loading="loading" tile color="primary" @click="handleSubmit"
+        >save</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -45,11 +47,12 @@
 export default {
   name: 'SeoForm',
   props: {
-    meta: Object,
+    item: Object,
     action: Function
   },
   data() {
     return {
+      loading: false,
       formModel: {
         meta_title: null,
         meta_keywords: null,
@@ -65,14 +68,34 @@ export default {
   watch: {
     item: {
       handler(item) {
-        this.assignModel(item)
+        if (item) {
+          this.assignModel(item)
+        } else {
+          this.formModel = {
+            meta_title: null,
+            meta_keywords: null,
+            meta_description: null
+          }
+        }
       },
       immediate: true
     }
   },
   methods: {
     assignModel(data) {
-      this.formModel = data
+      this.formModel = {
+        meta_title: data.meta_title,
+        meta_keywords: data.meta_keywords,
+        meta_description: data.meta_description
+      }
+    },
+    handleSubmit() {
+      this.action.apply(this, [
+        {
+          id: this.item.id,
+          data: this.formModel
+        }
+      ])
     }
   }
 }

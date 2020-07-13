@@ -59,6 +59,7 @@ const actions = {
     })
   },
   updateProduct({ commit }, { id, data }) {
+    console.log(id, data)
     return updateProduct(id, data).then((resp) => {
       window.ELEPHANT.$emit('SHOW_SNACKBAR', {
         show: true,

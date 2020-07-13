@@ -3,44 +3,45 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-card>
-            <v-card-text>
-              <v-treeview
-                v-model="tree"
-                :items="items"
-                activatable
-                item-key="id"
-                open-on-click
-              >
-                <template v-slot:append="{ item }">
-                  <v-menu>
-                    <template v-slot:activator="{ on: menu }">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on: tooltip }">
-                          <v-btn icon v-on="{ ...tooltip, ...menu }">
-                            <v-icon>mdi-dots-vertical</v-icon></v-btn
-                          >
-                        </template>
-                        <span>Action</span>
-                      </v-tooltip>
-                    </template>
-                    <v-list class="pa-0" dense>
-                      <v-list-item
-                        v-for="action in actions"
-                        :key="action.text"
-                        @click="action.click(item)"
+          <advance-table
+            :items="items"
+            :headers="headers"
+            :loading="loading"
+            :expanded="expanded"
+            :items-per-page="itemsPerPage"
+            @update:page="handlePageChanged"
+          >
+            <template v-slot:item.featured_img="{ item }">
+              <v-img :src="item.featrued_img" :height="90" :width="90"></v-img>
+            </template>
+
+            <template v-slot:item.action="{ item }">
+              <v-menu>
+                <template v-slot:activator="{ on: menu }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn icon v-on="{ ...tooltip, ...menu }">
+                        <v-icon>mdi-dots-vertical</v-icon></v-btn
                       >
-                        <v-list-item-icon class="mr-2">
-                          <v-icon small>{{ action.icon }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>{{ action.text }}</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
+                    </template>
+                    <span>Action</span>
+                  </v-tooltip>
                 </template>
-              </v-treeview>
-            </v-card-text>
-          </v-card>
+                <v-list class="pa-0" dense>
+                  <v-list-item
+                    v-for="action in actions"
+                    :key="action.text"
+                    @click="action.click(item)"
+                  >
+                    <v-list-item-icon class="mr-2">
+                      <v-icon small>{{ action.icon }}</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>{{ action.text }}</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </template>
+          </advance-table>
         </v-col>
       </v-row>
     </v-container>
@@ -48,14 +49,16 @@
 </template>
 
 <script>
+import AdvanceTable from '@/components/table/AdvanceTable'
 import { mapActions } from 'vuex'
 export default {
   name: 'PageProduct',
-  components: {},
+  components: {
+    AdvanceTable
+  },
   data() {
     return {
       //
-      tree: [],
       loading: false,
       items: [],
       expanded: [],

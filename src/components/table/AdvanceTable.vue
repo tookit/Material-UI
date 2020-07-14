@@ -148,12 +148,9 @@
           <slot name="toolbar"></slot>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-card flat v-show="showFilter">
-          <v-card-text>
-            <slot name="filter"></slot>
-          </v-card-text>
-        </v-card>
-        <v-divider></v-divider>
+        <div v-show="showFilter">
+          <slot name="filter"></slot>
+        </div>
       </template>
       <template
         v-for="(_, name) in $scopedSlots"

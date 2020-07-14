@@ -11,6 +11,36 @@
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
+            <div slot="filter">
+              <v-card flat class="grey lighten-4">
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-cascader
+                        name="categories"
+                        placeholder="Category"
+                        :items="getProductCategories"
+                        v-model="categories"
+                        @change="handleCategoryChange"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <v-switch
+                        label="Active"
+                        v-model="filter['filter[is_active]']"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="handleResetFilter" text>Reset</v-btn>
+                  <v-btn @click="handleApplyFilter" color="primary"
+                    >Apply</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </div>
             <v-btn slot="toolbar" icon @click="handleCreateItem">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -69,17 +99,24 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import { mapActions } from 'vuex'
+import VCascader from '@/components/cascader/'
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'PageProduct',
   components: {
-    AdvanceTable
+    AdvanceTable,
+    VCascader
   },
   data() {
     return {
       //
       loading: false,
       items: [],
+      filter: {
+        'filter[is_active]': false,
+        'filter[categories.id]': []
+      },
+      categories: [],
       headers: [
         {
           text: 'ID',
@@ -127,10 +164,14 @@ export default {
       ]
     }
   },
+  computed: {
+    ...mapGetters(['getProductCategories'])
+  },
   methods: {
     ...mapActions(['fetchProducts']),
     fetchRecord(query) {
       this.loading = true
+      this.items = []
       this.fetchProducts(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
@@ -157,7 +198,19 @@ export default {
       this.fetchRecord({
         page: page
       })
-    }
+    },
+    handleCategoryChange(val) {
+      this.filter['filter[categories.id]'] = val
+        .filter((item) => item !== 0)
+        .join(',')
+      this.categories = val
+    },
+    // filter
+    handleApplyFilter() {
+      this.fetchRecord(this.filter)
+    },
+
+    handleResetFilter() {}
   },
   created() {
     this.fetchRecord()

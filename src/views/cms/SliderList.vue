@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import GLightbox from 'glightbox'
 import AdvanceTable from '@/components/table/AdvanceTable'
 import { mapActions } from 'vuex'
 export default {
@@ -176,12 +175,7 @@ export default {
         page: page
       })
     },
-    handleViewImage(item) {
-      console.log(item)
-      var lightboxDescription = GLightbox({
-        selector: '.glightbox'
-      })
-    }
+    handleViewImage(item) {}
   },
   created() {
     this.fetchRecord()

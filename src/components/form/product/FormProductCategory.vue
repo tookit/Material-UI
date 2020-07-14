@@ -141,7 +141,6 @@ export default {
       }
     },
     handleCategoryChange(val) {
-      console.log(val)
       this.formModel.categories = val
     }
   },

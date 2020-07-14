@@ -24,7 +24,11 @@
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
-              <seo-form :item="item" :loading="loading" />
+              <seo-form
+                :item="item"
+                :loading="loading"
+                :action="updateProductCategory"
+              />
             </v-tab-item>
           </v-tabs-items>
         </v-col>
@@ -38,6 +42,7 @@ import FormProductCategory from '@/components/form/product/FormProductCategory'
 import SeoForm from '@/components/form/SeoForm'
 import MediaTable from '@/components/table/MediaTable'
 import { fetchImageByCategoryId } from '@/api/service'
+import { mapActions } from 'vuex'
 export default {
   props: {
     id: [Number, String]
@@ -83,6 +88,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['updateProductCategory']),
     fetchRecord(id) {
       this.loading = true
       this.$store.dispatch('getProductCategoryById', id).then(({ data }) => {

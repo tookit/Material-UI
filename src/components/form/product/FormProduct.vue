@@ -34,6 +34,8 @@
             <v-col :cols="12">
               <v-cascader
                 :items="getProductCategories"
+                name="Category"
+                label="Category"
                 v-model="formModel.categories"
                 @change="handleCategoriesChange"
               />
@@ -134,12 +136,7 @@ export default {
           specs: data.specs,
           categories:
             data.categories.length > 0
-              ? findAllParent(
-                  this.getProductCategories,
-                  (item) => item.id === data.categories[0].id,
-                  [],
-                  'id'
-                )
+              ? data.categories.map((item) => item.id)
               : []
         }
       } else {

@@ -84,9 +84,9 @@ export default {
   methods: {
     assignModel(data) {
       this.formModel = {
-        meta_title: data.meta_title,
-        meta_keywords: data.meta_keywords,
-        meta_description: data.meta_description
+        meta_title: data.meta_title || data.name,
+        meta_keywords: data.meta_keywords || data.name,
+        meta_description: data.meta_description || data.name
       }
     },
     handleSubmit() {

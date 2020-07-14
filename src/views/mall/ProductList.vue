@@ -24,9 +24,12 @@
               />
             </template>
             <template v-slot:item.categories="{ item }">
-              <v-chip small outlined v-for="c in item.categories" :key="c.id">
-                {{ c.name }}
-              </v-chip>
+              <template v-for="c in item.categories">
+                <span :key="c.id" class="caption">
+                  {{ c.name }}
+                  <v-icon size="12">mdi-arrow-right</v-icon>
+                </span>
+              </template>
             </template>
             <template v-slot:item.is_active="{ item }">
               <v-switch v-model="item.is_active" />

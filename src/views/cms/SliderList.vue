@@ -14,17 +14,17 @@
             <v-btn slot="toolbar" icon @click="handleCreate">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
-            <template v-slot:item.media="{ item }">
+            <template v-slot:item.img="{ item }">
               <a
-                :href="item.media[0].url"
+                :href="item.img"
                 class="glightbox"
                 target="blank"
                 @click.stop="handleViewImage"
               >
                 <v-img
-                  v-if="item.media.length > 0"
+                  v-if="item.img"
                   class="ma-3 glightbox"
-                  :src="item.media[0].url"
+                  :src="item.img"
                   width="100"
                   height="90"
                 />
@@ -95,7 +95,7 @@ export default {
         },
         {
           text: 'Image',
-          value: 'media'
+          value: 'img'
         },
         {
           text: 'Title',

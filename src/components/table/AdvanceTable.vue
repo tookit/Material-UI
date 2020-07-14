@@ -40,6 +40,7 @@
             flat
             hide-details
             prepend-inner-icon="mdi-filter-outline"
+            @click:prepend-inner="showFilter = !showFilter"
             v-model="searchInput"
             clearable
           >
@@ -147,6 +148,12 @@
           <slot name="toolbar"></slot>
         </v-toolbar>
         <v-divider></v-divider>
+        <v-card flat v-show="showFilter">
+          <v-card-text>
+            <slot name="filter"></slot>
+          </v-card-text>
+        </v-card>
+        <v-divider></v-divider>
       </template>
       <template
         v-for="(_, name) in $scopedSlots"
@@ -218,6 +225,7 @@ export default {
   },
   data() {
     return {
+      showFilter: false,
       selectedColumns: [],
       selectedAll: false,
       showColumnMenu: false,

@@ -14,11 +14,27 @@
               />
             </v-col>
             <v-col :cols="6">
+              <v-switch
+                v-model="formModel.is_active"
+                name="is_active"
+                placeholder="Active"
+                label="Active"
+              />
+            </v-col>
+            <v-col :cols="6">
               <v-text-field
                 v-model="formModel.url"
                 outlined
                 placeholder="Url"
                 label="Url"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.img"
+                outlined
+                placeholder="Image"
+                label="Image"
               />
             </v-col>
             <v-col :cols="12">
@@ -54,6 +70,8 @@ export default {
       formModel: {
         name: null,
         url: null,
+        img: null,
+        is_active: false,
         description: null
       }
     }
@@ -78,8 +96,10 @@ export default {
       } else {
         this.formModel = {
           name: null,
-          description: null,
-          url: null
+          url: null,
+          img: null,
+          is_active: false,
+          description: null
         }
       }
     },
@@ -92,6 +112,10 @@ export default {
             data: this.formModel
           })
           .then(() => {
+            window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+              text: 'SLider updated',
+              color: 'success'
+            })
             this.loading = false
           })
       } else {

@@ -2,11 +2,8 @@
   <div class="page-slider-item view">
     <v-container fluid>
       <v-row>
-        <v-col cols="8">
+        <v-col cols="12">
           <slider-form :item="item" />
-        </v-col>
-        <v-col cols="4" v-if="id">
-          <image-form :action="uploadAction" />
         </v-col>
       </v-row>
     </v-container>
@@ -15,15 +12,13 @@
 
 <script>
 import SliderForm from '@/components/form/SliderForm'
-import ImageForm from '@/components/form/ImageForm'
 export default {
   name: 'SliderItem',
   props: {
     id: [Number, String]
   },
   components: {
-    SliderForm,
-    ImageForm
+    SliderForm
   },
   data() {
     return {

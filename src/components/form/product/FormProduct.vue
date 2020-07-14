@@ -36,6 +36,7 @@
                 :items="getProductCategories"
                 name="Category"
                 label="Category"
+                placeholder="Category"
                 v-model="formModel.categories"
                 @change="handleCategoriesChange"
               />
@@ -69,7 +70,6 @@
 import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
 import VCascader from '@/components/cascader/'
-import { findAllParent } from '@/utils'
 export default {
   name: 'FormProduct',
   components: {

@@ -2,8 +2,8 @@
   <v-menu offset-y :close-on-content-click="false">
     <template v-slot:activator="{ on, attrs }">
       <v-text-field
-        label="Parent Category"
-        placeholder="Parent Category"
+        :label="label"
+        :placeholder="placeholder"
         hide-details
         outlined
         readonly
@@ -29,6 +29,9 @@ export default {
   name: 'VCascader',
   props: {
     items: Array,
+    label: String,
+    placeholder: String,
+    name: String,
     value: {
       type: Array,
       default: () => []

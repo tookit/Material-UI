@@ -50,11 +50,16 @@ service.interceptors.request.use((config) => {
 }, err)
 
 // response interceptor
-service.interceptors.response.use((response) => {
-  if (response.data.error !== undefined) {
-    window.ELEPHANT.$emit('API_FAILED', response.data.error)
+service.interceptors.response.use(({ data, config }) => {
+  if (['put', 'post'].includes(config.method)) {
+    window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      text: 'Resource Created'
+    })
   }
-  return response.data
+  if (data.error !== undefined) {
+    window.ELEPHANT.$emit('API_FAILED', data.error)
+  }
+  return data
 }, err)
 
 export default service

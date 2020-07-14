@@ -112,17 +112,17 @@ export default {
             data: this.formModel
           })
           .then(() => {
-            window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-              text: 'SLider updated',
-              color: 'success'
-            })
             this.loading = false
           })
       } else {
-        this.$store.dispatch('createSlider', this.formModel).then((resp) => {
-          this.loading = false
-          // this.$router.push({})
-        })
+        this.$store
+          .dispatch('createSlider', this.formModel)
+          .then(({ data }) => {
+            this.loading = false
+            this.$router.push({
+              path: `/cms/slider/item${data.id}`
+            })
+          })
       }
     }
   }

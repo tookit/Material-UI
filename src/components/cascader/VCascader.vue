@@ -41,26 +41,20 @@ export default {
   computed: {
     categories() {
       return flattern(this.items, { initNode: (node) => node })
-    },
-    inputValue() {
-      const names = this.selectedItems.map((id) => {
-        const node = this.categories.find((cat) => cat.id === id)
-        return node.name
-      })
-      return names.join(' / ')
     }
   },
   watch: {
     value: {
       handler(val) {
-        if (val) {
-          this.selectedItems = val
-        }
-      }
+        this.selectedItems = val
+        this.inputValue = this.computeInputValue()
+      },
+      immediate: true
     }
   },
   data() {
     return {
+      inputValue: '',
       selectedItems: this.value,
       selectedNames: []
     }
@@ -81,7 +75,15 @@ export default {
       }
       this.selectedItems[depth] = id
       this.selectedNames[depth] = name
+      this.inputValue = this.computeInputValue()
       this.$emit('change', this.selectedItems)
+    },
+    computeInputValue() {
+      const names = this.selectedItems.map((id) => {
+        const node = this.categories.find((cat) => cat.id === id)
+        return node ? node.name : ''
+      })
+      return names.join(' / ')
     }
   },
   mounted() {},

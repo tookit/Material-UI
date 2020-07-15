@@ -22,6 +22,7 @@
                 :items="images"
                 :id="id"
                 :data-source="fetchImages"
+                :upload-action="uploadAction"
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">

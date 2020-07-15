@@ -15,7 +15,7 @@
               <v-card flat class="grey lighten-4">
                 <v-card-text>
                   <v-row>
-                    <v-col cols="6">
+                    <v-col cols="12">
                       <v-cascader
                         name="categories"
                         placeholder="Category"

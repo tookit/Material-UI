@@ -135,9 +135,7 @@ export default {
       })
     },
     handleViewItem(item) {
-      this.$router.push({
-        path: `/mall/category/item/${item.id}`
-      })
+      window.open(item.href, '_blank')
     },
     handleEditItem(item) {
       this.$router.push({

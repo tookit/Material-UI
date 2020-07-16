@@ -134,7 +134,18 @@ export const protectedRoute = [
             component: () => import('@/views/mall/CategoryList.vue')
           },
           {
-            path: '/mall/category/:id',
+            path: '/mall/category/create',
+            name: 'mall.category.create',
+            props: true,
+            component: () => import('@/views/mall/CategoryItem.vue'),
+            meta: {
+              title: 'Create Product Category',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/mall/category/item/:id',
             name: 'mall.category.item',
             props: true,
             component: () => import('@/views/mall/CategoryItem.vue'),

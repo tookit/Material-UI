@@ -4,6 +4,10 @@
       <v-row>
         <v-col>
           <v-card :loading="loading">
+            <v-toolbar flat>
+              <v-btn color="primary" @click="handleCreateItem">Create</v-btn>
+            </v-toolbar>
+            <v-divider></v-divider>
             <v-card-text>
               <v-treeview
                 v-model="tree"
@@ -85,6 +89,11 @@ export default {
       itemsPerPage: 15,
       actions: [
         {
+          text: 'Add Child',
+          icon: 'mdi-plus',
+          click: this.handleAddChild
+        },
+        {
           text: 'View Item',
           icon: 'mdi-eye',
           click: this.handleViewItem
@@ -110,6 +119,19 @@ export default {
         this.loading = false
         this.items = data
         // this.serverItemsLength = meta.total
+      })
+    },
+    handleCreateItem() {
+      this.$router.push({
+        path: `/mall/category/create`
+      })
+    },
+    handleAddChild(item) {
+      this.$router.push({
+        path: `/mall/category/create`,
+        query: {
+          parent_id: item.id
+        }
       })
     },
     handleViewItem(item) {

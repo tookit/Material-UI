@@ -15,15 +15,6 @@
               <v-card flat class="grey lighten-4">
                 <v-card-text>
                   <v-row>
-                    <v-col cols="12">
-                      <v-cascader
-                        name="categories"
-                        placeholder="Category"
-                        :items="getProductCategories"
-                        v-model="categories"
-                        @change="handleCategoryChange"
-                      />
-                    </v-col>
                     <v-col cols="6">
                       <v-switch
                         label="Active"
@@ -59,13 +50,10 @@
                 height="50"
               />
             </template>
-            <template v-slot:item.categories="{ item }">
-              <template v-for="c in item.categories">
-                <span :key="c.id" class="caption">
-                  {{ c.name }}
-                  <v-icon size="12">mdi-arrow-right</v-icon>
-                </span>
-              </template>
+            <template v-slot:item.category="{ item }">
+              <span class="caption">
+                {{ item.category.name }}
+              </span>
             </template>
             <template v-slot:item.is_active="{ item }">
               <v-switch v-model="item.is_active" />
@@ -105,13 +93,11 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'PageNewsCategory',
   components: {
-    AdvanceTable,
-    VCascader
+    AdvanceTable
   },
   data() {
     return {
@@ -135,8 +121,8 @@ export default {
           value: 'name'
         },
         {
-          text: 'Category',
-          value: 'category_id'
+          text: 'Count',
+          value: 'posts_count'
         },
         {
           text: 'Active',

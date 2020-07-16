@@ -23,28 +23,12 @@
               ></v-text-field>
             </v-col>
             <v-col :cols="12">
-              <v-autocomplete
-                outlined
-                :items="getCmsCategories"
-                item-text="name"
-                item-value="id"
-                name="Category"
-                label="Category"
-                placeholder="Category"
-                v-model="formModel.category_id"
-              />
-            </v-col>
-            <v-col :cols="12">
               <v-textarea
                 v-model="formModel.description"
                 outlined
                 placeholder="Description"
                 label="Description"
               />
-            </v-col>
-            <v-col :cols="12">
-              <label for="">Content</label>
-              <v-jodit v-model="formModel.content" />
             </v-col>
           </v-row>
         </v-container>
@@ -61,12 +45,9 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import VJodit from '@/components/jodit'
 export default {
-  name: 'FormNews',
-  components: {
-    VJodit
-  },
+  name: 'FormNewsCategory',
+  components: {},
   props: {
     item: Object
   },
@@ -76,9 +57,7 @@ export default {
       formModel: {
         name: null,
         description: null,
-        slug: null,
-        content: '',
-        category_id: 0
+        slug: null
       }
     }
   },
@@ -103,17 +82,13 @@ export default {
           id: data.id,
           name: data.name,
           description: data.description,
-          slug: data.slug,
-          content: data.content || '',
-          category_id: data.category_id
+          slug: data.slug
         }
       } else {
         this.formModel = {
           name: null,
           description: null,
-          slug: null,
-          content: '',
-          category_id: 0
+          slug: null
         }
       }
     },
@@ -122,7 +97,7 @@ export default {
 
       if (this.formModel.id) {
         this.$store
-          .dispatch('updateNews', {
+          .dispatch('updateNewsCategory', {
             id: this.formModel.id,
             data: this.formModel
           })
@@ -131,11 +106,11 @@ export default {
           })
       } else {
         this.$store
-          .dispatch('createNews', this.formModel)
+          .dispatch('createNewsCategory', this.formModel)
           .then(({ data }) => {
             this.loading = false
             this.$router.push({
-              path: `/cms/news/item/${data.id}`
+              path: `/cms/category/item/${data.id}`
             })
           })
           .catch(() => {

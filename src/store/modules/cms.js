@@ -45,6 +45,7 @@ const actions = {
 
   fetchNewsCategory({ commit }, query) {
     return fetchNewsCategory(query).then((resp) => {
+      commit('SET_NEWS_CATEGORIES', resp)
       return resp
     })
   },
@@ -58,7 +59,7 @@ const actions = {
       return resp
     })
   },
-  getNewsCaegoryById({ commit }, id) {
+  getNewsCategoryById({ commit }, id) {
     return getNewsCategoryById(id).then((resp) => {
       return resp
     })
@@ -91,7 +92,11 @@ const actions = {
     })
   }
 }
-const mutations = {}
+const mutations = {
+  SET_NEWS_CATEGORIES(state, { data }) {
+    state.categories = data
+  }
+}
 
 export default {
   namespace: true,

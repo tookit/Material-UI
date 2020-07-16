@@ -1,9 +1,9 @@
 <template>
-  <div class="page-news-item view">
+  <div class="page-category-item view">
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <form-news :item="item" />
+          <form-news-category :item="item" />
         </v-col>
       </v-row>
     </v-container>
@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import FormNews from '@/components/form/cms/FormNews'
+import FormNewsCategory from '@/components/form/cms/FormNewsCategory'
 export default {
   name: 'NewsItem',
   props: {
     id: [Number, String]
   },
   components: {
-    FormNews
+    FormNewsCategory
   },
   data() {
     return {
@@ -38,8 +38,7 @@ export default {
   },
   methods: {
     fetchRecord(id) {
-      this.$store.dispatch('getNewsById', id).then(({ data }) => {
-        console.log(data)
+      this.$store.dispatch('getNewsCategoryById', id).then(({ data }) => {
         this.item = data
       })
     }

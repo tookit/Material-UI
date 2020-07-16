@@ -124,6 +124,15 @@ export function createNews(data) {
 }
 
 //category
+export function updateNews(id, data) {
+  return request({
+    url: `/cms/post/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+//category
 export function updateNewsCategory(id, data) {
   return request({
     url: `/cms/category/${id}`,
@@ -143,7 +152,10 @@ export function fetchNewsCategory(query) {
 export function getNewsCategoryById(id) {
   return request({
     url: `/cms/category/${id}`,
-    method: 'get'
+    method: 'get',
+    query: {
+      pageSize: -1
+    }
   })
 }
 

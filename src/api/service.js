@@ -99,6 +99,7 @@ export function deleteImageById(id, data) {
 }
 
 // cms
+//news
 export function fetchNews(query) {
   return request({
     url: '/cms/post',
@@ -107,6 +108,54 @@ export function fetchNews(query) {
   })
 }
 
+export function getNewsById(id) {
+  return request({
+    url: `/cms/post/${id}`,
+    method: 'get'
+  })
+}
+
+export function createNews(data) {
+  return request({
+    url: `/cms/post`,
+    method: 'post',
+    data: data
+  })
+}
+
+//category
+export function updateNewsCategory(id, data) {
+  return request({
+    url: `/cms/category/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function fetchNewsCategory(query) {
+  return request({
+    url: '/cms/category',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getNewsCategoryById(id) {
+  return request({
+    url: `/cms/category/${id}`,
+    method: 'get'
+  })
+}
+
+export function createNewsCategory(data) {
+  return request({
+    url: `/cms/category`,
+    method: 'post',
+    data: data
+  })
+}
+
+//slider
 export function getSilderById(id) {
   return request({
     url: `/cms/slider/${id}`,

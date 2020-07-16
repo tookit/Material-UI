@@ -136,12 +136,12 @@ export default {
     },
     handleViewItem(item) {
       this.$router.push({
-        path: `/mall/category/${item.id}`
+        path: `/mall/category/item/${item.id}`
       })
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/mall/category/${item.id}`
+        path: `/mall/category/item/${item.id}`
       })
     },
     handleDeleteItem() {},

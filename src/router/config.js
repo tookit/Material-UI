@@ -176,8 +176,62 @@ export const protectedRoute = [
             name: 'cms.news',
             component: () => import('@/views/cms/NewsList.vue'),
             meta: {
-              title: 'Company News',
+              title: 'News',
               hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/news/item/:id',
+            name: 'cms.news.edit',
+            props: true,
+            component: () => import('@/views/cms/NewsItem.vue'),
+            meta: {
+              title: 'Edit News',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/news/create',
+            name: 'cms.news.create',
+            props: true,
+            component: () => import('@/views/cms/NewsItem.vue'),
+            meta: {
+              title: 'Create News',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/categories',
+            name: 'cms.categories',
+            component: () => import('@/views/cms/CategoryList.vue'),
+            meta: {
+              title: 'Category',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/category/item/:id',
+            name: 'cms.category.edit',
+            props: true,
+            component: () => import('@/views/cms/CategoryItem.vue'),
+            meta: {
+              title: 'Edit category',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/category/create',
+            name: 'cms.category.create',
+            props: true,
+            component: () => import('@/views/cms/CategoryItem.vue'),
+            meta: {
+              title: 'Create category',
+              hiddenInMenu: true,
               icon: 'mdi-view'
             }
           },

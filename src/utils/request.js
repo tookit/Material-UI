@@ -9,11 +9,23 @@ const service = axios.create({
 
 const err = (error) => {
   const { status, data } = error.response
+  const { errors } = data
+  let message = []
+  for (let field in errors) {
+    message.push(errors[field])
+  }
   switch (status) {
     case 400:
       window.ELEPHANT.$emit('SHOW_SNACKBAR', {
         show: true,
         text: 'Bad Request ' + data.message,
+        color: 'red'
+      })
+      break
+    case 422:
+      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+        show: true,
+        text: message,
         color: 'red'
       })
       break

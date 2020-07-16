@@ -7,7 +7,7 @@ import VuexPersistence from 'vuex-persist'
 const vuexLocal = new VuexPersistence({
   key: 'elephant',
   storage: window.localStorage,
-  modules: ['app', 'auth', 'job', 'project']
+  modules: ['app', 'auth', 'cms', 'product']
 })
 
 Vue.use(Vuex)

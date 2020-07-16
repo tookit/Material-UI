@@ -108,7 +108,7 @@ import AdvanceTable from '@/components/table/AdvanceTable'
 import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
 export default {
-  name: 'PageNews',
+  name: 'PageNewsCategory',
   components: {
     AdvanceTable,
     VCascader
@@ -172,11 +172,11 @@ export default {
     ...mapGetters(['getProductCategories'])
   },
   methods: {
-    ...mapActions(['fetchNews']),
+    ...mapActions(['fetchNewsCategory']),
     fetchRecord(query) {
       this.loading = true
       this.items = []
-      this.fetchNews(query).then(({ data, meta }) => {
+      this.fetchNewsCategory(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
         this.serverItemsLength = meta.total
@@ -184,17 +184,17 @@ export default {
     },
     handleCreateItem() {
       this.$router.push({
-        path: `/cms/news/create`
+        path: `/cms/category/create`
       })
     },
     handleViewItem(item) {
       this.$router.push({
-        path: `/cms/news/item/${item.id}`
+        path: `/cms/category/item/${item.id}`
       })
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/cms/news/item/${item.id}`
+        path: `/cms/category/item/${item.id}`
       })
     },
     handleDeleteItem() {},

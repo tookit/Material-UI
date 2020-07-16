@@ -30,6 +30,12 @@
                         v-model="filter['filter[is_active]']"
                       />
                     </v-col>
+                    <v-col cols="6">
+                      <v-switch
+                        label="Has Image"
+                        v-model="filter['filter[imaged]']"
+                      />
+                    </v-col>
                   </v-row>
                 </v-card-text>
                 <v-card-actions>
@@ -113,7 +119,8 @@ export default {
       loading: false,
       items: [],
       filter: {
-        'filter[is_active]': false,
+        'filter[is_active]': null,
+        'filter[imaged]': null,
         'filter[categories.id]': []
       },
       categories: [],

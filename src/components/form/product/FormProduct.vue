@@ -11,16 +11,18 @@
                 label="Name"
                 name="Name"
                 placeholder="name"
-              ></v-text-field>
+              />
             </v-col>
             <v-col :cols="6">
               <v-text-field
                 v-model="formModel.slug"
                 readonly
-                label="slug"
+                label="Slug"
                 outlined
                 placeholder="slug"
-              ></v-text-field>
+                append-icon="mdi-eye"
+                @click:append="handleViewItem"
+              />
             </v-col>
             <v-col :cols="12">
               <v-text-field
@@ -28,8 +30,9 @@
                 readonly
                 outlined
                 label="Reference"
+                append-icon="mdi-eye"
                 placeholder="Reference"
-              ></v-text-field>
+              />
             </v-col>
             <v-col :cols="12">
               <v-cascader
@@ -173,6 +176,11 @@ export default {
       this.formModel.category_ids = categories.map((item) => {
         return item.id
       })
+    },
+    handleViewItem() {
+      if (this.item) {
+        window.open(this.item.href, '_blank')
+      }
     }
   },
   created() {

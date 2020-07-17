@@ -35,6 +35,8 @@
                 outlined
                 placeholder="Image"
                 label="Image"
+                append-icon="mdi-image"
+                @click:append="handlePickImage"
               />
             </v-col>
             <v-col :cols="12">
@@ -124,7 +126,8 @@ export default {
             })
           })
       }
-    }
+    },
+    handlePickImage() {}
   }
 }
 </script>

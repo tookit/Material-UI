@@ -115,6 +115,13 @@ export function getNewsById(id) {
   })
 }
 
+export function deleteNewsById(id) {
+  return request({
+    url: `/cms/post/${id}`,
+    method: 'delete'
+  })
+}
+
 export function createNews(data) {
   return request({
     url: `/cms/post`,

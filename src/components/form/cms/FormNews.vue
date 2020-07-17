@@ -11,7 +11,7 @@
                 label="Name"
                 name="Name"
                 placeholder="name"
-              ></v-text-field>
+              />
             </v-col>
             <v-col :cols="6">
               <v-text-field
@@ -20,7 +20,9 @@
                 label="Slug"
                 outlined
                 placeholder="Slug"
-              ></v-text-field>
+                append-icon="mdi-eye"
+                @click:append="handleViewItem"
+              />
             </v-col>
             <v-col :cols="12">
               <v-autocomplete
@@ -141,6 +143,11 @@ export default {
           .catch(() => {
             this.loading = false
           })
+      }
+    },
+    handleViewItem() {
+      if (this.item) {
+        window.open(this.item.href, '_blank')
       }
     }
   },

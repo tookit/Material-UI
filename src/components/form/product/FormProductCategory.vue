@@ -40,7 +40,6 @@
             <v-col :cols="6">
               <v-switch
                 v-model="formModel.is_active"
-                readonly
                 label="Active"
                 outlined
                 placeholder="Active"

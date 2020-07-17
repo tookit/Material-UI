@@ -29,6 +29,23 @@
                 placeholder="Slug"
               />
             </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.featured_img"
+                label="Featured Image"
+                outlined
+                placeholder="Featured Image"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-switch
+                v-model="formModel.is_active"
+                readonly
+                label="Active"
+                outlined
+                placeholder="Active"
+              />
+            </v-col>
             <v-col :cols="12">
               <v-text-field
                 v-model="formModel.reference_url"
@@ -79,6 +96,8 @@ export default {
         description: null,
         slug: null,
         reference_url: null,
+        featured_img: null,
+        is_active: false,
         parent_id: null,
         categories: []
       }
@@ -116,6 +135,8 @@ export default {
           description: null,
           slug: null,
           reference_url: null,
+          featured_img: null,
+          is_active: false,
           parent_id: null
         }
       }

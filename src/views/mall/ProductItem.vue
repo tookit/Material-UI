@@ -77,7 +77,7 @@ export default {
   },
   computed: {
     uploadAction() {
-      return `${process.env.VUE_APP_BASE_API_HOST}/api/mall/category/${this.id}/image`
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/mall/item/${this.id}/image`
     }
   },
   watch: {

@@ -7,9 +7,7 @@
           <template v-slot:activator="{ on }">
             <v-btn icon text slot="activator" v-on="on">
               <v-avatar>
-                <v-icon color="light-green accent-4" dark
-                  >mdi-account-circle</v-icon
-                >
+                <v-icon dark>mdi-account-circle</v-icon>
               </v-avatar>
             </v-btn>
           </template>

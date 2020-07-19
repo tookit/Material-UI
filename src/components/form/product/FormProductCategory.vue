@@ -27,6 +27,8 @@
                 label="Slug"
                 outlined
                 placeholder="Slug"
+                append-icon="mdi-eye"
+                @click:append="handleViewItem"
               />
             </v-col>
             <v-col :cols="6">
@@ -161,7 +163,13 @@ export default {
       }
     },
     handleCategoryChange(val) {
-      this.formModel.categories = val
+      const categories = val.filter((item) => item !== 0)
+      this.formModel.parent_id = categories.pop()
+    },
+    handleViewItem() {
+      if (this.item) {
+        window.open(this.item.href, '_blank')
+      }
     }
   },
   created() {

@@ -60,10 +60,12 @@
               />
             </template>
             <template v-slot:item.categories="{ item }">
-              <template v-for="c in item.categories">
-                <span :key="c.id" class="caption">
+              <template v-for="(c, key) in item.categories">
+                <span :key="key" class="caption">
                   {{ c.name }}
-                  <v-icon size="12">mdi-arrow-right</v-icon>
+                  <v-icon v-if="key !== item.categories.length - 1" size="12"
+                    >mdi-arrow-right</v-icon
+                  >
                 </span>
               </template>
             </template>

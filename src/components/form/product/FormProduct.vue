@@ -36,6 +36,30 @@
               />
             </v-col>
             <v-col :cols="12">
+              <v-autocomplete
+                v-model="formModel.tags"
+                :loading="loadingTags"
+                clearable
+                @keydown.enter="handleAddTag"
+                :items="tags"
+                :search-input.sync="search"
+                cache-items
+                chips
+                multiple
+                hide-details
+                label="Tags"
+                outlined
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-title>
+                      `Enter` Create a new tag
+                    </v-list-item-title>
+                  </v-list-item>
+                </template>
+              </v-autocomplete>
+            </v-col>
+            <v-col :cols="12">
               <v-cascader
                 :items="getProductCategories"
                 name="Category"
@@ -74,6 +98,7 @@
 import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
 import VCascader from '@/components/cascader/'
+import { fetchTags } from '@/api/service'
 export default {
   name: 'FormProduct',
   components: {
@@ -86,6 +111,9 @@ export default {
   data() {
     return {
       loading: false,
+      loadingTags: false,
+      search: null,
+      tags: [],
       items: [
         {
           id: 1,
@@ -110,7 +138,8 @@ export default {
         slug: null,
         reference_url: null,
         specs: '',
-        categories: []
+        categories: [],
+        tags: []
       }
     }
   },
@@ -138,6 +167,7 @@ export default {
           slug: data.slug,
           reference_url: data.reference_url,
           specs: data.specs,
+          tags: data.tags.map((item) => item.name),
           categories:
             data.categories.length > 0
               ? data.categories.map((item) => item.id)
@@ -187,10 +217,28 @@ export default {
       if (this.item) {
         window.open(this.item.reference_url, '_blank')
       }
+    },
+    handleAddTag(e) {
+      const tags = this.formModel.tags
+      tags.push(e.target.value)
+      this.tags.push({
+        text: e.target.value
+      })
+      this.formModel.tags = tags
+      this.search = null
+    },
+    fetchTags() {
+      fetchTags().then(({ data }) => {
+        this.tags = data.map((item) => {
+          item.text = item.name
+          return item
+        })
+      })
     }
   },
   created() {
     this.$store.dispatch('fetchProductCategoryTree')
+    this.fetchTags()
   }
 }
 </script>

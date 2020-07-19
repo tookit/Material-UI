@@ -71,11 +71,6 @@ const actions = {
   },
   updateProductCategory({ commit }, { id, data }) {
     return updateProductCategory(id, data).then((resp) => {
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-        show: true,
-        text: 'Category updated.',
-        color: 'success'
-      })
       return resp
     })
   }

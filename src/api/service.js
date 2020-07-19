@@ -9,6 +9,15 @@ export function login(data) {
 }
 
 //product
+export function fetchTags(query) {
+  return request({
+    url: '/tag',
+    method: 'get',
+    params: query
+  })
+}
+
+//product
 export function fetchProducts(query) {
   return request({
     url: '/mall/item',

@@ -36,10 +36,17 @@ export default {
   },
   computed: {
     breadcrumbs() {
-      return this.$route.matched.map((route) => {
+      const { matched } = this.$route
+      return matched.map((route, index) => {
+        const to =
+          index === matched.length - 1
+            ? this.$route.path
+            : route.path || route.redirect
         return {
           text: route.meta.title,
-          to: route.path
+          to: to,
+          exact: true,
+          disabled: false
         }
       })
     }

@@ -15,20 +15,14 @@
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <template v-slot:item.img="{ item }">
-              <a
-                :href="item.img"
-                class="glightbox"
-                target="blank"
+              <v-img
                 @click.stop="handleViewImage"
-              >
-                <v-img
-                  v-if="item.img"
-                  class="ma-3 glightbox"
-                  :src="item.img"
-                  width="100"
-                  height="90"
-                />
-              </a>
+                v-if="item.img"
+                class="ma-3 glightbox"
+                :src="computeImage(item.img)"
+                width="100"
+                height="90"
+              />
             </template>
             <template v-slot:item.categories="{ item }">
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
@@ -71,6 +65,12 @@
         </v-col>
       </v-row>
     </v-container>
+    <vue-easy-lightbox
+      :visible="showLightbox"
+      :imgs="imgs"
+      :index="index"
+      @hide="handleHideLightbox"
+    />
   </div>
 </template>
 
@@ -84,6 +84,10 @@ export default {
   },
   data() {
     return {
+      //slider lightbox
+      showLightbox: false,
+      index: 0,
+
       //
       loading: false,
       items: [],
@@ -128,6 +132,11 @@ export default {
           click: this.handleDeleteItem
         }
       ]
+    }
+  },
+  computed: {
+    imgs() {
+      return this.items.map((item) => item.img)
     }
   },
   methods: {
@@ -175,7 +184,15 @@ export default {
         page: page
       })
     },
-    handleViewImage(item) {}
+    handleViewImage(item) {
+      this.showLightbox = true
+    },
+    handleHideLightbox() {
+      this.showLightbox = false
+    },
+    computeImage(url) {
+      return url
+    }
   },
   created() {
     this.fetchRecord()

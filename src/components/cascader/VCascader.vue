@@ -32,6 +32,7 @@ export default {
     label: String,
     placeholder: String,
     name: String,
+    readonly: Boolean,
     value: {
       type: Array,
       default: () => []

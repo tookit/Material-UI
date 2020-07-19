@@ -8,6 +8,7 @@
               <v-cascader
                 :items="getProductCategories"
                 v-model="formModel.categories"
+                :readonly="parent_id ? true : false"
                 @change="handleCategoryChange"
               />
             </v-col>
@@ -92,6 +93,7 @@ export default {
   data() {
     return {
       loading: false,
+      parent_id: this.$route.query.parent_id,
       formModel: {
         name: null,
         description: null,
@@ -139,6 +141,14 @@ export default {
           featured_img: null,
           is_active: false,
           parent_id: null
+        }
+        if (this.parent_id) {
+          this.formModel.categories = findAllParent(
+            this.getProductCategories,
+            (data) => data.id === parseInt(this.parent_id),
+            [],
+            'id'
+          )
         }
       }
     },

@@ -46,7 +46,9 @@ export default {
   },
   methods: {},
   created() {
-    console.log(this.$route, this.$router)
+    // fetch common data
+    this.$store.dispatch('fetchProductCategoryTree')
+    this.$store.dispatch('fetchNewsCategory')
   }
 }
 </script>

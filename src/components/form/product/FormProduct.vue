@@ -32,6 +32,7 @@
                 label="Reference"
                 append-icon="mdi-eye"
                 placeholder="Reference"
+                @click:append="handleViewReference"
               />
             </v-col>
             <v-col :cols="12">
@@ -180,6 +181,11 @@ export default {
     handleViewItem() {
       if (this.item) {
         window.open(this.item.href, '_blank')
+      }
+    },
+    handleViewReference() {
+      if (this.item) {
+        window.open(this.item.reference_url, '_blank')
       }
     }
   },

@@ -10,6 +10,9 @@
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
+            :searchValue="filter['filter[name]']"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
             <div slot="filter">
               <v-card flat class="grey lighten-4">
@@ -121,6 +124,7 @@ export default {
       loading: false,
       items: [],
       filter: {
+        'filter[name]': null,
         'filter[is_active]': null,
         'filter[imaged]': null,
         'filter[categories.id]': []
@@ -176,8 +180,22 @@ export default {
   computed: {
     ...mapGetters(['getProductCategories'])
   },
+  watch: {
+    '$route.query': {
+      handler(query) {
+        Object.assign(this.filter, query)
+        if (query['filter[categories.id]']) {
+          this.categories = query['filter[categories.id]']
+            .split(',')
+            .map((item) => parseInt(item))
+        }
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
+  },
   methods: {
-    ...mapActions(['fetchProducts']),
+    ...mapActions(['fetchProducts', 'deleteProduct']),
     fetchRecord(query) {
       this.loading = true
       this.items = []
@@ -200,7 +218,13 @@ export default {
         path: `/mall/product/item/${item.id}`
       })
     },
-    handleDeleteItem() {},
+    handleDeleteItem({ id }) {
+      if (window.confirm('Are you sure to delete this item ?')) {
+        this.deleteProduct(id).then(() => {
+          this.items = this.items.filter((item) => item.id !== id)
+        })
+      }
+    },
     handlePageChanged(page) {
       this.fetchRecord({
         page: page
@@ -214,14 +238,19 @@ export default {
     },
     // filter
     handleApplyFilter() {
-      this.fetchRecord(this.filter)
+      // this.fetchRecord(this.filter)
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
     },
 
-    handleResetFilter() {}
+    handleResetFilter() {},
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
+    }
   },
-  created() {
-    this.fetchRecord()
-  }
+  created() {}
 }
 </script>
 

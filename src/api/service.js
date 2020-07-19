@@ -82,6 +82,13 @@ export function updateProductCategory(id, data) {
     data: data
   })
 }
+
+export function deleteProduct(id) {
+  return request({
+    url: `/mall/item/${id}`,
+    method: 'delete'
+  })
+}
 //image
 export function updateImageById(id, data) {
   return request({

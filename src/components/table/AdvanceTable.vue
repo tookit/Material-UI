@@ -38,10 +38,11 @@
             single-line
             full-width
             flat
+            @keydown.enter="$emit('search')"
             hide-details
             prepend-inner-icon="mdi-filter-outline"
             @click:prepend-inner="showFilter = !showFilter"
-            v-model="searchInput"
+            v-model="inputValue"
             clearable
           >
           </v-text-field>
@@ -213,6 +214,9 @@ export default {
     selectableKey: {
       type: String
     },
+    searchValue: {
+      type: String
+    },
     flat: Boolean,
     loading: Boolean,
     serverItemsLength: Number,
@@ -245,6 +249,14 @@ export default {
           const search = this.searchInput.toLowerCase()
           return text.includes(search)
         })
+      }
+    },
+    inputValue: {
+      get() {
+        return this.searchValue
+      },
+      set(val) {
+        this.$emit('input:change', val)
       }
     }
   },

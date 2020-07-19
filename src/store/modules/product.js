@@ -6,6 +6,7 @@ import {
   getProductCategoryById,
   getProductById,
   updateProduct,
+  deleteProduct,
   updateProductCategory,
   fetchImagesByProductId
 } from '@/api/service'
@@ -59,13 +60,12 @@ const actions = {
     })
   },
   updateProduct({ commit }, { id, data }) {
-    console.log(id, data)
     return updateProduct(id, data).then((resp) => {
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-        show: true,
-        text: 'Product updated.',
-        color: 'success'
-      })
+      return resp
+    })
+  },
+  deleteProduct({ commit }, id) {
+    return deleteProduct(id).then((resp) => {
       return resp
     })
   },

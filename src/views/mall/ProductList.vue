@@ -73,7 +73,10 @@
               </template>
             </template>
             <template v-slot:item.is_active="{ item }">
-              <v-switch v-model="item.is_active" />
+              <v-switch
+                v-model="item.is_active"
+                @change="handleItemStatus(item)"
+              />
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
@@ -224,6 +227,14 @@ export default {
           this.items = this.items.filter((item) => item.id !== id)
         })
       }
+    },
+    handleItemStatus(val) {
+      this.$store
+        .dispatch('updateProduct', {
+          id: val.id,
+          data: { is_active: val.is_active }
+        })
+        .then(() => {})
     },
     handlePageChanged(page) {
       this.fetchRecord({

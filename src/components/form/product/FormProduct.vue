@@ -24,6 +24,20 @@
                 @click:append="handleViewItem"
               />
             </v-col>
+            <v-col :cols="6">
+              <v-switch
+                v-model="formModel.is_active"
+                label="Active"
+                placeholder="Active"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-switch
+                v-model="formModel.is_home"
+                label="Home"
+                placeholder="Home"
+              />
+            </v-col>
             <v-col :cols="12">
               <v-text-field
                 v-model="formModel.reference_url"
@@ -134,6 +148,8 @@ export default {
       ],
       formModel: {
         name: null,
+        is_active: null,
+        is_home: null,
         description: null,
         slug: null,
         reference_url: null,
@@ -165,12 +181,14 @@ export default {
           name: data.name,
           description: data.description,
           slug: data.slug,
+          is_active: data.is_active,
+          is_home: data.is_home,
           reference_url: data.reference_url,
           specs: data.specs,
           tags: data.tags.map((item) => item.name),
           categories:
             data.categories.length > 0
-              ? data.categories.map((item) => item.id)
+              ? data.categories.map((item) => item.category_id)
               : []
         }
       } else {
@@ -178,6 +196,8 @@ export default {
           name: null,
           description: null,
           slug: null,
+          is_active: null,
+          is_home: null,
           reference_url: null,
           specs: '',
           categories: []

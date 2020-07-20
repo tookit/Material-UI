@@ -101,6 +101,7 @@ export const protectedRoute = [
               icon: 'mdi-view'
             }
           },
+
           {
             path: '/mall/product/create',
             name: 'mall.product.create',
@@ -177,6 +178,16 @@ export const protectedRoute = [
             component: () => import('@/views/cms/NewsList.vue'),
             meta: {
               title: 'News',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/tags',
+            name: 'cms.tags',
+            component: () => import('@/views/cms/TagList.vue'),
+            meta: {
+              title: 'Tags',
               hiddenInMenu: false,
               icon: 'mdi-view'
             }

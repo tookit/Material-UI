@@ -1,4 +1,5 @@
 import {
+  fetchTags,
   fetchNews,
   createNews,
   updateNews,
@@ -14,7 +15,8 @@ import {
   updateSlider
 } from '@/api/service'
 const state = {
-  categories: []
+  categories: [],
+  tags: []
 }
 const getters = {
   getCmsCategories: (state) => {
@@ -24,6 +26,12 @@ const getters = {
 const actions = {
   fetchNews({ commit }, query) {
     return fetchNews(query).then((resp) => {
+      return resp
+    })
+  },
+  fetchTags({ commit }, query) {
+    return fetchTags(query).then((resp) => {
+      commit('SET_TAGS', resp.data)
       return resp
     })
   },
@@ -95,6 +103,9 @@ const actions = {
 const mutations = {
   SET_NEWS_CATEGORIES(state, { data }) {
     state.categories = data
+  },
+  SET_TAGS(state, data) {
+    state.tags = data
   }
 }
 

@@ -85,6 +85,7 @@ export default {
   data() {
     return {
       //slider lightbox
+      showDialog: false,
       showLightbox: false,
       index: 0,
 

@@ -57,17 +57,41 @@
         >save</v-btn
       >
     </v-card-actions>
+    <v-dialog
+      v-model="showDialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar color="primary">
+          <v-spacer />
+          <v-btn @click="showDialog != showDialog" icon>
+            <v-icon color="white">mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-text class="pa-0">
+          <media-table :data-source="fetchImage" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
+import MediaTable from '@/components/table/MediaTable'
+
 export default {
   name: 'SliderForm',
   props: {
     item: Object
   },
+  components: {
+    MediaTable
+  },
   data() {
     return {
+      showDialog: false,
       loading: false,
       formModel: {
         name: null,
@@ -127,7 +151,12 @@ export default {
           })
       }
     },
-    handlePickImage() {}
+    handlePickImage() {
+      this.showDialog = true
+    },
+    fetchImage() {
+      return this.$store.dispatch('fetchSlider')
+    }
   }
 }
 </script>

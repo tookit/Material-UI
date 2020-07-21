@@ -20,6 +20,8 @@
                 outlined
                 placeholder="Slug"
                 label="Slug"
+                append-icon="mdi-eye"
+                @click:append="handleViewItem"
               />
             </v-col>
             <v-col :cols="6">
@@ -39,6 +41,8 @@
                 outlined
                 placeholder="Reference"
                 label="Reference"
+                append-icon="mdi-eye"
+                @click:append="handleViewReference(formModel.reference_url)"
               />
             </v-col>
             <v-col :cols="12">
@@ -144,6 +148,16 @@ export default {
           .catch(() => {
             this.loading = false
           })
+      }
+    },
+    handleViewItem() {
+      if (this.item) {
+        window.open(this.item.href, '_blank')
+      }
+    },
+    handleViewReference(url) {
+      if (url) {
+        window.open(url, '_blank')
       }
     },
     handleInputName(name) {

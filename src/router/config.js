@@ -182,16 +182,7 @@ export const protectedRoute = [
               icon: 'mdi-view'
             }
           },
-          {
-            path: '/cms/tags',
-            name: 'cms.tags',
-            component: () => import('@/views/cms/TagList.vue'),
-            meta: {
-              title: 'Tags',
-              hiddenInMenu: false,
-              icon: 'mdi-view'
-            }
-          },
+
           {
             path: '/cms/news/item/:id',
             name: 'cms.news.edit',
@@ -210,6 +201,38 @@ export const protectedRoute = [
             component: () => import('@/views/cms/NewsItem.vue'),
             meta: {
               title: 'Create News',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/tags',
+            name: 'cms.tags',
+            component: () => import('@/views/cms/TagList.vue'),
+            meta: {
+              title: 'Tags',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/tags/create',
+            name: 'cms.tags.create',
+            props: true,
+            component: () => import('@/views/cms/TagItem.vue'),
+            meta: {
+              title: 'Create Tag',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/cms/tags/item/:id',
+            name: 'cms.tags.edit',
+            props: true,
+            component: () => import('@/views/cms/TagItem.vue'),
+            meta: {
+              title: 'Edit Tag',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }

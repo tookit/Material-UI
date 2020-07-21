@@ -8,7 +8,7 @@ export function login(data) {
   })
 }
 
-//product
+//tag
 export function fetchTags(query) {
   return request({
     url: '/tag',
@@ -17,6 +17,27 @@ export function fetchTags(query) {
   })
 }
 
+export function getTagById(id) {
+  return request({
+    url: `/tag/${id}`,
+    method: 'get'
+  })
+}
+
+export function updateTag(id, data) {
+  return request({
+    url: `/tag/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function deleteTag(id) {
+  return request({
+    url: `/tag/${id}`,
+    method: 'delete'
+  })
+}
 //product
 export function fetchProducts(query) {
   return request({

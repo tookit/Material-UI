@@ -151,7 +151,7 @@ export default {
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/cms/news/item/${item.id}`
+        path: `/cms/tags/item/${item.id}`
       })
     },
     handleDeleteItem() {},

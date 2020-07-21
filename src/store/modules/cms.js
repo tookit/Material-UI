@@ -1,5 +1,9 @@
 import {
   fetchTags,
+  getTagById,
+  createTag,
+  updateTag,
+  deleteTag,
   fetchNews,
   createNews,
   updateNews,
@@ -40,13 +44,28 @@ const actions = {
       return resp
     })
   },
+  createTag({ commit }, query) {
+    return createTag(query).then((resp) => {
+      return resp
+    })
+  },
   updateNews({ commit }, { id, data }) {
     return updateNews(id, data).then((resp) => {
       return resp
     })
   },
+  updateTag({ commit }, { id, data }) {
+    return updateTag(id, data).then((resp) => {
+      return resp
+    })
+  },
   getNewsById({ commit }, id) {
     return getNewsById(id).then((resp) => {
+      return resp
+    })
+  },
+  getTagById({ commit }, id) {
+    return getTagById(id).then((resp) => {
       return resp
     })
   },

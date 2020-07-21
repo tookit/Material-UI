@@ -1,6 +1,5 @@
 <template>
   <v-card>
-    <v-card-title>{{ formTitle }}</v-card-title>
     <v-card-text>
       <v-form>
         <v-container fluid>
@@ -45,10 +44,9 @@
 
 <script>
 export default {
-  name: 'SeoForm',
+  name: 'FormTag',
   props: {
-    item: Object,
-    action: Function
+    item: Object
   },
   data() {
     return {
@@ -71,31 +69,46 @@ export default {
         if (item) {
           this.assignModel(item)
         } else {
-          this.formModel = {
-            name: null,
-            slug: null,
-            description: null
-          }
+          this.initForm()
         }
       },
       immediate: true
     }
   },
   methods: {
+    initForm() {
+      this.formModel = {
+        name: null,
+        slug: null,
+        description: null
+      }
+    },
     assignModel(data) {
       this.formModel = {
-        name: data.name || data.name,
+        name: data.name,
         slug: data.slug,
         description: data.description
       }
     },
     handleSubmit() {
-      this.action.apply(this, [
-        {
-          id: this.item.id,
-          data: this.formModel
-        }
-      ])
+      this.loading = true
+      if (this.item.id) {
+        this.$store
+          .dispatch('updateTag', {
+            id: this.item.id,
+            data: this.formModel
+          })
+          .then(() => {
+            this.loading = false
+          })
+          .catch(() => {
+            this.loading = false
+          })
+      } else {
+        this.$store.dispatch('createTag', this.formModel).then(() => {
+          this.loading = false
+        })
+      }
     }
   }
 }

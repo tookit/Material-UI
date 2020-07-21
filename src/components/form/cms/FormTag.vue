@@ -11,6 +11,7 @@
                 name="name"
                 placeholder="Name"
                 label="Name"
+                @input="handleInputName"
               />
             </v-col>
             <v-col :cols="6">
@@ -63,8 +64,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import SlugifyMixin from '@/mixins/Slugify'
 export default {
   name: 'FormTag',
+  mixins: [SlugifyMixin],
   props: {
     item: Object
   },
@@ -142,6 +145,9 @@ export default {
             this.loading = false
           })
       }
+    },
+    handleInputName(name) {
+      return (this.formModel.slug = this.slugify(name))
     }
   }
 }

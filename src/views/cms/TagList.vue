@@ -16,9 +16,14 @@
                 <v-card-text>
                   <v-row>
                     <v-col cols="6">
-                      <v-switch
-                        label="Active"
-                        v-model="filter['filter[is_active]']"
+                      <v-autocomplete
+                        v-model="filter['filter[type]']"
+                        outlined
+                        placeholder="Type"
+                        label="Type"
+                        :items="getTagTypes"
+                        item-text="text"
+                        item-value="value"
                       />
                     </v-col>
                   </v-row>
@@ -82,9 +87,7 @@ export default {
       loading: false,
       items: [],
       filter: {
-        'filter[is_active]': null,
-        'filter[imaged]': null,
-        'filter[categories.id]': []
+        'filter[type]': null
       },
       categories: [],
       headers: [
@@ -127,7 +130,18 @@ export default {
       ]
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters(['getTagTypes'])
+  },
+  watch: {
+    '$route.query': {
+      handler(query) {
+        Object.assign(this.filter, query)
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
+  },
   methods: {
     ...mapActions(['fetchTags']),
     fetchRecord(query) {
@@ -176,7 +190,10 @@ export default {
     },
     // filter
     handleApplyFilter() {
-      this.fetchRecord(this.filter)
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
     },
 
     handleResetFilter() {}

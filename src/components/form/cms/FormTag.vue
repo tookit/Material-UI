@@ -21,6 +21,25 @@
                 label="Slug"
               />
             </v-col>
+            <v-col :cols="6">
+              <v-autocomplete
+                v-model="formModel.type"
+                outlined
+                placeholder="Type"
+                label="Type"
+                :items="getTagTypes"
+                item-text="text"
+                item-value="value"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.reference_url"
+                outlined
+                placeholder="Reference"
+                label="Reference"
+              />
+            </v-col>
             <v-col :cols="12">
               <v-textarea
                 v-model="formModel.description"
@@ -43,6 +62,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'FormTag',
   props: {
@@ -54,11 +74,13 @@ export default {
       formModel: {
         name: null,
         slug: null,
+        type: 'fiber',
         description: null
       }
     }
   },
   computed: {
+    ...mapGetters(['getTagTypes']),
     formTitle() {
       return 'Tag'
     }
@@ -80,19 +102,22 @@ export default {
       this.formModel = {
         name: null,
         slug: null,
-        description: null
+        type: 'fiber',
+        description: null,
+        reference_url: null
       }
     },
     assignModel(data) {
       this.formModel = {
         name: data.name,
         slug: data.slug,
+        reference_url: data.reference_url,
         description: data.description
       }
     },
     handleSubmit() {
       this.loading = true
-      if (this.item.id) {
+      if (this.item) {
         this.$store
           .dispatch('updateTag', {
             id: this.item.id,
@@ -105,9 +130,17 @@ export default {
             this.loading = false
           })
       } else {
-        this.$store.dispatch('createTag', this.formModel).then(() => {
-          this.loading = false
-        })
+        this.$store
+          .dispatch('createTag', this.formModel)
+          .then(({ data }) => {
+            this.loading = false
+            this.$router.push({
+              path: `/cms/tags/item/${data.id}`
+            })
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     }
   }

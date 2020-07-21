@@ -20,11 +20,28 @@ import {
 } from '@/api/service'
 const state = {
   categories: [],
-  tags: []
+  tags: [],
+  tagTypes: [
+    {
+      text: 'Fiber',
+      value: 'fiber'
+    },
+    {
+      text: 'Abbr',
+      value: 'abbr'
+    },
+    {
+      text: 'News',
+      value: 'news'
+    }
+  ]
 }
 const getters = {
   getCmsCategories: (state) => {
     return state.categories
+  },
+  getTagTypes: (state) => {
+    return state.tagTypes
   }
 }
 const actions = {

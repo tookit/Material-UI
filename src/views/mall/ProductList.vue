@@ -249,7 +249,6 @@ export default {
     },
     // filter
     handleApplyFilter() {
-      // this.fetchRecord(this.filter)
       this.$router.replace({
         path: this.$route.path,
         query: this.filter

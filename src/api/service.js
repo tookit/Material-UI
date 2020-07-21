@@ -24,6 +24,14 @@ export function getTagById(id) {
   })
 }
 
+export function createTag(data) {
+  return request({
+    url: `/tag`,
+    method: 'post',
+    data: data
+  })
+}
+
 export function updateTag(id, data) {
   return request({
     url: `/tag/${id}`,

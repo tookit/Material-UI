@@ -74,7 +74,7 @@
           </v-btn>
         </v-toolbar>
         <v-card-text class="pa-0">
-          <media @selected="handleSelectMedia" />
+          <media @selected="handleSelectMedia" directory="slider" />
         </v-card-text>
       </v-card>
     </v-dialog>

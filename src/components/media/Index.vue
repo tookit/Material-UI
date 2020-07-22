@@ -9,6 +9,28 @@
       @update:page="handlePageChanged"
       @row:click="handleRowClick"
     >
+      <div slot="filter">
+        <v-card flat class="grey lighten-4">
+          <v-card-text>
+            <v-row>
+              <v-col cols="12">
+                <v-autocomplete
+                  outlined
+                  name="directory"
+                  placeholder="Directory"
+                  :items="directories"
+                  v-model="filter['filter[directory]']"
+                />
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn @click="handleResetFilter" text>Reset</v-btn>
+            <v-btn @click="handleApplyFilter" color="primary">Apply</v-btn>
+          </v-card-actions>
+        </v-card>
+      </div>
       <v-btn slot="toolbar" icon @click="handleCreate">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
@@ -64,6 +86,9 @@ import { fetchMedia, deleteMedia } from '@/api/service'
 import bytes from 'bytes'
 export default {
   name: 'Media',
+  props: {
+    directory: String
+  },
   components: {
     AdvanceTable,
     ImageForm
@@ -75,6 +100,10 @@ export default {
       showDialog: false,
       selectedItem: null,
       loading: false,
+      directories: ['fiber', 'slider', 'fact'],
+      filter: {
+        'filter[directory]': this.directory
+      },
       items: [],
       headers: [
         {
@@ -138,7 +167,17 @@ export default {
   },
   computed: {
     uploadAction() {
-      return `${process.env.VUE_APP_BASE_API_HOST}/api/media`
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/media?dir=${this.directory}`
+    }
+  },
+
+  watch: {
+    '$route.query': {
+      handler(query) {
+        Object.assign(this.filter, query)
+        this.fetchMedia(query)
+      },
+      immediate: true
     }
   },
   methods: {
@@ -173,14 +212,20 @@ export default {
     },
     handleFormCancel() {
       this.showDialog = false
+      this.fetchMedia()
     },
     handleRowClick(e) {
-      console.log(e)
       this.$emit('selected', e)
-    }
-  },
-  created() {
-    this.fetchMedia()
+    },
+    // filter
+    handleApplyFilter() {
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+
+    handleResetFilter() {}
   }
 }
 </script>

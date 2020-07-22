@@ -137,6 +137,16 @@ export function updateProduct(id, data) {
   })
 }
 
+export function attachMediaForProduct(id, mediaId) {
+  return request({
+    url: `/mall/item/${id}/media`,
+    method: 'post',
+    data: {
+      media_id: mediaId
+    }
+  })
+}
+
 export function updateProductCategory(id, data) {
   return request({
     url: `/mall/category/${id}`,

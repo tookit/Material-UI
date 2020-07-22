@@ -131,6 +131,10 @@ export default {
           value: 'size'
         },
         {
+          text: 'Attached',
+          value: 'attached'
+        },
+        {
           text: 'Directory',
           value: 'directory'
         },
@@ -159,6 +163,11 @@ export default {
           text: 'Edit Item',
           icon: 'mdi-pencil',
           click: this.handleEditItem
+        },
+        {
+          text: 'Attach  Entity',
+          icon: 'mdi-link-variant',
+          click: this.handleAttachItem
         },
         {
           text: 'Delete Item',
@@ -224,6 +233,9 @@ export default {
     },
     handleRowClick(e) {
       this.$emit('selected', e)
+    },
+    handleAttachItem(item) {
+      this.$emit('attach', item)
     },
     // filter
     handleApplyFilter() {

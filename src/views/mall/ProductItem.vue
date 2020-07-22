@@ -18,7 +18,11 @@
               <form-product :item="item" :loading="loading" />
             </v-tab-item>
             <v-tab-item key="media" value="media">
-              <media @selected="handleSelectMedia" :directory="directory" />
+              <media
+                @selected="handleSelectMedia"
+                :directory="directory"
+                @attach="handleAttachMedia"
+              />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
               <seo-form
@@ -38,6 +42,7 @@
 import FormProduct from '@/components/form/product/FormProduct'
 import SeoForm from '@/components/form/SeoForm'
 import Media from '@/components/media/Index'
+import { attachMediaForProduct } from '@/api/service'
 import { mapActions } from 'vuex'
 export default {
   props: {
@@ -107,7 +112,10 @@ export default {
         return value === 'general'
       }
     },
-    handleSelectMedia() {}
+    handleSelectMedia() {},
+    handleAttachMedia(item) {
+      attachMediaForProduct(this.id, item.id).then(() => {})
+    }
   }
 }
 </script>

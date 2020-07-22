@@ -304,6 +304,17 @@ export const protectedRoute = [
         ]
       },
       {
+        path: '/media',
+        name: 'media.index',
+        meta: {
+          group: 'media',
+          title: 'Media',
+          hiddenInMenu: false,
+          icon: 'mdi-image'
+        },
+        component: () => import('@/views/Media.vue')
+      },
+      {
         path: '/403',
         name: 'Forbidden',
         meta: {

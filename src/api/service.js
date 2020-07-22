@@ -8,6 +8,15 @@ export function login(data) {
   })
 }
 
+//media
+export function fetchMedia(query) {
+  return request({
+    url: '/media',
+    method: 'get',
+    params: query
+  })
+}
+
 //tag
 export function fetchTags(query) {
   return request({

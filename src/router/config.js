@@ -315,6 +315,32 @@ export const protectedRoute = [
         component: () => import('@/views/Media.vue')
       },
       {
+        path: '/acl',
+        name: 'acl.index',
+        meta: {
+          group: 'acl',
+          title: 'ACL',
+          hiddenInMenu: false,
+          icon: 'mdi-account'
+        },
+        component: RouterWrapper,
+        redirect: {
+          path: '/acl/users'
+        },
+        children: [
+          {
+            path: '/acl/users',
+            name: 'cms.news',
+            component: () => import('@/views/acl/UserList.vue'),
+            meta: {
+              title: 'Users',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          }
+        ]
+      },
+      {
         path: '/403',
         name: 'Forbidden',
         meta: {

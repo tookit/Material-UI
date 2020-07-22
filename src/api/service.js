@@ -8,6 +8,15 @@ export function login(data) {
   })
 }
 
+//user
+export function fetchUsers(query) {
+  return request({
+    url: '/acl/users',
+    method: 'get',
+    params: query
+  })
+}
+
 //media
 export function fetchMedia(query) {
   return request({

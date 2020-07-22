@@ -36,7 +36,12 @@
       </v-btn>
       <template v-slot:item.url="{ item }">
         <a :href="item.url" class="glightbox" target="blank">
-          <img class="ma-2" :src="item.url" height="50" width="50" />
+          <img
+            class="ma-2"
+            :src="resize(item.url, 50, 50)"
+            height="50"
+            width="50"
+          />
         </a>
       </template>
       <template v-slot:item.size="{ item }">
@@ -85,11 +90,13 @@ import ImageForm from '@/components/form/ImageForm'
 import { fetchMedia, deleteMedia } from '@/api/service'
 import bytes from 'bytes'
 import _merge from 'lodash/merge'
+import ResizeMixin from '@/mixins/Resize'
 export default {
   name: 'Media',
   props: {
     directory: String
   },
+  mixins: [ResizeMixin],
   components: {
     AdvanceTable,
     ImageForm

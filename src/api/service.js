@@ -17,6 +17,21 @@ export function fetchMedia(query) {
   })
 }
 
+export function updateMedia(id, data) {
+  return request({
+    url: `/media/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function deleteMedia(id) {
+  return request({
+    url: `/media/${id}`,
+    method: 'delete'
+  })
+}
+
 //tag
 export function fetchTags(query) {
   return request({

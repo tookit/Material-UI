@@ -7,6 +7,13 @@
         <v-card-text class="pa-3">
           <v-form>
             <v-text-field
+              name="name"
+              v-model="formModel.filename"
+              outlined
+              label="Filename"
+              placeholder="Filename"
+            />
+            <v-text-field
               name="title"
               v-model="formModel.custom_properties.title"
               outlined
@@ -51,7 +58,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { updateImageById } from '@/api/service'
+import { updateMedia } from '@/api/service'
 import VDropzone from '@/components/dropzone'
 export default {
   name: 'ImageForm',
@@ -66,8 +73,9 @@ export default {
     return {
       loading: false,
       formModel: {
+        filename: '',
         custom_properties: {
-          title: null,
+          title: '',
           featured: false
         }
       },
@@ -92,8 +100,17 @@ export default {
     item: {
       handler(item) {
         if (item) {
+          this.formModel.filename = item.name
+          if (item.custom_properties !== null) {
+            this.formModel.custom_properties = item.custom_properties
+          }
+        } else {
           this.formModel = {
-            custom_properties: item.custom_properties
+            filename: '',
+            custom_properties: {
+              title: '',
+              featured: false
+            }
           }
         }
       },
@@ -103,10 +120,14 @@ export default {
   methods: {
     handleSubmit() {
       this.loading = true
-      updateImageById(this.item.id, this.formModel).then((resp) => {
-        this.$emit('form:success')
-        this.loading = false
-      })
+      updateMedia(this.item.id, this.formModel)
+        .then(() => {
+          this.$emit('form:success')
+          this.loading = false
+        })
+        .catch(() => {
+          this.loading = false
+        })
     }
   }
 }

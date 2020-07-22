@@ -6,6 +6,8 @@
       :loading="loading"
       :server-items-length="serverItemsLength"
       :items-per-page="itemsPerPage"
+      @update:page="handlePageChanged"
+      @row:click="handleRowClick"
     >
       <v-btn slot="toolbar" icon @click="handleCreate">
         <v-icon>mdi-plus</v-icon>
@@ -58,7 +60,7 @@
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
 import ImageForm from '@/components/form/ImageForm'
-import { fetchMedia } from '@/api/service'
+import { fetchMedia, deleteMedia } from '@/api/service'
 import bytes from 'bytes'
 export default {
   name: 'Media',
@@ -136,24 +138,45 @@ export default {
   },
   computed: {
     uploadAction() {
-      return `${process.env.VUE_APP_BASE_API_HOST}/api/cms/slider/${this.id}/image`
+      return `${process.env.VUE_APP_BASE_API_HOST}/api/media`
     }
   },
   methods: {
     fetchMedia(query) {
       this.loading = true
+      this.items = []
       fetchMedia(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
         this.serverItemsLength = meta.total
       })
     },
+    handlePageChanged(page) {
+      this.fetchMedia({
+        page: page
+      })
+    },
     handleCreate() {
       this.selectedItem = null
       this.showDialog = true
     },
+    handleEditItem(item) {
+      this.selectedItem = item
+      this.showDialog = true
+    },
+    handleDeleteItem(item) {
+      if (window.confirm('Are you sure to delete this?')) {
+        deleteMedia(item.id).then(() => {
+          this.fetchMedia()
+        })
+      }
+    },
     handleFormCancel() {
       this.showDialog = false
+    },
+    handleRowClick(e) {
+      console.log(e)
+      this.$emit('selected', e)
     }
   },
   created() {

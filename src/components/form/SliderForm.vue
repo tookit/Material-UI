@@ -67,11 +67,14 @@
         <v-toolbar color="primary">
           <v-spacer />
           <v-btn @click="handleCloseDialog" icon>
+            <v-icon color="white">mdi-check</v-icon>
+          </v-btn>
+          <v-btn @click="handleCloseDialog" icon>
             <v-icon color="white">mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
         <v-card-text class="pa-0">
-          <media-table :data-source="fetchImage" />
+          <media @selected="handleSelectMedia" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -79,7 +82,7 @@
 </template>
 
 <script>
-import MediaTable from '@/components/table/MediaTable'
+import Media from '@/components/media/Index'
 
 export default {
   name: 'SliderForm',
@@ -87,10 +90,11 @@ export default {
     item: Object
   },
   components: {
-    MediaTable
+    Media
   },
   data() {
     return {
+      selectedMedia: null,
       showDialog: false,
       loading: false,
       formModel: {
@@ -156,9 +160,15 @@ export default {
     },
     handleCloseDialog() {
       this.showDialog = false
+      if (this.selectedMedia) {
+        this.formModel.img = this.selectedMedia.url
+      }
     },
     fetchImage() {
       return this.$store.dispatch('fetchSlider')
+    },
+    handleSelectMedia(item) {
+      this.selectedMedia = item
     }
   }
 }

@@ -133,6 +133,11 @@ export default {
         this.items = data
       })
     },
+    handlePageChanged(page) {
+      this.fetchRecord({
+        page: page
+      })
+    },
     handleEditItem(item) {
       this.selectedItem = item
       this.showDialog = true

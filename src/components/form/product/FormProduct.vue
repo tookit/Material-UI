@@ -84,12 +84,8 @@
               />
             </v-col>
             <v-col :cols="12">
-              <v-textarea
-                v-model="formModel.description"
-                outlined
-                placeholder="Description"
-                label="Description"
-              />
+              <label for="">Description</label>
+              <v-jodit v-model="formModel.description" />
             </v-col>
             <v-col :cols="12">
               <label for="">Specs</label>

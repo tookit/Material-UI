@@ -34,6 +34,7 @@
 
 <script>
 import ThemeSettings from '@/components/ThemeSettings'
+import Echo from 'laravel-echo'
 export default {
   components: {
     ThemeSettings
@@ -77,11 +78,29 @@ export default {
         color: e.color
       }
     })
+    // this.initWebsocket()
   },
   methods: {
     openThemeSettings() {
       this.$vuetify.goTo(0)
       this.rightDrawer = !this.rightDrawer
+    },
+    initWebsocket() {
+      window.Pusher = require('pusher-js')
+      window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: '9002ae97ba006ca29343',
+        wsHost: 'local.theopticalfiber.com',
+        wsPort: 6001,
+        encrypted: false,
+        forceTLS: false,
+        disableStats: false
+      })
+      console.log(
+        window.Echo.connector.pusher.connection.bind('connected', (e) => {
+          console.log(e)
+        })
+      )
     }
   }
 }

@@ -66,7 +66,7 @@
       <v-card>
         <v-toolbar color="primary">
           <v-spacer />
-          <v-btn @click="showDialog != showDialog" icon>
+          <v-btn @click="handleCloseDialog" icon>
             <v-icon color="white">mdi-close</v-icon>
           </v-btn>
         </v-toolbar>
@@ -153,6 +153,9 @@ export default {
     },
     handlePickImage() {
       this.showDialog = true
+    },
+    handleCloseDialog() {
+      this.showDialog = false
     },
     fetchImage() {
       return this.$store.dispatch('fetchSlider')

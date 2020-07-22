@@ -84,6 +84,7 @@ import AdvanceTable from '@/components/table/AdvanceTable'
 import ImageForm from '@/components/form/ImageForm'
 import { fetchMedia, deleteMedia } from '@/api/service'
 import bytes from 'bytes'
+import _merge from 'lodash/merge'
 export default {
   name: 'Media',
   props: {
@@ -175,7 +176,7 @@ export default {
     '$route.query': {
       handler(query) {
         Object.assign(this.filter, query)
-        this.fetchMedia(query)
+        this.fetchMedia(_merge(query, this.filter))
       },
       immediate: true
     }
@@ -184,7 +185,7 @@ export default {
     fetchMedia(query) {
       this.loading = true
       this.items = []
-      fetchMedia(query).then(({ data, meta }) => {
+      fetchMedia(_merge(query, this.filter)).then(({ data, meta }) => {
         this.loading = false
         this.items = data
         this.serverItemsLength = meta.total

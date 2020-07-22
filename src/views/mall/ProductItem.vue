@@ -18,12 +18,7 @@
               <form-product :item="item" :loading="loading" />
             </v-tab-item>
             <v-tab-item key="media" value="media">
-              <media-table
-                :items="images"
-                :id="id"
-                :data-source="fetchImages"
-                :upload-action="uploadAction"
-              />
+              <media @selected="handleSelectMedia" :directory="directory" />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
               <seo-form
@@ -42,7 +37,7 @@
 <script>
 import FormProduct from '@/components/form/product/FormProduct'
 import SeoForm from '@/components/form/SeoForm'
-import MediaTable from '@/components/table/MediaTable'
+import Media from '@/components/media/Index'
 import { mapActions } from 'vuex'
 export default {
   props: {
@@ -50,7 +45,7 @@ export default {
   },
   components: {
     SeoForm,
-    MediaTable,
+    Media,
     FormProduct
   },
   data() {
@@ -78,6 +73,9 @@ export default {
   computed: {
     uploadAction() {
       return `${process.env.VUE_APP_BASE_API_HOST}/api/mall/item/${this.id}/image`
+    },
+    directory() {
+      return `fiber/${this.id}`
     }
   },
   watch: {
@@ -108,7 +106,8 @@ export default {
       } else {
         return value === 'general'
       }
-    }
+    },
+    handleSelectMedia() {}
   }
 }
 </script>

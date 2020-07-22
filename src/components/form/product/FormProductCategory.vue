@@ -38,6 +38,8 @@
                 label="Featured Image"
                 outlined
                 placeholder="Featured Image"
+                append-icon="mdi-image"
+                @click:append="handlePickImage"
               />
             </v-col>
             <v-col :cols="6">
@@ -76,6 +78,27 @@
         save
       </v-btn>
     </v-card-actions>
+    <v-dialog
+      v-model="showDialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar color="primary">
+          <v-spacer />
+          <v-btn @click="handleCloseDialog" icon>
+            <v-icon color="white">mdi-check</v-icon>
+          </v-btn>
+          <v-btn @click="handleCloseDialog" icon>
+            <v-icon color="white">mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-text class="pa-0">
+          <media @selected="handleSelectMedia" :directory="directory" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
@@ -83,15 +106,16 @@
 import { mapGetters } from 'vuex'
 import { findAllParent } from '@/utils'
 import VCascader from '@/components/cascader/'
-
+import Media from '@/components/media/Index'
 export default {
   name: 'FromProductCategory',
-  components: { VCascader },
+  components: { VCascader, Media },
   props: {
     item: Object
   },
   data() {
     return {
+      showDialog: false,
       loading: false,
       parent_id: this.$route.query.parent_id,
       formModel: {
@@ -110,6 +134,9 @@ export default {
     ...mapGetters(['getProductCategories']),
     formTitle() {
       return this.item ? 'Edit Product' : 'Create Product'
+    },
+    directory() {
+      return this.item ? `fiber/category/${this.item.id}` : null
     }
   },
   watch: {
@@ -179,6 +206,18 @@ export default {
     handleViewItem() {
       if (this.item) {
         window.open(this.item.href, '_blank')
+      }
+    },
+    handlePickImage() {
+      this.showDialog = true
+    },
+    handleSelectMedia(item) {
+      this.selectedMedia = item
+    },
+    handleCloseDialog() {
+      this.showDialog = false
+      if (this.selectedMedia) {
+        this.formModel.img = this.selectedMedia.url
       }
     }
   },

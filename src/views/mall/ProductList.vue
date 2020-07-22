@@ -188,9 +188,10 @@ export default {
       handler(query) {
         Object.assign(this.filter, query)
         if (query['filter[categories.id]']) {
-          this.categories = query['filter[categories.id]']
-            .split(',')
-            .map((item) => parseInt(item))
+          const cids = query['filter[categories.id]']
+
+          this.categories =
+            cids.length > 0 ? cids.split(',').map((item) => parseInt(item)) : []
         }
         this.fetchRecord(query)
       },

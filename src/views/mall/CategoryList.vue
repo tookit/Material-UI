@@ -16,6 +16,9 @@
                 item-key="id"
                 open-on-click
               >
+                <template v-slot:label="{ item }">
+                  <span>{{ item.name }} ( {{ item.products_count }} )</span>
+                </template>
                 <template v-slot:append="{ item }">
                   <v-menu>
                     <template v-slot:activator="{ on: menu }">

@@ -154,17 +154,17 @@ export default {
     },
     handleCreate() {
       this.$router.push({
-        path: `/cms/user/create`
+        path: `/acl/user/create`
       })
     },
     handleViewItem(item) {
       this.$router.push({
-        path: `/cms/user/${item.id}`
+        path: `/acl/user/${item.id}`
       })
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/cms/user/item/${item.id}`
+        path: `/acl/user/item/${item.id}`
       })
     },
     handleItemStatus(val) {
@@ -177,7 +177,7 @@ export default {
     },
     handleDeleteItem(item) {
       if (window.confirm('Are you sure to delete this')) {
-        this.$store.dispatch('deleteSliderById', item.id).then(() => {
+        this.$store.dispatch('deleteUser', item.id).then(() => {
           this.fetchRecord()
         })
       }

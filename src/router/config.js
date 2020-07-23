@@ -325,16 +325,37 @@ export const protectedRoute = [
         },
         component: RouterWrapper,
         redirect: {
-          path: '/acl/users'
+          path: '/acl/user'
         },
         children: [
           {
-            path: '/acl/users',
-            name: 'cms.news',
+            path: '/acl/user',
+            name: 'acl.user',
             component: () => import('@/views/acl/UserList.vue'),
             meta: {
               title: 'Users',
               hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/acl/user/create',
+            name: 'acl.user.create',
+            component: () => import('@/views/acl/UserItem.vue'),
+            meta: {
+              title: 'Create User',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/acl/user/item/:id',
+            name: 'cms.news.edit',
+            component: () => import('@/views/acl/UserItem.vue'),
+            props: true,
+            meta: {
+              title: 'Edit User',
+              hiddenInMenu: true,
               icon: 'mdi-view'
             }
           }

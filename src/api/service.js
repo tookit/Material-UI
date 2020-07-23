@@ -17,6 +17,35 @@ export function fetchUsers(query) {
   })
 }
 
+export function getUserById(id) {
+  return request({
+    url: `/acl/users/${id}`,
+    method: 'get'
+  })
+}
+export function updateUser(id, data) {
+  return request({
+    url: `/acl/users/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function createUser(data) {
+  return request({
+    url: `/acl/users`,
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteUser(id) {
+  return request({
+    url: `/acl/users/${id}`,
+    method: 'delete'
+  })
+}
+
 //media
 export function fetchMedia(query) {
   return request({

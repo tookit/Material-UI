@@ -61,11 +61,6 @@ export default {
           click: this.handleSetting
         },
         {
-          icon: 'mdi-account-cog',
-          href: '#/admin/user',
-          title: 'User Management'
-        },
-        {
           icon: 'mdi-logout',
           href: '#',
           title: 'Logout',

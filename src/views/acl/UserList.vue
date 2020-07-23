@@ -14,15 +14,10 @@
             <v-btn slot="toolbar" icon @click="handleCreate">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
-            <template v-slot:item.img="{ item }">
-              <v-img
-                @click.stop="handleViewImage"
-                v-if="item.img"
-                class="ma-3 glightbox"
-                :src="computeImage(item.img)"
-                width="100"
-                height="90"
-              />
+            <template v-slot:item.avatar="{ item }">
+              <v-avatar v-if="item.avatar" size="50" class="ma-3">
+                <img :src="item.avatar" />
+              </v-avatar>
             </template>
             <template v-slot:item.categories="{ item }">
               <v-chip small outlined v-for="c in item.categories" :key="c.id">
@@ -90,6 +85,10 @@ export default {
         {
           text: 'ID',
           value: 'id'
+        },
+        {
+          text: 'Avatar',
+          value: 'avatar'
         },
         {
           text: 'Username',

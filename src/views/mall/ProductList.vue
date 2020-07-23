@@ -250,6 +250,7 @@ export default {
     },
     // filter
     handleApplyFilter() {
+      this.filter.t = Date.now()
       this.$router.replace({
         path: this.$route.path,
         query: this.filter

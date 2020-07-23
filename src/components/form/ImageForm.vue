@@ -42,7 +42,7 @@
 
     <template v-else>
       <v-card>
-        <v-toolbar tile flat>
+        <v-toolbar tile dark color="primary">
           <v-toolbar-title>Upload Image</v-toolbar-title>
           <v-spacer />
           <v-btn @click="$emit('form:cancel')" icon>

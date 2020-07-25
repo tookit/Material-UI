@@ -40,6 +40,22 @@
             </v-col>
             <v-col :cols="6">
               <v-text-field
+                v-model="formModel.password"
+                outlined
+                placeholder="Password"
+                label="Password"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.password_confirmation"
+                outlined
+                placeholder="Password Confirmation"
+                label="Password Confirmation"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
                 v-model="formModel.avatar"
                 outlined
                 placeholder="Avatar"
@@ -111,7 +127,9 @@ export default {
         avatar: null,
         gender: 'male',
         mobile: null,
-        active: false
+        active: false,
+        password: null,
+        password_confirmation: null
       }
     }
   },
@@ -136,7 +154,9 @@ export default {
         avatar: null,
         gender: 'male',
         mobile: null,
-        active: false
+        active: false,
+        password: null,
+        password_confirmation: null
       }
     },
     assignModel(data) {
@@ -155,13 +175,21 @@ export default {
           .then(() => {
             this.loading = false
           })
-      } else {
-        this.$store.dispatch('createUser', this.formModel).then(({ data }) => {
-          this.loading = false
-          this.$router.push({
-            path: `/acl/user/item/${data.id}`
+          .catch(() => {
+            this.loading = false
           })
-        })
+      } else {
+        this.$store
+          .dispatch('createUser', this.formModel)
+          .then(({ data }) => {
+            this.loading = false
+            this.$router.push({
+              path: `/acl/user/item/${data.id}`
+            })
+          })
+          .catch(() => {
+            this.loading = false
+          })
       }
     },
     handlePickImage() {

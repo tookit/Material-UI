@@ -24,7 +24,7 @@
                 @click:append="handleViewItem"
               />
             </v-col>
-            <v-col :cols="12">
+            <v-col :cols="6">
               <v-autocomplete
                 outlined
                 :items="getCmsCategories"
@@ -34,6 +34,24 @@
                 label="Category"
                 placeholder="Category"
                 v-model="formModel.category_id"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-switch
+                name="Active"
+                label="Active"
+                placeholder="Active"
+                v-model="formModel.is_active"
+              />
+            </v-col>
+            <v-col :cols="12">
+              <v-text-field
+                v-model="formModel.img"
+                outlined
+                placeholder="Featrued Image"
+                label="Featrued Image"
+                append-icon="mdi-image"
+                @click:append="handlePickImage"
               />
             </v-col>
             <v-col :cols="12">
@@ -58,28 +76,55 @@
         save
       </v-btn>
     </v-card-actions>
+    <v-dialog
+      v-model="showDialog"
+      fullscreen
+      hide-overlay
+      transition="dialog-bottom-transition"
+    >
+      <v-card>
+        <v-toolbar color="primary">
+          <v-spacer />
+          <v-btn @click="handleCloseDialog" icon>
+            <v-icon color="white">mdi-check</v-icon>
+          </v-btn>
+          <v-btn @click="handleCloseDialog" icon>
+            <v-icon color="white">mdi-close</v-icon>
+          </v-btn>
+        </v-toolbar>
+        <v-card-text class="pa-0">
+          <media @selected="handleSelectMedia" :directory="directory" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </v-card>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
+import Media from '@/components/media/Index'
 export default {
   name: 'FormNews',
   components: {
-    VJodit
+    VJodit,
+    Media
   },
   props: {
     item: Object
   },
   data() {
     return {
+      showDialog: false,
+      selectedMedia: null,
       loading: false,
       formModel: {
         name: null,
         description: null,
+        img: null,
         slug: null,
         content: '',
+        is_active: false,
         category_id: 0
       }
     }
@@ -88,6 +133,9 @@ export default {
     ...mapGetters(['getCmsCategories']),
     formTitle() {
       return this.item ? 'Edit News' : 'Create News'
+    },
+    directory() {
+      return this.item ? `news/${this.item.id}` : `news`
     }
   },
   watch: {
@@ -106,7 +154,9 @@ export default {
           name: data.name,
           description: data.description,
           slug: data.slug,
+          img: data.img,
           content: data.content || '',
+          is_active: data.is_active,
           category_id: data.category_id
         }
       } else {
@@ -115,6 +165,8 @@ export default {
           description: null,
           slug: null,
           content: '',
+          img: null,
+          is_actvie: false,
           category_id: 0
         }
       }
@@ -148,6 +200,18 @@ export default {
     handleViewItem() {
       if (this.item) {
         window.open(this.item.href, '_blank')
+      }
+    },
+    handlePickImage() {
+      this.showDialog = true
+    },
+    handleSelectMedia(item) {
+      this.selectedMedia = item
+    },
+    handleCloseDialog() {
+      this.showDialog = false
+      if (this.selectedMedia) {
+        this.formModel.img = this.selectedMedia.url
       }
     }
   },

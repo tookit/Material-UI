@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row>
         <v-col cols="12">
-          <slider-form :item="item" />
+          <form-slider :item="item" />
         </v-col>
       </v-row>
     </v-container>
@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import SliderForm from '@/components/form/SliderForm'
+import FormSlider from '@/components/form/FormSlider'
 export default {
   name: 'SliderItem',
   props: {
     id: [Number, String]
   },
   components: {
-    SliderForm
+    FormSlider
   },
   data() {
     return {

@@ -56,8 +56,9 @@
             <template v-slot:item.media="{ item }">
               <v-img
                 v-if="item.media.length > 0"
+                @click.stop="showLightbox = true"
                 class="ma-3"
-                :src="item.media[0].url"
+                :src="resize(item.media[0].url, 50, 50)"
                 width="50"
                 height="50"
               />
@@ -108,6 +109,12 @@
         </v-col>
       </v-row>
     </v-container>
+    <vue-easy-lightbox
+      :visible="showLightbox"
+      :imgs="imgs"
+      :index="index"
+      @hide="showLightbox = false"
+    />
   </div>
 </template>
 
@@ -115,21 +122,25 @@
 import AdvanceTable from '@/components/table/AdvanceTable'
 import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
+import ResizeMixin from '@/mixins/Resize'
 export default {
   name: 'PageProduct',
   components: {
     AdvanceTable,
     VCascader
   },
+  mixins: [ResizeMixin],
   data() {
     return {
       //
+      showLightbox: false,
+      index: 0,
       loading: false,
       items: [],
       filter: {
         'filter[name]': null,
         'filter[is_active]': null,
-        'filter[imaged]': null,
+        'filter[imaged]': true,
         'filter[categories.id]': []
       },
       categories: [],
@@ -181,7 +192,16 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories'])
+    ...mapGetters(['getProductCategories']),
+    imgs() {
+      let temp = []
+      this.items.forEach((item) => {
+        item.media.forEach((m) => {
+          temp.push(m.url)
+        })
+      })
+      return temp
+    }
   },
   watch: {
     '$route.query': {

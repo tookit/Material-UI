@@ -85,7 +85,7 @@
 import Media from '@/components/media/Index'
 
 export default {
-  name: 'SliderForm',
+  name: 'FormSlider',
   props: {
     item: Object
   },

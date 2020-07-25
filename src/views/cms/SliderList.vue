@@ -69,7 +69,7 @@
       :visible="showLightbox"
       :imgs="imgs"
       :index="index"
-      @hide="handleHideLightbox"
+      @hide="showLightbox = false"
     />
   </div>
 </template>

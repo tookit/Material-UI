@@ -50,7 +50,12 @@
           >
         </v-toolbar>
         <v-card-text>
-          <v-dropzone class="v-dropzone" :option="option"> </v-dropzone>
+          <v-dropzone
+            class="v-dropzone"
+            :option="option"
+            @success="handleSuccess"
+          >
+          </v-dropzone>
         </v-card-text>
       </v-card>
     </template>
@@ -61,7 +66,7 @@ import { mapGetters } from 'vuex'
 import { updateMedia } from '@/api/service'
 import VDropzone from '@/components/dropzone'
 export default {
-  name: 'ImageForm',
+  name: 'FormMedia',
   components: {
     VDropzone
   },
@@ -128,6 +133,9 @@ export default {
         .catch(() => {
           this.loading = false
         })
+    },
+    handleSuccess(e) {
+      console.log(e)
     }
   }
 }

@@ -22,6 +22,7 @@
                 @selected="handleSelectMedia"
                 :directory="directory"
                 @attach="handleAttachMedia"
+                attach-action=""
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">

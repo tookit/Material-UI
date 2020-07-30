@@ -86,6 +86,11 @@ const actions = {
       return resp
     })
   },
+  deleteTag({ commit }, id) {
+    return deleteTag(id).then((resp) => {
+      return resp
+    })
+  },
 
   fetchNewsCategory({ commit }, query) {
     return fetchNewsCategory(query).then((resp) => {

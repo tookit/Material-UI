@@ -63,9 +63,9 @@ service.interceptors.request.use((config) => {
 
 // response interceptor
 service.interceptors.response.use(({ data, config }) => {
-  if (['put', 'post'].includes(config.method)) {
+  if (['put', 'post', 'delete'].includes(config.method)) {
     window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-      text: 'Resource Created'
+      text: data.meta.message
     })
   }
   if (data.error !== undefined) {

@@ -75,9 +75,10 @@
       </template>
     </advance-table>
     <v-dialog v-model="showDialog" width="600">
-      <image-form
+      <form-media
         :action="uploadAction"
         @form:cancel="handleFormCancel"
+        @form:success="handleUploadSuccess"
         :item="selectedItem"
       />
     </v-dialog>
@@ -86,7 +87,7 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import ImageForm from '@/components/form/ImageForm'
+import FormMedia from '@/components/form/FormMedia'
 import { fetchMedia, deleteMedia } from '@/api/service'
 import bytes from 'bytes'
 import _merge from 'lodash/merge'
@@ -94,12 +95,13 @@ import ResizeMixin from '@/mixins/Resize'
 export default {
   name: 'Media',
   props: {
-    directory: String
+    directory: String,
+    attachAction: Function
   },
   mixins: [ResizeMixin],
   components: {
     AdvanceTable,
-    ImageForm
+    FormMedia
   },
   data() {
     return {
@@ -230,6 +232,10 @@ export default {
     handleFormCancel() {
       this.showDialog = false
       this.fetchMedia()
+    },
+    handleUploadSuccess() {
+      // attach entity
+      this.attachAction.call(this)
     },
     handleRowClick(e) {
       this.$emit('selected', e)

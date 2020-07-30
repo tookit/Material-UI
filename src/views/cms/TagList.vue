@@ -168,7 +168,13 @@ export default {
         path: `/cms/tags/item/${item.id}`
       })
     },
-    handleDeleteItem() {},
+    handleDeleteItem(item) {
+      if (window.confirm('Are you sure to delete this item ?')) {
+        this.$store.dispatch('deleteTag', item.id).then(() => {
+          this.fetchRecord()
+        })
+      }
+    },
     handleItemStatus(val) {
       this.$store
         .dispatch('updateTags', {

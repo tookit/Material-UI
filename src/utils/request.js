@@ -63,7 +63,7 @@ service.interceptors.request.use((config) => {
 
 // response interceptor
 service.interceptors.response.use(({ data, config }) => {
-  if (['put', 'post', 'delete'].includes(config.method)) {
+  if (['put', 'post', 'delete'].includes(config.method) && data.meta) {
     window.ELEPHANT.$emit('SHOW_SNACKBAR', {
       text: data.meta.message
     })

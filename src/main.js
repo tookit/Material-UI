@@ -2,17 +2,14 @@ import Vue from 'vue'
 import router from './router/'
 import store from './store/'
 // import './registerServiceWorker'
-import './plugins/storage'
 //import './iconfont'
 import './theme/default.sass'
 
 import App from './App.vue'
 import vuetify from './plugins/vuetify'
 import VueTheMask from 'vue-the-mask'
-import uploader from 'vue-simple-uploader'
 import Lightbox from 'vue-easy-lightbox'
 Vue.use(Lightbox)
-Vue.use(uploader)
 import ConfirmDialog from '@/components/dialog/ConfirmDialog'
 Vue.use(ConfirmDialog, { vuetify })
 //vue vise

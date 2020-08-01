@@ -1,4 +1,3 @@
-import { clearCookie } from '@/utils'
 import { login } from '@/api/service'
 
 const state = {
@@ -11,14 +10,13 @@ const getters = {
 }
 const actions = {
   login({ commit }, payload) {
+    console.log(login(payload))
     return login(payload).then(({ access_token }) => {
       commit('SET_ACCESS_TOKEN', access_token)
     })
   },
   logout({ commit }) {
     commit('SET_ACCESS_TOKEN', null)
-    //clear cookie
-    clearCookie()
   }
 }
 const mutations = {

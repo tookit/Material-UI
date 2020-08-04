@@ -350,11 +350,42 @@ export const protectedRoute = [
           },
           {
             path: '/acl/user/item/:id',
-            name: 'cms.news.edit',
+            name: 'cms.user.edit',
             component: () => import('@/views/acl/UserItem.vue'),
             props: true,
             meta: {
               title: 'Edit User',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/acl/role',
+            name: 'acl.role',
+            component: () => import('@/views/acl/RoleList.vue'),
+            meta: {
+              title: 'Roles',
+              hiddenInMenu: false,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/acl/role/create',
+            name: 'acl.role.create',
+            component: () => import('@/views/acl/RoleItem.vue'),
+            meta: {
+              title: 'Create Role',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/acl/role/item/:id',
+            name: 'cms.role.edit',
+            component: () => import('@/views/acl/RoleItem.vue'),
+            props: true,
+            meta: {
+              title: 'Edit Role',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }

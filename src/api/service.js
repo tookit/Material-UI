@@ -46,6 +46,44 @@ export function deleteUser(id) {
   })
 }
 
+//role
+export function fetchRoles(query) {
+  return request({
+    url: '/acl/roles',
+    method: 'get',
+    params: query
+  })
+}
+
+export function getRoleById(id) {
+  return request({
+    url: `/acl/roles/${id}`,
+    method: 'get'
+  })
+}
+export function updateRole(id, data) {
+  return request({
+    url: `/acl/users/${id}`,
+    method: 'put',
+    data: data
+  })
+}
+
+export function createRole(data) {
+  return request({
+    url: `/acl/roles`,
+    method: 'post',
+    data: data
+  })
+}
+
+export function deleteRole(id) {
+  return request({
+    url: `/acl/roles/${id}`,
+    method: 'delete'
+  })
+}
+
 //media
 export function fetchMedia(query) {
   return request({

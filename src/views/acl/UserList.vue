@@ -10,7 +10,29 @@
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
+            @input:change="handleInputChange"
           >
+            <div slot="filter">
+              <v-card flat class="grey lighten-4">
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-switch
+                        label="Active"
+                        v-model="filter['filter[is_active]']"
+                      />
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn @click="handleResetFilter" text>Reset</v-btn>
+                  <v-btn @click="handleApplyFilter" color="primary"
+                    >Apply</v-btn
+                  >
+                </v-card-actions>
+              </v-card>
+            </div>
             <v-btn slot="toolbar" icon @click="handleCreate">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -77,7 +99,9 @@ export default {
       showDialog: false,
       showLightbox: false,
       index: 0,
-
+      filter: {
+        'filter[active]': null
+      },
       //
       loading: false,
       items: [],
@@ -194,6 +218,25 @@ export default {
     },
     computeImage(url) {
       return url
+    },
+    // filter
+    handleApplyFilter() {
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+
+    handleResetFilter() {
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: null
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
     }
   },
   created() {

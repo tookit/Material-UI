@@ -1,7 +1,7 @@
 <template>
   <div class="app dashboard">
     <app-drawer class="app--drawer" ref="drawer" />
-    <app-toolbar class="app--toolbar" />
+    <app-toolbar class="app--toolbar" @drawer:toggle="handleToggleDrawer" />
     <v-main>
       <div class="white">
         <v-breadcrumbs :items="breadcrumbs" />
@@ -51,7 +51,12 @@ export default {
       })
     }
   },
-  methods: {},
+  methods: {
+    handleToggleDrawer() {
+      const drawer = this.$refs.drawer
+      drawer.showDrawer = !drawer.showDrawer
+    }
+  },
   created() {
     // fetch common data
     this.$store.dispatch('fetchProductCategoryTree')

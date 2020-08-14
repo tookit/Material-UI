@@ -1,5 +1,11 @@
 <template>
-  <v-navigation-drawer app class="app--drawer" :width="drawerWidth" dark>
+  <v-navigation-drawer
+    app
+    class="app--drawer"
+    :width="drawerWidth"
+    dark
+    v-model="showDrawer"
+  >
     <v-toolbar flat>
       <img
         :src="computeLogo"
@@ -23,16 +29,24 @@
               </v-list-item-content>
             </template>
             <v-list-item
+              :class="drawerWidth === 64 ? 'pl-4' : ''"
               v-for="subItem in item.children"
               :key="subItem.name"
               :to="subItem.path"
               v-show="!subItem.meta.hiddenInMenu"
             >
-              <v-list-item-content>
-                <v-list-item-title
-                  v-text="subItem.meta.title"
-                ></v-list-item-title>
-              </v-list-item-content>
+              <template v-if="drawerWidth === 64">
+                <v-list-item-icon>
+                  <v-icon v-text="subItem.meta.icon"></v-icon>
+                </v-list-item-icon>
+              </template>
+              <template v-else>
+                <v-list-item-content>
+                  <v-list-item-title
+                    v-text="subItem.meta.title"
+                  ></v-list-item-title>
+                </v-list-item-content>
+              </template>
             </v-list-item>
           </v-list-group>
         </template>
@@ -62,7 +76,7 @@
             @click="handleDrawerToggle"
             class="mx-auto"
           >
-            <v-icon>mdi-menu</v-icon>
+            <v-icon>mdi-arrow-collapse-right</v-icon>
           </v-btn>
         </div>
       </template>
@@ -70,7 +84,7 @@
         <div class="d-flex">
           <v-spacer></v-spacer>
           <v-btn icon tile @click="handleDrawerToggle" class="mr-2">
-            <v-icon>mdi-menu</v-icon>
+            <v-icon>mdi-arrow-collapse-left</v-icon>
           </v-btn>
         </div>
       </template>
@@ -91,20 +105,8 @@ export default {
   data() {
     return {
       mini: false,
+      showDrawer: true,
       drawerWidth: 256,
-      items: [
-        {
-          title: 'Dashboard',
-          icon: 'mdi-monitor-dashboard',
-          to: '/dashboard',
-          color: 'teal'
-        },
-        {
-          title: 'Product',
-          icon: 'mdi-store',
-          to: '/product'
-        }
-      ],
       scrollSettings: {
         maxScrollbarLength: 160
       }

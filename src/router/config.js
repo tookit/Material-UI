@@ -86,9 +86,9 @@ export const protectedRoute = [
             name: 'mall.product',
             component: () => import('@/views/mall/ProductList.vue'),
             meta: {
-              title: 'Product List',
+              title: 'Product',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-database'
             }
           },
           {
@@ -96,9 +96,9 @@ export const protectedRoute = [
             name: 'mall.quote',
             component: () => import('@/views/mall/QuoteList.vue'),
             meta: {
-              title: 'Quote List',
+              title: 'Quote',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-basket'
             }
           },
 
@@ -119,7 +119,7 @@ export const protectedRoute = [
             props: true,
             component: () => import('@/views/mall/ProductItem.vue'),
             meta: {
-              title: 'Edit Prouduct',
+              title: 'Edit Product',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }
@@ -130,7 +130,7 @@ export const protectedRoute = [
             meta: {
               title: 'Proudct Category',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-buffer'
             },
             component: () => import('@/views/mall/CategoryList.vue')
           },
@@ -140,7 +140,7 @@ export const protectedRoute = [
             props: true,
             component: () => import('@/views/mall/CategoryItem.vue'),
             meta: {
-              title: 'Create Product Category',
+              title: 'Create  Category',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }
@@ -151,7 +151,7 @@ export const protectedRoute = [
             props: true,
             component: () => import('@/views/mall/CategoryItem.vue'),
             meta: {
-              title: 'Edit Product Category',
+              title: 'Edit  Category',
               hiddenInMenu: true,
               icon: 'mdi-view'
             }
@@ -179,7 +179,7 @@ export const protectedRoute = [
             meta: {
               title: 'News',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-post'
             }
           },
 
@@ -212,7 +212,7 @@ export const protectedRoute = [
             meta: {
               title: 'Tags',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-tag'
             }
           },
           {
@@ -244,7 +244,7 @@ export const protectedRoute = [
             meta: {
               title: 'Category',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-buffer'
             }
           },
           {
@@ -287,7 +287,7 @@ export const protectedRoute = [
             meta: {
               title: 'Edit Slider',
               hiddenInMenu: true,
-              icon: 'mdi-view'
+              icon: 'mdi-folder-image'
             }
           },
           {
@@ -321,7 +321,7 @@ export const protectedRoute = [
           group: 'acl',
           title: 'ACL',
           hiddenInMenu: false,
-          icon: 'mdi-account'
+          icon: 'mdi-shield-account'
         },
         component: RouterWrapper,
         redirect: {
@@ -335,7 +335,7 @@ export const protectedRoute = [
             meta: {
               title: 'Users',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-account'
             }
           },
           {
@@ -366,7 +366,7 @@ export const protectedRoute = [
             meta: {
               title: 'Roles',
               hiddenInMenu: false,
-              icon: 'mdi-view'
+              icon: 'mdi-account-group'
             }
           },
           {

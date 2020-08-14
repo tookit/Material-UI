@@ -1,6 +1,7 @@
 <template>
   <div class="app-bar">
     <v-app-bar flat dark app>
+      <v-app-bar-nav-icon @click="$emit('drawer:toggle')"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-toolbar-items class="align-center">
         <v-menu offset-y origin="center center" transition="scale-transition">

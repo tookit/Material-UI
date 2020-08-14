@@ -24,14 +24,22 @@
                 @click:append="handleViewItem"
               />
             </v-col>
-            <v-col :cols="6">
+            <v-col :cols="4">
+              <v-select
+                v-model="formModel.flag"
+                :items="getProductFlags"
+                label="Flag"
+                placeholder="Flag"
+              />
+            </v-col>
+            <v-col :cols="4">
               <v-switch
                 v-model="formModel.is_active"
                 label="Active"
                 placeholder="Active"
               />
             </v-col>
-            <v-col :cols="6">
+            <v-col :cols="4">
               <v-switch
                 v-model="formModel.is_home"
                 label="Home"
@@ -130,6 +138,7 @@ export default {
         is_home: null,
         description: null,
         slug: null,
+        flag: 1,
         reference_url: null,
         specs: '',
         categories: [],
@@ -138,57 +147,47 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories']),
-    formTitle() {
-      return this.item ? 'Edit Product' : 'Create Product'
-    }
+    ...mapGetters(['getProductCategories', 'getProductFlags'])
   },
   watch: {
     item: {
       handler(item) {
-        this.assignModel(item)
+        this.item ? this.assignModel(item) : this.initModel()
       },
       immediate: true
     }
   },
   methods: {
     assignModel(data) {
-      if (data) {
-        this.formModel = {
-          id: data.id,
-          name: data.name,
-          description: data.description,
-          slug: data.slug,
-          is_active: data.is_active,
-          is_home: data.is_home,
-          reference_url: data.reference_url,
-          specs: data.specs,
-          tags: data.tags.map((item) => item.name),
-          categories:
-            data.categories.length > 0
-              ? data.categories.map((item) => item.category_id)
-              : []
-        }
-      } else {
-        this.formModel = {
-          name: null,
-          description: null,
-          slug: null,
-          is_active: null,
-          is_home: null,
-          reference_url: null,
-          specs: '',
-          categories: []
-        }
+      for (let key in this.formModel) {
+        this.formModel[key] = data[key] || null
+      }
+      this.formModel.tags = data.tags.map((item) => item.name)
+      this.formModel.categories =
+        data.categories.length > 0
+          ? data.categories.map((item) => item.category_id)
+          : []
+    },
+    initModel() {
+      this.formModel = {
+        name: null,
+        is_active: null,
+        is_home: null,
+        description: null,
+        slug: null,
+        flag: 1,
+        reference_url: null,
+        specs: '',
+        categories: [],
+        tags: []
       }
     },
     handleSubmit() {
       this.loading = true
-
-      if (this.formModel.id) {
+      if (this.item && this.item.id) {
         this.$store
           .dispatch('updateProduct', {
-            id: this.formModel.id,
+            id: this.item.id,
             data: this.formModel
           })
           .then(() => {

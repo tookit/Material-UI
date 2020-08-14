@@ -11,11 +11,36 @@ import {
   fetchImagesByProductId
 } from '@/api/service'
 const state = {
-  categories: []
+  categories: [],
+  flags: [
+    {
+      text: 'Default',
+      value: 1
+    },
+    {
+      text: 'Promoted',
+      value: 2
+    },
+    {
+      text: 'Hot',
+      value: 3
+    },
+    {
+      text: 'New',
+      value: 4
+    },
+    {
+      text: 'Featured',
+      value: 5
+    }
+  ]
 }
 const getters = {
   getProductCategories: (state) => {
     return state.categories
+  },
+  getProductFlags: (state) => {
+    return state.flags
   }
 }
 const actions = {

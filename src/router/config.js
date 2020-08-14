@@ -128,7 +128,7 @@ export const protectedRoute = [
             path: '/mall/category',
             name: 'mall.category',
             meta: {
-              title: 'Proudct Category',
+              title: 'Category',
               hiddenInMenu: false,
               icon: 'mdi-buffer'
             },
@@ -298,7 +298,7 @@ export const protectedRoute = [
             meta: {
               title: 'Create Slider',
               hiddenInMenu: true,
-              icon: 'mdi-view'
+              icon: 'mdi-image-multiple'
             }
           }
         ]

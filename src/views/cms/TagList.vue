@@ -37,6 +37,9 @@
                 </v-card-actions>
               </v-card>
             </div>
+            <v-btn slot="toolbar" icon @click="fetchRecord()">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
             <v-btn slot="toolbar" icon @click="handleCreateItem">
               <v-icon>mdi-plus</v-icon>
             </v-btn>

@@ -7,7 +7,11 @@
     v-model="showDrawer"
   >
     <v-toolbar flat class="app-drawer__toolbar">
-      <img :src="computeLogo" :width="drawerWidth === 64 ? 64 : " alt="Kame" />
+      <img
+        :src="computeLogo"
+        :width="drawerWidth === 64 ? 64 : 256"
+        alt="Kame"
+      />
     </v-toolbar>
     <v-list class="pa-0">
       <template v-for="(item, key) in computeMenu">

@@ -11,6 +11,9 @@
             :items-per-page="itemsPerPage"
             @update:page="handlePageChanged"
           >
+            <v-btn slot="toolbar" icon @click="fetchRecord()">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
             <template v-slot:item.action="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu }">

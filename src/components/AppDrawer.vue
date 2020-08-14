@@ -6,13 +6,8 @@
     dark
     v-model="showDrawer"
   >
-    <v-toolbar flat>
-      <img
-        :src="computeLogo"
-        :width="drawerWidth === 64 ? 36 : 220"
-        :height="64"
-        alt="Kame"
-      />
+    <v-toolbar flat class="app-drawer__toolbar">
+      <img :src="computeLogo" :width="drawerWidth === 64 ? 64 : " alt="Kame" />
     </v-toolbar>
     <v-list class="pa-0">
       <template v-for="(item, key) in computeMenu">
@@ -122,9 +117,7 @@ export default {
       return true
     },
     computeLogo() {
-      return this.drawerWidth === 256
-        ? 'http://www.theopticalfiber.com/images/logo/logo.png'
-        : '/http://www.theopticalfiber.com/images/logo/logo.png'
+      return this.drawerWidth === 256 ? '/img/logo_text.png' : '/img/logo.png'
     }
   },
   created() {},

@@ -2,28 +2,22 @@
   <div>
     <template v-if="item">
       <v-card>
-        <v-img class="grey lighten-3" height="450px" :src="item.url" />
+        <v-img class="grey lighten-3" height="300px" :src="item.cloud_url" />
         <v-divider></v-divider>
         <v-card-text class="pa-3">
           <v-form>
             <v-text-field
-              name="name"
-              v-model="formModel.filename"
-              outlined
-              label="Filename"
-              placeholder="Filename"
-            />
-            <v-text-field
               name="title"
               v-model="formModel.custom_properties.title"
               outlined
+              dense
               label="Title"
               placeholder="Title"
             />
             <v-switch
               v-model="formModel.custom_properties.featured"
               name="featured"
-              outlined
+              dense
               label="Featured"
               placeholder="Featured"
             />

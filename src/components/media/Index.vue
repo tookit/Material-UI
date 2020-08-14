@@ -31,14 +31,18 @@
           </v-card-actions>
         </v-card>
       </div>
+      <v-btn slot="toolbar" icon @click="fetchMedia">
+        <v-icon>mdi-refresh</v-icon>
+      </v-btn>
       <v-btn slot="toolbar" icon @click="handleCreate">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
-      <template v-slot:item.url="{ item }">
-        <a :href="item.url" class="glightbox" target="blank">
+      <template v-slot:item.cloud_url="{ item }">
+        <a :href="item.cloud_url" class="glightbox" target="blank">
           <img
             class="ma-2"
-            :src="resize(item.url, 50, 50)"
+            :src="resize(item.cloud_url, 50, 50)"
+            @click.stop="showLightbox = true"
             height="50"
             width="50"
           />
@@ -82,6 +86,12 @@
         :item="selectedItem"
       />
     </v-dialog>
+    <vue-easy-lightbox
+      :visible="showLightbox"
+      :imgs="imgs"
+      :index="index"
+      @hide="showLightbox = false"
+    />
   </div>
 </template>
 
@@ -105,8 +115,8 @@ export default {
   },
   data() {
     return {
-      index: null,
-      showImageDialog: false,
+      showLightbox: false,
+      index: 0,
       showDialog: false,
       selectedItem: null,
       loading: false,
@@ -122,7 +132,7 @@ export default {
         },
         {
           text: 'Image',
-          value: 'url'
+          value: 'cloud_url'
         },
         {
           text: 'Name',
@@ -187,6 +197,11 @@ export default {
   computed: {
     uploadAction() {
       return `${process.env.VUE_APP_BASE_API_HOST}/api/media?dir=${this.directory}`
+    },
+    imgs() {
+      return this.items.map((item) => {
+        return item.cloud_url
+      })
     }
   },
 
@@ -235,7 +250,6 @@ export default {
     },
     handleUploadSuccess() {
       // attach entity
-      this.attachAction.call(this)
     },
     handleRowClick(e) {
       this.$emit('selected', e)

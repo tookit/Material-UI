@@ -1,7 +1,11 @@
 <template>
-  <div class="page-media">
-    <media />
-  </div>
+  <v-container class="page-media">
+    <v-row>
+      <v-col>
+        <media />
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>

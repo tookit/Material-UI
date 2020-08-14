@@ -100,8 +100,13 @@ export default {
       handler(item) {
         if (item) {
           this.formModel.filename = item.name
+          console.log(item.custom_properties)
           if (item.custom_properties !== null) {
             this.formModel.custom_properties = item.custom_properties
+          } else {
+            if (item.product.length > 0) {
+              this.formModel.custom_properties.title = item.product[0].name
+            }
           }
         } else {
           this.formModel = {

@@ -51,6 +51,9 @@
       <template v-slot:item.size="{ item }">
         <span>{{ item.size | bytes }}</span>
       </template>
+      <template v-slot:item.product="{ item }">
+        <span v-if="item.product.length > 0">{{ item.product[0].name }}</span>
+      </template>
       <template v-slot:item.action="{ item }">
         <v-menu>
           <template v-slot:activator="{ on: menu }">
@@ -143,8 +146,8 @@ export default {
           value: 'size'
         },
         {
-          text: 'Attached',
-          value: 'attached'
+          text: 'Product',
+          value: 'product'
         },
         {
           text: 'Directory',

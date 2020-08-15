@@ -66,6 +66,8 @@ export default {
   },
   props: {
     item: Object,
+    entityId: [Number, String],
+    entity: String,
     action: String
   },
   data() {
@@ -89,7 +91,9 @@ export default {
       return {
         url: this.action,
         headers: {
-          Authorization: 'Bearer ' + this.getAccessToken
+          Authorization: 'Bearer ' + this.getAccessToken,
+          entityId: this.entityId,
+          entity: this.entity
         },
         testChunks: false
       }
@@ -100,7 +104,6 @@ export default {
       handler(item) {
         if (item) {
           this.formModel.filename = item.name
-          console.log(item.custom_properties)
           if (item.custom_properties !== null) {
             this.formModel.custom_properties = item.custom_properties
           } else {

@@ -84,6 +84,8 @@
     <v-dialog v-model="showDialog" width="600">
       <form-media
         :action="uploadAction"
+        :entity-id="entityId"
+        :entity="entity"
         @form:cancel="handleFormCancel"
         @form:success="handleUploadSuccess"
         :item="selectedItem"
@@ -109,6 +111,8 @@ export default {
   name: 'Media',
   props: {
     directory: String,
+    entityId: [Number, String],
+    entity: String,
     attachAction: Function
   },
   mixins: [ResizeMixin],
@@ -156,6 +160,10 @@ export default {
         {
           text: 'Disk',
           value: 'disk'
+        },
+        {
+          text: 'Featured',
+          value: 'custom_properties.featured'
         },
         {
           text: 'Created',

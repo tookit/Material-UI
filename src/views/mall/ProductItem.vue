@@ -21,6 +21,8 @@
               <media
                 @selected="handleSelectMedia"
                 :directory="directory"
+                :entity-id="id"
+                entity="App\Models\Mall\Product"
                 @attach="handleAttachMedia"
               />
             </v-tab-item>

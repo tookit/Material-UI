@@ -27,13 +27,20 @@
                         @change="handleCategoryChange"
                       />
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="4">
+                      <v-select
+                        label="Flag"
+                        :items="getProductFlags"
+                        v-model="filter['filter[flag]']"
+                      />
+                    </v-col>
+                    <v-col cols="4">
                       <v-switch
                         label="Active"
                         v-model="filter['filter[is_active]']"
                       />
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="4">
                       <v-switch
                         label="Has Image"
                         v-model="filter['filter[imaged]']"
@@ -142,6 +149,7 @@ export default {
       items: [],
       filter: {
         'filter[name]': null,
+        'filter[flag]': 1,
         'filter[is_active]': null,
         'filter[imaged]': true,
         'filter[categories.id]': []
@@ -195,7 +203,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories']),
+    ...mapGetters(['getProductCategories', 'getProductFlags']),
     imgs() {
       let temp = []
       this.items.forEach((item) => {

@@ -73,6 +73,9 @@
                 height="50"
               />
             </template>
+            <template v-slot:item.flag="{ item }">
+              <span>{{ getFlagLabel(item.flag) }}</span>
+            </template>
             <template v-slot:item.categories="{ item }">
               <template v-for="(c, key) in item.categories">
                 <span :key="key" class="caption">
@@ -173,6 +176,10 @@ export default {
           value: 'categories'
         },
         {
+          text: 'Flag',
+          value: 'flag'
+        },
+        {
           text: 'Active',
           value: 'is_active'
         },
@@ -203,7 +210,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories', 'getProductFlags']),
+    ...mapGetters(['getProductCategories', 'getProductFlags', 'getFlagLabel']),
     imgs() {
       let temp = []
       this.items.forEach((item) => {

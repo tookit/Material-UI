@@ -41,6 +41,10 @@ const getters = {
   },
   getProductFlags: (state) => {
     return state.flags
+  },
+  getFlagLabel: (state) => (value) => {
+    const find = state.flags.find((item) => item.value === value)
+    return find ? find.text : ''
   }
 }
 const actions = {

@@ -25,22 +25,30 @@
                         :items="getProductCategories"
                         v-model="categories"
                         @change="handleCategoryChange"
+                        clearable
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="3">
                       <v-select
                         label="Flag"
                         :items="getProductFlags"
                         v-model="filter['filter[flag]']"
+                        clearable
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="3">
                       <v-switch
                         label="Active"
                         v-model="filter['filter[is_active]']"
                       />
                     </v-col>
-                    <v-col cols="4">
+                    <v-col cols="3">
+                      <v-switch
+                        label="Active"
+                        v-model="filter['filter[is_home]']"
+                      />
+                    </v-col>
+                    <v-col cols="3">
                       <v-switch
                         label="Has Image"
                         v-model="filter['filter[imaged]']"
@@ -89,7 +97,13 @@
             <template v-slot:item.is_active="{ item }">
               <v-switch
                 v-model="item.is_active"
-                @change="handleItemStatus(item)"
+                @change="handleItemStatus('is_active', item.is_active, item.id)"
+              />
+            </template>
+            <template v-slot:item.is_home="{ item }">
+              <v-switch
+                v-model="item.is_home"
+                @change="handleItemStatus('is_home', item.is_home, item.id)"
               />
             </template>
             <template v-slot:item.action="{ item }">
@@ -154,6 +168,7 @@ export default {
         'filter[name]': null,
         'filter[flag]': 1,
         'filter[is_active]': null,
+        'filter[is_home]': null,
         'filter[imaged]': true,
         'filter[categories.id]': []
       },
@@ -182,6 +197,10 @@ export default {
         {
           text: 'Active',
           value: 'is_active'
+        },
+        {
+          text: 'Home',
+          value: 'is_home'
         },
         {
           text: 'Action',
@@ -267,11 +286,13 @@ export default {
         })
       }
     },
-    handleItemStatus(val) {
+    handleItemStatus(key, val, id) {
+      let data = {}
+      data[key] = val
       this.$store
         .dispatch('updateProduct', {
-          id: val.id,
-          data: { is_active: val.is_active }
+          id: id,
+          data: data
         })
         .then(() => {})
     },

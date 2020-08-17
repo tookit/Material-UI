@@ -217,15 +217,15 @@ export default {
   },
 
   watch: {
-    '$route.query': {
-      // handler(query) {
-      //   if (query) {
-      //     Object.assign(this.filter, query)
-      //     this.fetchMedia(_merge(query, this.filter))
-      //   }
-      // },
-      // immediate: true
-    },
+    // '$route.query': {
+    //   handler(query) {
+    //     if (query) {
+    //       Object.assign(this.filter, query)
+    //       this.fetchMedia(_merge(query, this.filter))
+    //     }
+    //   },
+    //   immediate: true
+    // },
     directory: {
       handler(dir) {
         this.filter['filter[directory]'] = dir

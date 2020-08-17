@@ -155,6 +155,38 @@ export const protectedRoute = [
               hiddenInMenu: true,
               icon: 'mdi-view'
             }
+          },
+          {
+            path: '/mall/property',
+            name: 'mall.property',
+            meta: {
+              title: 'Propterty',
+              hiddenInMenu: false,
+              icon: 'mdi-filter-variant'
+            },
+            component: () => import('@/views/mall/PropertyList.vue')
+          },
+          {
+            path: '/mall/property/create',
+            name: 'mall.property.create',
+            props: true,
+            component: () => import('@/views/mall/PropertyItem.vue'),
+            meta: {
+              title: 'Create Property',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/mall/property/item/:id',
+            name: 'mall.property.item',
+            props: true,
+            component: () => import('@/views/mall/PropertyItem.vue'),
+            meta: {
+              title: 'Edit Property',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
           }
         ]
       },

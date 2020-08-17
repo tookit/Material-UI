@@ -10,6 +10,7 @@ import {
   updateProductCategory,
   fetchImagesByProductId
 } from '@/api/service'
+import request from '@/utils/request'
 const state = {
   categories: [],
   flags: [
@@ -45,6 +46,21 @@ const getters = {
   getFlagLabel: (state) => (value) => {
     const find = state.flags.find((item) => item.value === value)
     return find ? find.text : ''
+  },
+  getProperties: (state) => {
+    return state.properties
+  },
+  getSkuProperties: (state) => {
+    return state.properties.filter((item) => item.type === 'sku')
+  },
+  getSpuProperties: (state) => {
+    return state.properties.filter((item) => item.type === 'spu')
+  },
+  getPropUnits: (state) => {
+    return state.units
+  },
+  getPropTypes: (state) => {
+    return state.types
   }
 }
 const actions = {
@@ -102,11 +118,90 @@ const actions = {
     return updateProductCategory(id, data).then((resp) => {
       return resp
     })
+  },
+
+  fetchProperty({ commit }, query) {
+    return request({
+      url: '/mall/property',
+      method: 'get',
+      params: query
+    }).then((resp) => {
+      if (query && query.pageSize == -1) {
+        commit('SET_PRODUCT_PROPERTIES', resp.data)
+      }
+      return resp
+    })
+  },
+
+  createProperty({ commit }, data) {
+    return request({
+      url: '/mall/property',
+      method: 'post',
+      data: data
+    })
+  },
+  updateProperty({ commit }, { id, data }) {
+    return request({
+      url: `/mall/property/${id}`,
+      method: 'put',
+      data: data
+    })
+  },
+
+  fetchValueById({ commit }, id) {
+    return request({
+      url: `/mall/property/${id}/value`,
+      method: 'get'
+    })
+  },
+
+  getPropertyById({ commit }, id) {
+    return request({
+      url: `/mall/property/${id}`,
+      method: 'get'
+    })
+  },
+
+  fetchSpecByProductId({ commit }, id) {
+    return request({
+      url: `/mall/item/${id}/sku`,
+      method: 'get'
+    })
+  },
+  attachValueForProperty({ commit }, { id, data }) {
+    return request({
+      url: `/mall/property/${id}/value`,
+      method: 'put',
+      data: data
+    })
+  },
+  attachPropsForProduct({ commit }, { id, data }) {
+    return request({
+      url: `/mall/item/${id}/property`,
+      method: 'post',
+      data: data
+    })
+  },
+  attachSkuForProduct({ commit }, { id, data }) {
+    return request({
+      url: `/mall/item/${id}/sku`,
+      method: 'post',
+      data: data
+    })
+  },
+  deletePropertyValue({ commit }, id) {
+    return request({
+      url: `/mall/property_value/${id}`,
+      method: 'delete'
+    })
   }
 }
 const mutations = {
   SET_PRODUCT_CATEGORY(state, { data }) {
     state.categories = data
+  },
+  SET_PRODUCT_PROPERTIES(state, data) {
+    state.properties = data
   }
 }
 

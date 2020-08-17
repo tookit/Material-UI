@@ -218,9 +218,18 @@ export default {
 
   watch: {
     '$route.query': {
-      handler(query) {
-        Object.assign(this.filter, query)
-        this.fetchMedia(_merge(query, this.filter))
+      // handler(query) {
+      //   if (query) {
+      //     Object.assign(this.filter, query)
+      //     this.fetchMedia(_merge(query, this.filter))
+      //   }
+      // },
+      // immediate: true
+    },
+    directory: {
+      handler(dir) {
+        this.filter['filter[directory]'] = dir
+        this.fetchMedia(this.filter)
       },
       immediate: true
     }

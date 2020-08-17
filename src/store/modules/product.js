@@ -148,6 +148,13 @@ const actions = {
     })
   },
 
+  deleteProperty({ commit }, id) {
+    return request({
+      url: `/mall/property/${id}`,
+      method: 'delete'
+    })
+  },
+
   fetchValueById({ commit }, id) {
     return request({
       url: `/mall/property/${id}/value`,

@@ -1,14 +1,9 @@
 <template>
   <div>
     <advance-table :items="items" :headers="headers" :loading="loading">
-      <v-btn slot="toolbar" icon @click="handleCreate">
+      <v-btn slot="toolbar" icon @click="handleCreateItem">
         <v-icon>mdi-plus</v-icon>
       </v-btn>
-      <template v-slot:item.url="{ item }">
-        <a :href="item.url" class="glightbox" target="blank">
-          <img class="ma-2" :src="item.url" height="50" width="50" />
-        </a>
-      </template>
       <template v-slot:item.action="{ item }">
         <v-menu>
           <template v-slot:activator="{ on: menu }">
@@ -36,35 +31,38 @@
         </v-menu>
       </template>
     </advance-table>
-    <v-dialog v-model="showDialog" width="600">
-      <image-form
-        :action="uploadAction"
-        @form:cancel="handleFormCancel"
-        :item="selectedItem"
-      />
+    <v-dialog v-model="showDialog">
+      <v-card>
+        <v-toolbar dark flat color="primary">
+          Property Value
+        </v-toolbar>
+        <v-card-text class="pa-0">
+          <form-property-value
+            :propertyId="id"
+            :item="selectedItem"
+            @form:success="handleFormSuccess"
+          />
+        </v-card-text>
+      </v-card>
     </v-dialog>
   </div>
 </template>
 
 <script>
 import AdvanceTable from './AdvanceTable'
-import ImageForm from '@/components/form/ImageForm'
-import { deleteImageById } from '@/api/service'
+import FormPropertyValue from '@/components/form/product/FormPropertyValue'
 export default {
-  name: 'MediaTable',
+  name: 'PropertyTable',
   props: {
-    id: [Number, String],
-    dataSource: [Promise, Function],
-    uploadAction: [String]
+    id: [Number, String] //property id
   },
   components: {
     AdvanceTable,
-    ImageForm
+    FormPropertyValue
   },
   data() {
     return {
       index: null,
-      showImageDialog: false,
       showDialog: false,
       selectedItem: null,
       loading: false,
@@ -74,21 +72,14 @@ export default {
           text: 'ID',
           value: 'id'
         },
+
         {
-          text: 'Image',
-          value: 'url'
+          text: 'Name',
+          value: 'value'
         },
         {
-          text: 'Size',
-          value: 'size'
-        },
-        {
-          text: 'Collection',
-          value: 'collection_name'
-        },
-        {
-          text: 'Created',
-          value: 'created_at'
+          text: 'Sku',
+          value: 'uuid'
         },
         {
           text: 'Action',
@@ -128,7 +119,7 @@ export default {
   methods: {
     fetchRecord() {
       this.loading = true
-      this.dataSource().then(({ data }) => {
+      this.$store.dispatch('fetchValueById', this.id).then(({ data }) => {
         this.loading = false
         this.items = data
       })
@@ -143,15 +134,21 @@ export default {
       this.showDialog = true
     },
     handleDeleteItem(item) {
-      if (window.confirm('Are you sure to delete this ?')) {
-        deleteImageById(item.id).then(() => {
-          this.fetchRecord()
-        })
+      console.log('here')
+
+      if (window.confirm('Are you sure to delete this?')) {
+        // this.$store.dispatch('deletePropertyValue', item.id).then(() => {
+        //   this.fetchRecord()
+        // })
       }
     },
-    handleCreate() {
+    handleCreateItem() {
       this.selectedItem = null
       this.showDialog = true
+    },
+    handleFormSuccess() {
+      this.showDialog = false
+      this.fetchRecord(this.id)
     },
     handleFormCancel() {
       this.showDialog = false

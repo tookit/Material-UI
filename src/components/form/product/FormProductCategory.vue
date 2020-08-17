@@ -43,6 +43,26 @@
               />
             </v-col>
             <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.icon"
+                label="Icon"
+                outlined
+                placeholder="Icon"
+                append-icon="mdi-image"
+              />
+            </v-col>
+
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.reference_url"
+                outlined
+                label="Reference"
+                append-icon="mdi-eye"
+                placeholder="Reference"
+                @click:append="handleViewReference"
+              />
+            </v-col>
+            <v-col :cols="6">
               <v-switch
                 v-model="formModel.is_active"
                 label="Active"
@@ -50,16 +70,6 @@
                 placeholder="Active"
               />
             </v-col>
-            <v-col :cols="12">
-              <v-text-field
-                v-model="formModel.reference_url"
-                readonly
-                outlined
-                label="Reference"
-                placeholder="Reference"
-              />
-            </v-col>
-            <v-col :cols="12"> </v-col>
             <v-col :cols="12">
               <v-textarea
                 v-model="formModel.description"
@@ -124,6 +134,7 @@ export default {
         slug: null,
         reference_url: null,
         featured_img: null,
+        icon: null,
         is_active: false,
         parent_id: null,
         categories: []
@@ -132,9 +143,7 @@ export default {
   },
   computed: {
     ...mapGetters(['getProductCategories']),
-    formTitle() {
-      return this.item ? 'Edit Product' : 'Create Product'
-    },
+
     directory() {
       return this.item ? `fiber/category/${this.item.id}` : null
     }
@@ -151,7 +160,7 @@ export default {
     assignModel(data) {
       if (data) {
         for (let key in this.formModel) {
-          this.formModel[key] = data[key] || null
+          this.formModel[key] = data[key]
         }
         this.formModel.categories = findAllParent(
           this.getProductCategories,
@@ -160,23 +169,27 @@ export default {
           'id'
         )
       } else {
-        this.formModel = {
-          name: null,
-          description: null,
-          slug: null,
-          reference_url: null,
-          featured_img: null,
-          is_active: false,
-          parent_id: null
-        }
-        if (this.parent_id) {
-          this.formModel.categories = findAllParent(
-            this.getProductCategories,
-            (data) => data.id === parseInt(this.parent_id),
-            [],
-            'id'
-          )
-        }
+        this.initModel()
+      }
+    },
+    initModel() {
+      this.formModel = {
+        name: null,
+        description: null,
+        slug: null,
+        reference_url: null,
+        featured_img: null,
+        icon: null,
+        is_active: false,
+        parent_id: null
+      }
+      if (this.parent_id) {
+        this.formModel.categories = findAllParent(
+          this.getProductCategories,
+          (data) => data.id === parseInt(this.parent_id),
+          [],
+          'id'
+        )
       }
     },
     handleSubmit() {
@@ -191,10 +204,16 @@ export default {
           .then(() => {
             this.loading = false
           })
+          .catch(() => {
+            this.loading = false
+          })
       } else {
         this.$store
           .dispatch('createProductCategory', this.formModel)
           .then(() => {
+            this.loading = false
+          })
+          .catch(() => {
             this.loading = false
           })
       }
@@ -218,6 +237,11 @@ export default {
       this.showDialog = false
       if (this.selectedMedia) {
         this.formModel.img = this.selectedMedia.url
+      }
+    },
+    handleViewReference() {
+      if (this.item) {
+        window.open(this.item.reference_url, '_blank')
       }
     }
   },

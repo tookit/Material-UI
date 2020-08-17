@@ -194,7 +194,7 @@ export default {
     },
     handleDeleteItem({ id }) {
       if (window.confirm('Are you sure to delete this item ?')) {
-        this.deleteProduct(id).then(() => {
+        this.$store.dispatch('deleteProperty', id).then(() => {
           this.items = this.items.filter((item) => item.id !== id)
         })
       }

@@ -44,7 +44,7 @@
                     </v-col>
                     <v-col cols="3">
                       <v-switch
-                        label="Active"
+                        label="Home"
                         v-model="filter['filter[is_home]']"
                       />
                     </v-col>

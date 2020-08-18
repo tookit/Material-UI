@@ -18,7 +18,7 @@
               <form-property :item="item" />
             </v-tab-item>
             <v-tab-item key="value" value="value">
-              <property-table :id="id"   />
+              <property-value-table :id="id" />
             </v-tab-item>
           </v-tabs-items>
         </v-col>
@@ -29,14 +29,14 @@
 
 <script>
 import FormProperty from '@/components/form/product/FormProperty'
-import PropertyTable from '@/components/table/PropertyTable';
+import PropertyValueTable from '@/components/table/PropertyValueTable'
 export default {
   props: {
     id: [Number, String]
   },
   components: {
     FormProperty,
-    PropertyTable
+    PropertyValueTable
   },
   data() {
     return {
@@ -51,14 +51,11 @@ export default {
         {
           text: 'Value',
           value: 'value'
-        },
-
-      ],
+        }
+      ]
     }
   },
-  computed: {
-
-  },
+  computed: {},
   watch: {
     id: {
       handler(id) {
@@ -78,7 +75,7 @@ export default {
       })
     },
     fetchValueById(id) {
-      return this.$store.dispatch('fetchValueById',id)
+      return this.$store.dispatch('fetchValueById', id)
     },
     showTab({ value }) {
       if (this.id) {

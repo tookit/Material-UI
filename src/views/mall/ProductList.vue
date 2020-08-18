@@ -9,6 +9,7 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
             @update:page="handlePageChanged"
             :searchValue="filter['filter[name]']"
             @input:change="handleInputChange"
@@ -165,6 +166,7 @@ export default {
       loading: false,
       items: [],
       filter: {
+        page: 1,
         'filter[name]': null,
         'filter[flag]': 1,
         'filter[is_active]': null,
@@ -297,8 +299,11 @@ export default {
         .then(() => {})
     },
     handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
       })
     },
     handleCategoryChange(val) {

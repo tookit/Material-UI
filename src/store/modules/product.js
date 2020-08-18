@@ -104,6 +104,14 @@ const actions = {
       return resp
     })
   },
+  getPropertyByCategoryId({ commit }, id) {
+    return request({
+      url: `/mall/category/${id}/property`,
+      method: 'get'
+    }).then((resp) => {
+      return resp
+    })
+  },
   updateProduct({ commit }, { id, data }) {
     return updateProduct(id, data).then((resp) => {
       return resp

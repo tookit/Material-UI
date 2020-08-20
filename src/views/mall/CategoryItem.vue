@@ -17,6 +17,9 @@
             <v-tab-item key="general" value="general">
               <form-product-category :item="item" />
             </v-tab-item>
+            <v-tab-item key="product" value="product">
+              <product-table :category-id="id" />
+            </v-tab-item>
             <v-tab-item key="property" value="property">
               <property-table :category-id="id" />
             </v-tab-item>
@@ -41,6 +44,7 @@
 import FormProductCategory from '@/components/form/product/FormProductCategory'
 import SeoForm from '@/components/form/SeoForm'
 import PropertyTable from '@/components/table/PropertyTable'
+import ProductTable from '@/components/table/ProductTable'
 import Media from '@/components/media/Index'
 import { fetchImageByCategoryId } from '@/api/service'
 import { mapActions } from 'vuex'
@@ -52,6 +56,7 @@ export default {
     SeoForm,
     Media,
     PropertyTable,
+    ProductTable,
     FormProductCategory
   },
   data() {
@@ -61,6 +66,10 @@ export default {
         {
           text: 'General',
           value: 'general'
+        },
+        {
+          text: 'product',
+          value: 'product'
         },
         {
           text: 'Property',

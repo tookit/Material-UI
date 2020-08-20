@@ -183,6 +183,14 @@ const actions = {
       method: 'get'
     })
   },
+
+  getProductByCategoryId({ commit }, { id, query }) {
+    return request({
+      url: `/mall/category/${id}/item`,
+      method: 'get',
+      query: query
+    })
+  },
   attachValueForProperty({ commit }, { id, data }) {
     return request({
       url: `/mall/property/${id}/value`,

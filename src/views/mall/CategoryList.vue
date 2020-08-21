@@ -17,7 +17,17 @@
                 open-on-click
               >
                 <template v-slot:label="{ item }">
-                  <span>{{ item.name }} ( {{ item.products_count }} )</span>
+                  <v-row>
+                    <v-col>
+                      <span>{{ item.name }}</span>
+                    </v-col>
+                    <v-col>
+                      <span>{{ item.products_count }}</span>
+                    </v-col>
+                    <v-col>
+                      <span>{{ item.id }}</span>
+                    </v-col>
+                  </v-row>
                 </template>
                 <template v-slot:append="{ item }">
                   <v-menu>
@@ -145,7 +155,18 @@ export default {
         path: `/mall/category/item/${item.id}`
       })
     },
-    handleDeleteItem() {},
+    handleDeleteItem(item) {
+      if (window.confirm('Are you sure to delete this item')) {
+        this.$store
+          .dispatch('deleteProductCategory', item.id)
+          .then(() => {
+            this.fetchRecord()
+          })
+          .catch(() => {
+            this.fetchRecord()
+          })
+      }
+    },
     handlePageChanged(page) {
       this.fetchRecord({
         page: page

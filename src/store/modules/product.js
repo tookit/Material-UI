@@ -122,6 +122,14 @@ const actions = {
       return resp
     })
   },
+  deleteProductCategory({ commit }, id) {
+    return request({
+      url: `/mall/category/${id}`,
+      method: 'delete'
+    }).then((resp) => {
+      return resp
+    })
+  },
   updateProductCategory({ commit }, { id, data }) {
     return updateProductCategory(id, data).then((resp) => {
       return resp

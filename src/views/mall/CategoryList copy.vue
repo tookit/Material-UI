@@ -3,63 +3,30 @@
     <v-container>
       <v-row>
         <v-col>
-          <v-card :loading="loading">
-            <v-toolbar flat>
-              <v-btn color="primary" @click="handleCreateItem">Create</v-btn>
-            </v-toolbar>
-            <v-divider></v-divider>
-            <v-card-text>
-              <v-treeview
-                v-model="tree"
-                :items="items"
-                activatable
-                item-key="id"
-                ref="tree"
-                open-on-click
-              >
-                <template v-slot:label="{ item }">
-                  <v-row>
-                    <v-col>
-                      <span>{{ item.name }}</span>
-                    </v-col>
-                    <v-col>
-                      <span>{{ item.products_count }}</span>
-                    </v-col>
-                    <v-col>
-                      <span>{{ item.id }}</span>
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-slot:append="{ item }">
-                  <v-menu v-if="item.id !== 'ID'">
-                    <template v-slot:activator="{ on: menu }">
-                      <v-tooltip bottom>
-                        <template v-slot:activator="{ on: tooltip }">
-                          <v-btn icon v-on="{ ...tooltip, ...menu }">
-                            <v-icon>mdi-dots-vertical</v-icon></v-btn
-                          >
-                        </template>
-                        <span>Action</span>
-                      </v-tooltip>
-                    </template>
-                    <v-list class="pa-0" dense>
-                      <v-list-item
-                        v-for="action in actions"
-                        :key="action.text"
-                        @click="action.click(item)"
-                      >
-                        <v-list-item-icon class="mr-2">
-                          <v-icon small>{{ action.icon }}</v-icon>
-                        </v-list-item-icon>
-                        <v-list-item-title>{{ action.text }}</v-list-item-title>
-                      </v-list-item>
-                    </v-list>
-                  </v-menu>
-                  <span v-else>Action</span>
-                </template>
-              </v-treeview>
-            </v-card-text>
-          </v-card>
+          <v-data-table
+            :headers="headers"
+            :items="items"
+            :single-expand="true"
+            :expanded.sync="expanded"
+            item-key="id"
+            show-expand
+            class="elevation-1"
+          >
+            <template v-slot:top>
+              <v-toolbar flat>
+                <v-toolbar-title>Expandable Table</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-switch
+                  v-model="singleExpand"
+                  label="Single expand"
+                  class="mt-2"
+                ></v-switch>
+              </v-toolbar>
+            </template>
+            <template v-slot:expanded-item="{ headers, item }">
+              <td :colspan="headers.length">More info about {{ item.name }}</td>
+            </template>
+          </v-data-table>
         </v-col>
       </v-row>
     </v-container>
@@ -143,11 +110,6 @@ export default {
       this.fetchProductCategoryTree(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
-        this.items.unshift({
-          name: 'Name',
-          products_count: 'Count',
-          id: 'ID'
-        })
         // this.serverItemsLength = meta.total
       })
     },

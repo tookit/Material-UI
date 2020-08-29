@@ -9,6 +9,23 @@
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
+              <div class="v-treeview-node">
+                <div class="v-treeview-node__root">
+                  <div class="v-treeview-node__content">
+                    <v-row>
+                      <v-col>
+                        <span>Name</span>
+                      </v-col>
+                      <v-col>
+                        <span>Count</span>
+                      </v-col>
+                      <v-col>
+                        <span>ID</span>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </div>
+              </div>
               <v-treeview
                 v-model="tree"
                 :items="items"
@@ -31,7 +48,7 @@
                   </v-row>
                 </template>
                 <template v-slot:append="{ item }">
-                  <v-menu v-if="item.id !== 'ID'">
+                  <v-menu>
                     <template v-slot:activator="{ on: menu }">
                       <v-tooltip bottom>
                         <template v-slot:activator="{ on: tooltip }">
@@ -55,7 +72,6 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
-                  <span v-else>Action</span>
                 </template>
               </v-treeview>
             </v-card-text>
@@ -143,11 +159,6 @@ export default {
       this.fetchProductCategoryTree(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data
-        this.items.unshift({
-          name: 'Name',
-          products_count: 'Count',
-          id: 'ID'
-        })
         // this.serverItemsLength = meta.total
       })
     },

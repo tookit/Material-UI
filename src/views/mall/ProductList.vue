@@ -245,12 +245,14 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
+        console.log(query)
+        query.page = parseInt(query.page)
         Object.assign(this.filter, query)
         if (query['filter[categories.id]']) {
           const cids = query['filter[categories.id]']
           this.categories =
-            cids.length > 0 ? cids.split(',').map((item) => parseInt(item)) : []
-          query['filter[categories.id]'] = cids.split(',').slice(-1)
+            cids.length > 0 ? cids.join(',').map((item) => parseInt(item)) : []
+          query['filter[categories.id]'] = cids.join(',').slice(-1)
         }
         this.fetchRecord(query)
       },

@@ -9,11 +9,29 @@
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
+              <div class="v-treeview-node">
+                <div class="v-treeview-node__root">
+                  <div class="v-treeview-node__content">
+                    <v-row>
+                      <v-col>
+                        <span>Name</span>
+                      </v-col>
+                      <v-col>
+                        <span>Count</span>
+                      </v-col>
+                      <v-col>
+                        <span>ID</span>
+                      </v-col>
+                    </v-row>
+                  </div>
+                </div>
+              </div>
               <v-treeview
                 v-model="tree"
                 :items="items"
                 activatable
                 item-key="id"
+                ref="tree"
                 open-on-click
               >
                 <template v-slot:label="{ item }">
@@ -61,11 +79,16 @@
         </v-col>
       </v-row>
     </v-container>
+    <ul class="sortable">
+      <li class="item"><span class="my-handle">::</span> list item text one</li>
+      <li class="item"><span class="my-handle">::</span> list item text two</li>
+    </ul>
   </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import Sortable from 'sortablejs'
 export default {
   name: 'PageProduct',
   components: {},
@@ -117,6 +140,11 @@ export default {
           click: this.handleEditItem
         },
         {
+          text: 'Move Item',
+          icon: 'mdi-pencil',
+          click: this.handleMoveItem
+        },
+        {
           text: 'Delete Item',
           icon: 'mdi-close',
           click: this.handleDeleteItem
@@ -155,6 +183,7 @@ export default {
         path: `/mall/category/item/${item.id}`
       })
     },
+    handleMoveItem() {},
     handleDeleteItem(item) {
       if (window.confirm('Are you sure to delete this item')) {
         this.$store
@@ -173,8 +202,13 @@ export default {
       })
     }
   },
-  created() {
+  mounted() {
     this.fetchRecord()
+    const sortable = new Sortable(
+      document.querySelector('.v-treeview', {
+        draggable: '.v-treeview-node'
+      })
+    )
   }
 }
 </script>

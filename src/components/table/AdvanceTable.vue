@@ -219,9 +219,9 @@ export default {
     },
     flat: Boolean,
     loading: Boolean,
-    serverItemsLength: Number,
-    itemsPerPage: Number,
-    page: Number,
+    serverItemsLength: [Number, String],
+    itemsPerPage: [Number, String],
+    page: [Number, String],
     footerProps: Object
   },
   data() {

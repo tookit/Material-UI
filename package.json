@@ -36,6 +36,7 @@
     "pusher-js": "^6.0.2",
     "register-service-worker": "^1.6.2",
     "slugify": "^1.4.4",
+    "sortablejs": "^1.10.2",
     "vue": "^2.6.10",
     "vue-easy-lightbox": "^0.14.0",
     "vue-router": "^3.1.1",
@@ -44,7 +45,7 @@
     "vue2-brace-editor": "^2.0.2",
     "vue2-perfect-scrollbar": "^1.4.0",
     "vuedraggable": "^2.24.0",
-    "vuetify": "^2.3.9",
+    "vuetify": "^2.3.10",
     "vuex": "^3.2.2",
     "vuex-persist": "^2.2.0"
   },

@@ -77,6 +77,7 @@ export default {
     return {
       //
       tree: [],
+      items: [],
       loading: false,
       actions: [
         {

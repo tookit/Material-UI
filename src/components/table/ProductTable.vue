@@ -188,7 +188,7 @@ export default {
     }
   },
   watch: {
-    id: {
+    categoryId: {
       handler(id) {
         this.fetchRecord()
       },

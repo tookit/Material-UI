@@ -6,6 +6,7 @@
           <v-card :loading="loading">
             <v-toolbar flat>
               <v-btn color="primary" @click="handleCreateItem">Create</v-btn>
+              <v-btn @click="fetchRecord">Refresh</v-btn>
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
@@ -63,10 +64,6 @@
         </v-col>
       </v-row>
     </v-container>
-    <ul class="sortable">
-      <li class="item"><span class="my-handle">::</span> list item text one</li>
-      <li class="item"><span class="my-handle">::</span> list item text two</li>
-    </ul>
   </div>
 </template>
 
@@ -81,32 +78,6 @@ export default {
       //
       tree: [],
       loading: false,
-      items: [],
-      expanded: [],
-      headers: [
-        {
-          text: 'ID',
-          value: 'id'
-        },
-        {
-          text: 'Image',
-          value: 'featured_img'
-        },
-        {
-          text: 'Name',
-          value: 'name'
-        },
-        {
-          text: 'Count',
-          value: 'product_count'
-        },
-        {
-          text: 'Action',
-          value: 'action'
-        }
-      ],
-      serverItemsLength: 0,
-      itemsPerPage: 15,
       actions: [
         {
           text: 'Add Child',
@@ -140,6 +111,7 @@ export default {
     ...mapActions(['fetchProductCategoryTree']),
     fetchRecord(query) {
       this.loading = true
+      this.items = []
       this.fetchProductCategoryTree(query).then(({ data, meta }) => {
         this.loading = false
         this.items = data

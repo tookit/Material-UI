@@ -210,8 +210,11 @@ export default {
       } else {
         this.$store
           .dispatch('createProductCategory', this.formModel)
-          .then(() => {
+          .then(({ data }) => {
             this.loading = false
+            this.$router.push({
+              path: `/mall/category/item${data.id}`
+            })
           })
           .catch(() => {
             this.loading = false

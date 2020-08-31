@@ -223,6 +223,14 @@ export function attachMediaForProduct(id, mediaId) {
   })
 }
 
+export function createProductCategory(data) {
+  return request({
+    url: `/mall/category/`,
+    method: 'post',
+    data: data
+  })
+}
+
 export function updateProductCategory(id, data) {
   return request({
     url: `/mall/category/${id}`,

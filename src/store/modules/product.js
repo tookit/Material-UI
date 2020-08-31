@@ -7,6 +7,7 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
+  createProductCategory,
   updateProductCategory,
   fetchImagesByProductId
 } from '@/api/service'
@@ -130,6 +131,7 @@ const actions = {
       return resp
     })
   },
+
   updateProductCategory({ commit }, { id, data }) {
     return updateProductCategory(id, data).then((resp) => {
       return resp
@@ -224,6 +226,13 @@ const actions = {
     return request({
       url: `/mall/property_value/${id}`,
       method: 'delete'
+    })
+  },
+  createProductCategory({ commit }, data) {
+    return request({
+      url: `/mall/category/`,
+      method: 'post',
+      data: data
     })
   }
 }

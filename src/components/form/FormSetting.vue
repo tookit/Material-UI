@@ -21,6 +21,22 @@
                 label="Slogan"
               />
             </v-col>
+            <v-col :cols="12">
+              <v-text-field
+                v-model="formModel.twiiter"
+                outlined
+                placeholder="Twiiter"
+                label="Twiiter"
+              />
+            </v-col>
+            <v-col :cols="12">
+              <v-text-field
+                v-model="formModel.facebook"
+                outlined
+                placeholder="Facebook"
+                label="Facebook"
+              />
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -66,7 +82,9 @@ export default {
       setting_key: null,
       formModel: {
         site_title: null,
-        site_slogan: null
+        site_slogan: null,
+        twitter: null,
+        facebook: null
       }
     }
   },

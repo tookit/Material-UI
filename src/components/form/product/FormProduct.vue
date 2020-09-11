@@ -122,12 +122,14 @@ import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
 import VCascader from '@/components/cascader/'
 import { fetchTags } from '@/api/service'
+import HtmlFilter from '@/mixins/HtmlFilter'
 export default {
   name: 'FormProduct',
   components: {
     VJodit,
     VCascader
   },
+  mixins: [HtmlFilter],
   props: {
     item: Object
   },

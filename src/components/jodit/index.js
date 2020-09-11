@@ -1,4 +1,5 @@
 import { Jodit } from 'jodit'
+import sanitizeHtml from 'sanitize-html'
 
 export default {
   name: 'v-jodit',
@@ -19,7 +20,7 @@ export default {
     value: {
       handler(val) {
         if (this.editor) {
-          this.editor.value = val
+          this.editor.value = sanitizeHtml(val)
         }
       }
     }

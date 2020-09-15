@@ -105,12 +105,38 @@ export const protectedRoute = [
           {
             path: '/mall/vendor',
             name: 'mall.vendor',
-            component: () => import('@/views/mall/VendorList.vue'),
             meta: {
               title: 'Vendor',
               hiddenInMenu: false,
               icon: 'mdi-basket'
-            }
+            },
+            component: RouterWrapper,
+            redirect: {
+              path: '/mall/vendor/list'
+            },
+            children: [
+              {
+                path: '/mall/vendor/list',
+                name: 'mall.vendor.list',
+                component: () => import('@/views/mall/VendorList.vue'),
+                meta: {
+                  title: 'Vendor List',
+                  hiddenInMenu: false,
+                  icon: 'mdi-basket'
+                }
+              },
+              {
+                path: '/mall/vendor/item/:id',
+                name: 'mall.vendor.update',
+                props: true,
+                component: () => import('@/views/mall/VendorItem.vue'),
+                meta: {
+                  title: 'Update vendor',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              }
+            ]
           },
           {
             path: '/mall/vendor/create',
@@ -123,17 +149,7 @@ export const protectedRoute = [
               icon: 'mdi-view'
             }
           },
-          {
-            path: '/mall/vendor/item/:id',
-            name: 'mall.vendor.update',
-            props: true,
-            component: () => import('@/views/mall/VendorItem.vue'),
-            meta: {
-              title: 'Update vendor',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
+
           {
             path: '/mall/product/create',
             name: 'mall.product.create',

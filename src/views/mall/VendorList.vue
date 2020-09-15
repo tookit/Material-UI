@@ -18,16 +18,14 @@
               <v-icon>mdi-plus</v-icon>
             </v-btn>
             <template v-slot:item.action="{ item }">
+              <a :href="item.website" target="_blank">{{ item.website }}</a>
+            </template>
+            <template v-slot:item.action="{ item }">
               <v-menu>
-                <template v-slot:activator="{ on: menu }">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="{ ...tooltip, ...menu }">
-                        <v-icon>mdi-dots-vertical</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Action</span>
-                  </v-tooltip>
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on" icon>
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
                 </template>
                 <v-list class="pa-0" dense>
                   <v-list-item

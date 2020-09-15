@@ -101,7 +101,39 @@ export const protectedRoute = [
               icon: 'mdi-basket'
             }
           },
-
+          //vendor
+          {
+            path: '/mall/vendor',
+            name: 'mall.vendor',
+            component: () => import('@/views/mall/VendorList.vue'),
+            meta: {
+              title: 'Vendor',
+              hiddenInMenu: false,
+              icon: 'mdi-basket'
+            }
+          },
+          {
+            path: '/mall/vendor/create',
+            name: 'mall.vendor.create',
+            props: true,
+            component: () => import('@/views/mall/VendorItem.vue'),
+            meta: {
+              title: 'Create vendor',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
+          {
+            path: '/mall/vendor/item/:id',
+            name: 'mall.vendor.update',
+            props: true,
+            component: () => import('@/views/mall/VendorItem.vue'),
+            meta: {
+              title: 'Update vendor',
+              hiddenInMenu: true,
+              icon: 'mdi-view'
+            }
+          },
           {
             path: '/mall/product/create',
             name: 'mall.product.create',

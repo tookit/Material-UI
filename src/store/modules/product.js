@@ -7,7 +7,6 @@ import {
   getProductById,
   updateProduct,
   deleteProduct,
-  createProductCategory,
   updateProductCategory,
   fetchImagesByProductId
 } from '@/api/service'

@@ -245,7 +245,6 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        console.log(query)
         query.page = parseInt(query.page)
         Object.assign(this.filter, query)
         if (query['filter[categories.id]']) {

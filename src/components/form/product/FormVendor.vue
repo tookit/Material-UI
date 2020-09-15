@@ -34,6 +34,22 @@
             </v-col>
             <v-col :cols="6">
               <v-text-field
+                v-model="formModel.country"
+                label="Country"
+                outlined
+                placeholder="Country"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                v-model="formModel.city"
+                label="City"
+                outlined
+                placeholder="City"
+              />
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
                 v-model="formModel.website"
                 :rules="formRules.website"
                 label="Website"
@@ -45,10 +61,10 @@
             </v-col>
             <v-col :cols="6">
               <v-text-field
-                v-model="formModel.country"
-                label="Country"
+                v-model="formModel.email"
+                label="Email"
                 outlined
-                placeholder="Country"
+                placeholder="Email"
               />
             </v-col>
           </v-row>
@@ -87,11 +103,18 @@ export default {
         description: null,
         website: null,
         country: null,
-        address: null
+        city: null,
+        address: null,
+        mobile: null,
+        email: null
       },
       formRules: {
         name: [(v) => !!v || 'Name is required'],
-        website: [(v) => URL.test(v) || 'Website is not a valid URL']
+        website: [
+          (v) => {
+            return URL.test(v) || 'Website is not a valid URL'
+          }
+        ]
       }
     }
   },
@@ -116,7 +139,10 @@ export default {
         description: null,
         website: null,
         country: null,
-        address: null
+        city: null,
+        address: null,
+        mobile: null,
+        email: null
       }
     },
     handleSubmit() {

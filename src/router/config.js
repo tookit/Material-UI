@@ -126,6 +126,17 @@ export const protectedRoute = [
                 }
               },
               {
+                path: '/mall/vendor/create',
+                name: 'mall.vendor.create',
+                props: true,
+                component: () => import('@/views/mall/VendorItem.vue'),
+                meta: {
+                  title: 'Create vendor',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              },
+              {
                 path: '/mall/vendor/item/:id',
                 name: 'mall.vendor.update',
                 props: true,
@@ -137,17 +148,6 @@ export const protectedRoute = [
                 }
               }
             ]
-          },
-          {
-            path: '/mall/vendor/create',
-            name: 'mall.vendor.create',
-            props: true,
-            component: () => import('@/views/mall/VendorItem.vue'),
-            meta: {
-              title: 'Create vendor',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
           },
 
           {

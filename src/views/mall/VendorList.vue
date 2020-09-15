@@ -9,16 +9,24 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
             @update:page="handlePageChanged"
+            :searchValue="filter['filter[name]']"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
+            <div slot="filter"></div>
             <v-btn slot="toolbar" icon @click="fetchRecord()">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
             <v-btn slot="toolbar" icon @click="handleCreateItem">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
-            <template v-slot:item.action="{ item }">
+            <template v-slot:item.website="{ item }">
               <a :href="item.website" target="_blank">{{ item.website }}</a>
+            </template>
+            <template v-slot:item.created_at="{ item }">
+              {{ new Date(item.created_at).toLocaleString() }}
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
@@ -70,8 +78,8 @@ export default {
           value: 'name'
         },
         {
-          text: 'Phone',
-          value: 'mobile'
+          text: 'City',
+          value: 'city'
         },
         {
           text: 'Website',
@@ -86,6 +94,10 @@ export default {
           value: 'action'
         }
       ],
+      filter: {
+        page: 1,
+        'filter[name]': null
+      },
       serverItemsLength: 0,
       itemsPerPage: 15,
       actions: [
@@ -102,8 +114,20 @@ export default {
       ]
     }
   },
+  watch: {
+    '$route.query': {
+      handler(query) {
+        query.page = parseInt(query.page)
+        Object.assign(this.filter, query)
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
+  },
+
   methods: {
     fetchRecord(query) {
+      console.log(query)
       this.loading = true
       this.$store
         .dispatch('fetchVendors', query)
@@ -127,14 +151,24 @@ export default {
       })
     },
     handleDeleteItem() {},
-    handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
+    handleApplyFilter() {
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
       })
+    },
+    handlePageChanged(page) {
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
     }
-  },
-  created() {
-    this.fetchRecord()
   }
 }
 </script>

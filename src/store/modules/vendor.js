@@ -7,7 +7,8 @@ const actions = {
   fetchVendors({ commit }, query) {
     return request({
       url: `/mall/vendor`,
-      method: 'get'
+      method: 'get',
+      params: query
     })
   },
   getVendorById({ commit }, id) {

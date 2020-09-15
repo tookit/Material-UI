@@ -63,13 +63,13 @@ service.interceptors.request.use((config) => {
 
 // response interceptor
 service.interceptors.response.use(({ data, config }) => {
-  if (['put', 'post', 'delete'].includes(config.method) && data.meta) {
-    window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-      text: data.meta.message
+  if (['put', 'post', 'delete'].includes(config.method)) {
+    window._VMA.$emit('SHOW_SNACKBAR', {
+      text: data.meta ? data.meta.message : 'Resource updated.'
     })
   }
   if (data.error !== undefined) {
-    window.ELEPHANT.$emit('API_FAILED', data.error)
+    window._VMA.$emit('API_FAILED', data.error)
   }
   return data
 }, err)

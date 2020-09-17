@@ -119,7 +119,6 @@
                     <span>Action</span>
                   </v-tooltip>
                 </template>
-
                 <v-list class="pa-0" dense>
                   <v-list-item
                     v-for="action in actions"
@@ -247,7 +246,7 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        query.page = parseInt(query.page)
+        // query.page = parseInt(query.page)
         Object.assign(this.filter, query)
         if (query['filter[categories.id]']) {
           const cids = query['filter[categories.id]']

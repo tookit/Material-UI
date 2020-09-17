@@ -24,6 +24,7 @@
                 :entity-id="id"
                 entity="App\Models\Mall\Product"
                 @attach="handleAttachMedia"
+                show-select
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">

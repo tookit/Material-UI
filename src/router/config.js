@@ -136,7 +136,7 @@ export const protectedRoute = [
             meta: {
               title: 'Quote',
               hiddenInMenu: false,
-              icon: 'mdi-basket'
+              icon: 'mdi-quora'
             }
           },
           //vendor
@@ -146,7 +146,7 @@ export const protectedRoute = [
             meta: {
               title: 'Vendor',
               hiddenInMenu: false,
-              icon: 'mdi-basket'
+              icon: 'mdi-alpha-v-circle'
             },
             component: RouterWrapper,
             redirect: {

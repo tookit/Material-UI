@@ -107,6 +107,13 @@ export function deleteMedia(id) {
     method: 'delete'
   })
 }
+export function deleteMultiMedia(data) {
+  return request({
+    url: `/media/`,
+    method: 'delete',
+    data: data
+  })
+}
 
 //tag
 export function fetchTags(query) {

@@ -8,6 +8,9 @@
       :items-per-page="itemsPerPage"
       @update:page="handlePageChanged"
       @row:click="handleRowClick"
+      :show-select="showSelect"
+      :single-select="singleSelect"
+      @toggle-select-all="handleToggleAll"
     >
       <div slot="filter">
         <v-card flat class="grey lighten-4">
@@ -31,6 +34,14 @@
           </v-card-actions>
         </v-card>
       </div>
+      <v-btn
+        v-show="toggle && toggle.value && toggle.items.length > 0"
+        slot="toolbar"
+        icon
+        @click="handleDeleteAll"
+      >
+        <v-icon>mdi-delete</v-icon>
+      </v-btn>
       <v-btn slot="toolbar" icon @click="fetchMedia">
         <v-icon>mdi-refresh</v-icon>
       </v-btn>
@@ -52,7 +63,12 @@
         <span>{{ item.size | bytes }}</span>
       </template>
       <template v-slot:item.product="{ item }">
-        <span v-if="item.product.length > 0">{{ item.product[0].name }}</span>
+        <a
+          v-if="item.product.length > 0"
+          :href="item.product[0].href"
+          target="_blank"
+          >{{ item.product[0].name }}</a
+        >
       </template>
       <template v-slot:item.action="{ item }">
         <v-menu>
@@ -98,7 +114,7 @@
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
 import FormMedia from '@/components/form/FormMedia'
-import { fetchMedia, deleteMedia } from '@/api/service'
+import { fetchMedia, deleteMedia, deleteMultiMedia } from '@/api/service'
 import bytes from 'bytes'
 import _merge from 'lodash/merge'
 import ResizeMixin from '@/mixins/Resize'
@@ -108,7 +124,9 @@ export default {
     directory: String,
     entityId: [Number, String],
     entity: String,
-    attachAction: Function
+    attachAction: Function,
+    showSelect: Boolean,
+    singleSelect: Boolean
   },
   mixins: [ResizeMixin],
   components: {
@@ -126,6 +144,7 @@ export default {
       filter: {
         'filter[directory]': this.directory
       },
+      toggle: null,
       items: [],
       headers: [
         {
@@ -280,7 +299,23 @@ export default {
       })
     },
 
-    handleResetFilter() {}
+    handleResetFilter() {},
+    handleToggleAll(e) {
+      this.toggle = e
+      // this.toggle = { items: items, checked: value }
+    },
+    handleDeleteAll() {
+      const that = this
+      if (window.confirm('Are you sure to delete all?')) {
+        //handle delete all media
+        const data = {
+          ids: this.toggle.items.map((item) => item.id)
+        }
+        deleteMultiMedia(data).then(() => {
+          that.fetchRecord()
+        })
+      }
+    }
   }
 }
 </script>

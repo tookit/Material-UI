@@ -49,12 +49,6 @@
                         v-model="filter['filter[is_home]']"
                       />
                     </v-col>
-                    <v-col cols="3">
-                      <v-switch
-                        label="Has Image"
-                        v-model="filter['filter[imaged]']"
-                      />
-                    </v-col>
                   </v-row>
                 </v-card-text>
                 <v-card-actions>
@@ -170,9 +164,8 @@ export default {
         page: 1,
         'filter[name]': null,
         'filter[flag]': 1,
-        'filter[is_active]': null,
+        'filter[is_active]': true,
         'filter[is_home]': null,
-        'filter[imaged]': true,
         'filter[categories.id]': []
       },
       categories: [],
@@ -247,19 +240,17 @@ export default {
     '$route.query': {
       handler(query) {
         // query.page = parseInt(query.page)
-        Object.assign(this.filter, query)
-        if (query['filter[categories.id]']) {
-          const cids = query['filter[categories.id]']
-          this.categories =
-            cids.length > 0 ? cids.join(',').map((item) => parseInt(item)) : []
-          query['filter[categories.id]'] = cids.join(',').slice(-1)
-        }
-        this.fetchRecord(query)
+        const filter = this.updateFilterQuery(query)
+        filter.page = parseInt(filter.page)
+        this.fetchRecord(filter)
       },
       immediate: true
     }
   },
   methods: {
+    updateFilterQuery(query) {
+      return Object.assign(this.filter, query)
+    },
     ...mapActions(['fetchProducts', 'deleteProduct']),
     fetchRecord(query) {
       this.loading = true

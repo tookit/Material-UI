@@ -81,16 +81,53 @@ export const protectedRoute = [
           path: '/mall/product'
         },
         children: [
+          // product
           {
             path: '/mall/product',
             name: 'mall.product',
-            component: () => import('@/views/mall/ProductList.vue'),
             meta: {
               title: 'Product',
               hiddenInMenu: false,
-              icon: 'mdi-database'
+              icon: 'mdi-store'
             },
-            children: []
+            component: RouterWrapper,
+            redirect: {
+              path: '/mall/product/list'
+            },
+            children: [
+              {
+                path: '/mall/product/list',
+                name: 'mall.product.list',
+                component: () => import('@/views/mall/ProductList.vue'),
+                meta: {
+                  title: 'Product List',
+                  hiddenInMenu: false,
+                  icon: 'mdi-basket'
+                }
+              },
+              {
+                path: '/mall/product/create',
+                name: 'mall.product.create',
+                props: true,
+                component: () => import('@/views/mall/ProductItem.vue'),
+                meta: {
+                  title: 'Create Product',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              },
+              {
+                path: '/mall/product/item/:id',
+                name: 'mall.product.item',
+                props: true,
+                component: () => import('@/views/mall/ProductItem.vue'),
+                meta: {
+                  title: 'Edit Product',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              }
+            ]
           },
           {
             path: '/mall/quote',
@@ -151,28 +188,7 @@ export const protectedRoute = [
             ]
           },
 
-          {
-            path: '/mall/product/create',
-            name: 'mall.product.create',
-            props: true,
-            component: () => import('@/views/mall/ProductItem.vue'),
-            meta: {
-              title: 'Create Product',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
-          {
-            path: '/mall/product/item/:id',
-            name: 'mall.product.item',
-            props: true,
-            component: () => import('@/views/mall/ProductItem.vue'),
-            meta: {
-              title: 'Edit Product',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
+          //category
           {
             path: '/mall/category',
             name: 'mall.category',
@@ -181,61 +197,92 @@ export const protectedRoute = [
               hiddenInMenu: false,
               icon: 'mdi-buffer'
             },
-            component: () => import('@/views/mall/CategoryList.vue')
+            component: RouterWrapper,
+            redirect: {
+              path: '/mall/category/list'
+            },
+            children: [
+              {
+                path: '/mall/category/list',
+                name: 'mall.category.list',
+                component: () => import('@/views/mall/CategoryList.vue'),
+                meta: {
+                  title: 'Category List',
+                  hiddenInMenu: false,
+                  icon: 'mdi-buffer'
+                }
+              },
+              {
+                path: '/mall/category/create',
+                name: 'mall.category.create',
+                props: true,
+                component: () => import('@/views/mall/CategoryItem.vue'),
+                meta: {
+                  title: 'Create  Category',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              },
+              {
+                path: '/mall/category/item/:id',
+                name: 'mall.category.item',
+                props: true,
+                component: () => import('@/views/mall/CategoryItem.vue'),
+                meta: {
+                  title: 'Edit  Category',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              }
+            ]
           },
-          {
-            path: '/mall/category/create',
-            name: 'mall.category.create',
-            props: true,
-            component: () => import('@/views/mall/CategoryItem.vue'),
-            meta: {
-              title: 'Create  Category',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
-          {
-            path: '/mall/category/item/:id',
-            name: 'mall.category.item',
-            props: true,
-            component: () => import('@/views/mall/CategoryItem.vue'),
-            meta: {
-              title: 'Edit  Category',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
+          // property
           {
             path: '/mall/property',
             name: 'mall.property',
             meta: {
-              title: 'Propterty',
+              title: 'Property',
               hiddenInMenu: false,
               icon: 'mdi-filter-variant'
             },
-            component: () => import('@/views/mall/PropertyList.vue')
-          },
-          {
-            path: '/mall/property/create',
-            name: 'mall.property.create',
-            props: true,
-            component: () => import('@/views/mall/PropertyItem.vue'),
-            meta: {
-              title: 'Create Property',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
-          },
-          {
-            path: '/mall/property/item/:id',
-            name: 'mall.property.item',
-            props: true,
-            component: () => import('@/views/mall/PropertyItem.vue'),
-            meta: {
-              title: 'Edit Property',
-              hiddenInMenu: true,
-              icon: 'mdi-view'
-            }
+            component: RouterWrapper,
+            redirect: {
+              path: '/mall/property/list'
+            },
+            children: [
+              {
+                path: '/mall/property/list',
+                name: 'mall.property.list',
+                component: () => import('@/views/mall/PropertyList.vue'),
+                meta: {
+                  title: 'Property List',
+                  hiddenInMenu: false,
+                  icon: 'mdi-filter-variant'
+                }
+              },
+              {
+                path: '/mall/property/create',
+                name: 'mall.property.create',
+                props: true,
+                component: () => import('@/views/mall/PropertyItem.vue'),
+                meta: {
+                  title: 'Create Property',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              },
+              {
+                path: '/mall/property/item/:id',
+                name: 'mall.property.item',
+                props: true,
+                component: () => import('@/views/mall/PropertyItem.vue'),
+                meta: {
+                  title: 'Edit Property',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              }
+            ]
           }
         ]
       },

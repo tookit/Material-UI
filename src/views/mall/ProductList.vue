@@ -109,11 +109,17 @@
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
+                <template v-slot:activator="{ on: menu }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Action</span>
+                  </v-tooltip>
                 </template>
+
                 <v-list class="pa-0" dense>
                   <v-list-item
                     v-for="action in actions"
@@ -146,13 +152,14 @@ import AdvanceTable from '@/components/table/AdvanceTable'
 import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
 import ResizeMixin from '@/mixins/Resize'
+import TooltipMixin from '@/mixins/Tooltip'
 export default {
   name: 'PageProduct',
   components: {
     AdvanceTable,
     VCascader
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, TooltipMixin],
   data() {
     return {
       //

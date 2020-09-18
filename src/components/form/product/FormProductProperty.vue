@@ -1,17 +1,19 @@
 <template>
   <v-card :loading="loading">
     <v-card-text>
-      <v-form>
+      <v-form v-if="!loading">
         <v-container fluid>
           <v-row>
-            <template v-for="item in getSpuProperties">
-              <v-col :cols="12" :key="item.id">
+            <v-col :cols="12">
+              <v-subheader class="pl-0">
+                From Category
+              </v-subheader>
+            </v-col>
+            <template v-for="item in catProps">
+              <v-col :cols="4" :key="item.id">
                 <v-autocomplete
                   :items="item.values"
                   outlined
-                  chips
-                  deletable-chips
-                  multiple
                   :name="item.name"
                   :placeholder="item.name"
                   :label="item.name"
@@ -21,6 +23,48 @@
                 />
               </v-col>
             </template>
+          </v-row>
+          <v-row>
+            <v-col :cols="12">
+              <v-subheader> Specs </v-subheader>
+              <div v-if="item" v-html="item.specs" />
+            </v-col>
+            <v-col :cols="12">
+              <v-btn text>
+                <v-icon @click="handleAddProps">mdi-plus</v-icon>
+                Add Direct
+              </v-btn>
+            </v-col>
+            <v-col :cols="6">
+              <v-combobox
+                outlined
+                label="name"
+                :items="items"
+                :loading="isLoading"
+                :search-input.sync="search"
+                placeholder="Property Name"
+                item-text="name"
+                item-value="id"
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        No results matching "<strong>{{ search }}</strong
+                        >". Press <kbd>enter</kbd> to create a new one
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </v-combobox>
+            </v-col>
+            <v-col :cols="6">
+              <v-text-field
+                outlined
+                label="value"
+                placeholder="Property Value"
+              />
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -46,10 +90,12 @@ export default {
   data() {
     return {
       loading: false,
-      loadingTags: false,
+      isLoading: false,
+      items: [],
       search: null,
-      tags: [],
-      formModel: {}
+      catProps: [],
+      formModel: {},
+      props: []
     }
   },
   computed: {
@@ -58,9 +104,26 @@ export default {
   watch: {
     item: {
       handler(item) {
-        this.assignModel(item)
+        if (item) {
+          this.fetchCategoryProps(item)
+          this.assignModel(item)
+        }
       },
       immediate: true
+    },
+    search(val) {
+      // Items have already been loaded
+      if (this.items.length > 0) return
+      // Items have already been requested
+      if (this.isLoading) return
+      this.isLoading = true
+      // Lazily load input items
+      this.$store
+        .dispatch('fetchProperty', { pageSize: -1 })
+        .then(({ data }) => {
+          this.items = data
+          this.isLoading = false
+        })
     }
   },
   methods: {
@@ -68,7 +131,7 @@ export default {
       if (data.props) {
         let props = _groupBy(data.props, 'property_slug')
         for (let slug in props) {
-          props[slug] = props[slug].map((p) => p.id)
+          props[slug] = props[slug].find((p) => p.id)
         }
         this.formModel = props
       } else {
@@ -92,24 +155,21 @@ export default {
           })
       }
     },
-    handleCategoriesChange(categories) {
-      this.formModel.categories = categories
-      this.formModel.category_ids = categories.map((item) => {
-        return item.id
-      })
-    },
-    handleViewItem() {
-      if (this.item) {
-        window.open(this.item.href, '_blank')
+    fetchCategoryProps(item) {
+      const cats = item.categories
+      if (cats.length > 0) {
+        const cat = cats[cats.length - 1]
+        this.$store
+          .dispatch('getPropertyByCategoryId', cat.category_id)
+          .then((resp) => {
+            this.catProps = resp.data
+          })
       }
     },
-    handleNameChange(val) {
-      this.formModel.slug = this.slugify(val.toLowerCase())
-    }
+
+    handleAddProps() {}
   },
-  created() {
-    this.$store.dispatch('fetchProperty', { pageSize: -1 })
-  }
+  created() {}
 }
 </script>
 

@@ -45,6 +45,31 @@
                 v-model="formModel.type"
               />
             </v-col>
+            <v-col :cols="12">
+              <v-combobox
+                v-model="formModel.values"
+                :items="items"
+                :search-input.sync="search"
+                hide-selected
+                label="Property Value"
+                multiple
+                persistent-hint
+                small-chips
+                outlined
+                deletable-chips
+              >
+                <template v-slot:no-data>
+                  <v-list-item>
+                    <v-list-item-content>
+                      <v-list-item-title>
+                        No results matching "<strong>{{ search }}</strong
+                        >". Press <kbd>enter</kbd> to create a new one
+                      </v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </template>
+              </v-combobox>
+            </v-col>
           </v-row>
         </v-container>
       </v-form>
@@ -73,12 +98,13 @@ export default {
       loading: false,
       loadingTags: false,
       search: null,
-      tags: [],
+      items: [],
       formModel: {
         name: null,
-        type: null,
+        type: 'spu',
         unit: null,
-        slug: null
+        slug: null,
+        values: []
       },
       formRules: {
         name: [(v) => !!v || 'Name is required']
@@ -102,6 +128,7 @@ export default {
         for (let key in this.formModel) {
           this.formModel[key] = data[key] || null
         }
+        this.formModel.values = data.values.map((item) => item.value)
       } else {
         this.initModel()
       }
@@ -109,9 +136,10 @@ export default {
     initModel() {
       this.formModel = {
         name: null,
-        type: null,
+        type: 'spu',
         unit: null,
-        slug: null
+        slug: null,
+        values: []
       }
     },
     handleSubmit() {

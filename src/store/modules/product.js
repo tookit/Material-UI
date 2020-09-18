@@ -137,38 +137,11 @@ const actions = {
     })
   },
 
-  fetchProperty({ commit }, query) {
+  attachPropertyForCategory({ commit }, { id, data }) {
     return request({
-      url: '/mall/property',
-      method: 'get',
-      params: query
-    }).then((resp) => {
-      if (query && query.pageSize == -1) {
-        commit('SET_PRODUCT_PROPERTIES', resp.data)
-      }
-      return resp
-    })
-  },
-
-  createProperty({ commit }, data) {
-    return request({
-      url: '/mall/property',
+      url: `/mall/category/${id}/property`,
       method: 'post',
       data: data
-    })
-  },
-  updateProperty({ commit }, { id, data }) {
-    return request({
-      url: `/mall/property/${id}`,
-      method: 'put',
-      data: data
-    })
-  },
-
-  deleteProperty({ commit }, id) {
-    return request({
-      url: `/mall/property/${id}`,
-      method: 'delete'
     })
   },
 
@@ -238,9 +211,6 @@ const actions = {
 const mutations = {
   SET_PRODUCT_CATEGORY(state, { data }) {
     state.categories = data
-  },
-  SET_PRODUCT_PROPERTIES(state, data) {
-    state.properties = data
   }
 }
 

@@ -1,7 +1,7 @@
 <template>
   <v-card :loading="loading">
     <v-card-text>
-      <v-form>
+      <v-form lazy-validation ref="form">
         <v-container fluid>
           <v-row>
             <v-col :cols="6">
@@ -11,6 +11,7 @@
                 label="Name"
                 name="Name"
                 placeholder="name"
+                :rules="formRules.name"
                 @input="handleNameChange"
               />
             </v-col>
@@ -78,14 +79,14 @@ export default {
         type: null,
         unit: null,
         slug: null
+      },
+      formRules: {
+        name: [(v) => !!v || 'Name is required']
       }
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories', 'getPropUnits', 'getPropTypes']),
-    formTitle() {
-      return this.item ? 'Edit Product' : 'Create Product'
-    }
+    ...mapGetters(['getPropUnits', 'getPropTypes'])
   },
   watch: {
     item: {
@@ -114,29 +115,31 @@ export default {
       }
     },
     handleSubmit() {
-      this.loading = true
+      if (this.$refs.form.validate()) {
+        this.loading = true
 
-      if (this.item) {
-        this.$store
-          .dispatch('updateProperty', {
-            id: this.item.id,
-            data: this.formModel
-          })
-          .then(() => {
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-          })
-      } else {
-        this.$store
-          .dispatch('createProperty', this.formModel)
-          .then(() => {
-            this.loading = false
-          })
-          .catch(() => {
-            this.loading = false
-          })
+        if (this.item) {
+          this.$store
+            .dispatch('updateProperty', {
+              id: this.item.id,
+              data: this.formModel
+            })
+            .then(() => {
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        } else {
+          this.$store
+            .dispatch('createProperty', this.formModel)
+            .then(() => {
+              this.loading = false
+            })
+            .catch(() => {
+              this.loading = false
+            })
+        }
       }
     },
 

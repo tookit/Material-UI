@@ -230,7 +230,10 @@ export default {
       let temp = []
       this.items.forEach((item) => {
         item.media.forEach((m) => {
-          temp.push(m.cloud_url)
+          temp.push({
+            src: m.cloud_url,
+            title: item.name
+          })
         })
       })
       return temp

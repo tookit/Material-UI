@@ -16,31 +16,31 @@ const err = (error) => {
   }
   switch (status) {
     case 400:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: 'Bad Request ' + data.message,
         color: 'red'
       })
       break
     case 422:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: message,
         color: 'red'
       })
       break
     case 401:
-      window.ELEPHANT.$emit('AUTH_FAILED', data)
+      window._VMA.$emit('AUTH_FAILED', data)
       break
     case 403:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: 'Access Denied ' + data.message,
         color: 'red'
       })
       break
     case 500:
-      window.ELEPHANT.$emit('Internal Server error', {
+      window._VMA.$emit('Internal Server error', {
         show: true,
         text: 'Server error ' + data.message,
         color: 'red'

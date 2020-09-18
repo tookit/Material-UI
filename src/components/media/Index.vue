@@ -49,15 +49,19 @@
         <v-icon>mdi-plus</v-icon>
       </v-btn>
       <template v-slot:item.cloud_url="{ item }">
-        <a :href="item.cloud_url" class="glightbox" target="blank">
+        <div
+          :href="item.cloud_url"
+          @click.stop="handleViewImage"
+          class="glightbox"
+          target="blank"
+        >
           <img
             class="ma-2"
             :src="resize(item.cloud_url, 50, 50)"
-            @click.stop="showLightbox = true"
             height="50"
             width="50"
           />
-        </a>
+        </div>
       </template>
       <template v-slot:item.size="{ item }">
         <span>{{ item.size | bytes }}</span>
@@ -315,6 +319,11 @@ export default {
           that.fetchRecord()
         })
       }
+    },
+    handleViewImage(e) {
+      console.log(e)
+      e.preventDefault()
+      this.showLightbox = true
     }
   }
 }

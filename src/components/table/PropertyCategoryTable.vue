@@ -1,69 +1,86 @@
 <template>
-  <advance-table
-    :items="items"
-    :headers="headers"
-    :loading="loading"
-    :items-per-page="itemsPerPage"
-    @update:page="handlePageChanged"
-    @input:change="handleInputChange"
-    @search="handleApplyFilter"
-  >
-    <v-btn slot="toolbar" icon @click="handleRefreshItem">
-      <v-icon>mdi-refresh</v-icon>
-    </v-btn>
-    <v-btn slot="toolbar" icon @click="handleCreateItem">
-      <v-icon>mdi-plus</v-icon>
-    </v-btn>
-    <template v-slot:item.action="{ item }">
-      <v-menu>
-        <template v-slot:activator="{ on: menu }">
-          <v-tooltip bottom>
-            <template v-slot:activator="{ on: tooltip }">
-              <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
-                <v-icon>mdi-dots-vertical</v-icon>
-              </v-btn>
-            </template>
-            <span>Action</span>
-          </v-tooltip>
-        </template>
-        <v-list class="pa-0" dense>
-          <v-list-item
-            v-for="action in actions"
-            :key="action.text"
-            @click="action.click(item)"
-          >
-            <v-list-item-icon class="mr-2">
-              <v-icon small>{{ action.icon }}</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{ action.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
-      </v-menu>
-    </template>
-  </advance-table>
+  <div>
+    <advance-table
+      :items="items"
+      :headers="headers"
+      :loading="loading"
+      :items-per-page="itemsPerPage"
+      @update:page="handlePageChanged"
+      @input:change="handleInputChange"
+      @search="handleApplyFilter"
+    >
+      <v-btn slot="toolbar" icon @click="handleRefreshItem">
+        <v-icon>mdi-refresh</v-icon>
+      </v-btn>
+      <v-btn slot="toolbar" icon @click="handleCreateItem">
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+      <template v-slot:item.action="{ item }">
+        <v-menu>
+          <template v-slot:activator="{ on: menu }">
+            <v-tooltip bottom>
+              <template v-slot:activator="{ on: tooltip }">
+                <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                  <v-icon>mdi-dots-vertical</v-icon>
+                </v-btn>
+              </template>
+              <span>Action</span>
+            </v-tooltip>
+          </template>
+          <v-list class="pa-0" dense>
+            <v-list-item
+              v-for="action in actions"
+              :key="action.text"
+              @click="action.click(item)"
+            >
+              <v-list-item-icon class="mr-2">
+                <v-icon small>{{ action.icon }}</v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ action.text }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </template>
+    </advance-table>
+    <v-dialog v-model="showDialog">
+      <v-card>
+        <v-card-title dark tile color="primary"
+          >Attach property for category
+          <v-spacer />
+          <v-icon @click="showDialog = false">mdi-close</v-icon>
+        </v-card-title>
+        <v-card-text class="pa-0">
+          <form-category-property
+            @attached="fetchRecord()"
+            :category-id="categoryId"
+          />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
+import FormCategoryProperty from '@/components/form/product/FormCategoryProperty'
 import ResizeMixin from '@/mixins/Resize'
 import TooltipMixin from '@/mixins/Tooltip'
 export default {
-  name: 'PropertyTable',
+  name: 'PropertyCategoryTable',
   props: {
     categoryId: [Number, String]
   },
   components: {
-    AdvanceTable
+    AdvanceTable,
+    FormCategoryProperty
   },
   mixins: [ResizeMixin, TooltipMixin],
   data() {
     return {
       //
-      showLightbox: false,
-      index: 0,
       loading: false,
+      showDialog: false,
       items: [],
-      categories: [],
       headers: [
         {
           text: 'ID',
@@ -90,11 +107,6 @@ export default {
       itemsPerPage: 15,
       actions: [
         {
-          text: 'View Item',
-          icon: 'mdi-eye',
-          click: this.handleViewItem
-        },
-        {
           text: 'Edit Item',
           icon: 'mdi-pencil',
           click: this.handleEditItem
@@ -114,7 +126,8 @@ export default {
         if (id) {
           this.fetchRecord()
         }
-      }
+      },
+      immediate: true
     }
   },
   methods: {
@@ -129,7 +142,8 @@ export default {
         })
     },
     handleCreateItem() {
-      this.$emit('create-click')
+      console.log('here')
+      this.showDialog = true
     },
     handleViewItem(item) {
       window.open(item.href, '_blank')
@@ -141,9 +155,14 @@ export default {
     },
     handleDeleteItem({ id }) {
       if (window.confirm('Are you sure to delete this item ?')) {
-        this.$store.dispatch('deleteProperty', id).then(() => {
-          this.items = this.items.filter((item) => item.id !== id)
-        })
+        this.$store
+          .dispatch('detachPropertyForCategory', {
+            cid: this.categoryId,
+            data: { properties: [id] }
+          })
+          .then(() => {
+            this.items = this.items.filter((item) => item.id !== id)
+          })
       }
     },
     handleRefreshItem() {

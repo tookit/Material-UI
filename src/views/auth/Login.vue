@@ -43,8 +43,8 @@ export default {
   data: () => ({
     loading: false,
     model: {
-      email: 'wangqiangshen@gmail.com',
-      password: 'secret'
+      email: '',
+      password: ''
     }
   }),
 
@@ -55,7 +55,7 @@ export default {
         .dispatch('login', this.model)
         .then(() => {
           this.loading = false
-          window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+          window._VMA.$emit('SHOW_SNACKBAR', {
             text: 'Authentication Successful',
             color: 'success'
           })

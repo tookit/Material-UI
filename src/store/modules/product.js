@@ -130,6 +130,13 @@ const actions = {
       data: data
     })
   },
+  attachDirectPropForProduct({ commit }, { id, data }) {
+    return request({
+      url: `/mall/item/${id}/property`,
+      method: 'put',
+      data: data
+    })
+  },
   attachSkuForProduct({ commit }, { id, data }) {
     return request({
       url: `/mall/item/${id}/sku`,

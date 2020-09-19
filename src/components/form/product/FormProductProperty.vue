@@ -1,89 +1,92 @@
 <template>
-  <v-card :loading="loading">
-    <v-card-text>
-      <v-form v-if="!loading">
-        <v-container fluid>
-          <v-row>
-            <v-col :cols="12">
-              <v-subheader class="pl-0">
-                From Category
-              </v-subheader>
-            </v-col>
-            <template v-for="item in catProps">
-              <v-col :cols="4" :key="item.id">
-                <v-autocomplete
-                  :items="item.values"
-                  outlined
-                  :name="item.name"
-                  :placeholder="item.name"
-                  :label="item.name"
-                  item-text="value"
-                  item-value="id"
-                  v-model="formModel[item.slug]"
-                />
+  <div>
+    <v-card :loading="loading">
+      <v-card-text>
+        <v-form v-if="!loading">
+          <v-container fluid>
+            <v-row>
+              <v-col :cols="12">
+                <v-subheader class="pl-0">
+                  From Category
+                </v-subheader>
               </v-col>
-            </template>
-          </v-row>
-          <v-row>
-            <v-col :cols="12">
-              <v-subheader> Specs </v-subheader>
-              <div v-if="item" v-html="item.specs" />
-            </v-col>
-            <v-col :cols="12">
-              <v-btn text>
-                <v-icon @click="handleAddProps">mdi-plus</v-icon>
-                Add Direct
-              </v-btn>
-            </v-col>
-            <v-col :cols="6">
-              <v-combobox
-                outlined
-                label="name"
-                :items="items"
-                :loading="isLoading"
-                :search-input.sync="search"
-                placeholder="Property Name"
-                item-text="name"
-                item-value="id"
-              >
-                <template v-slot:no-data>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        No results matching "<strong>{{ search }}</strong
-                        >". Press <kbd>enter</kbd> to create a new one
-                      </v-list-item-title>
-                    </v-list-item-content>
-                  </v-list-item>
+              <template v-if="catProps.length > 0">
+                <template v-for="item in catProps">
+                  <v-col :cols="4" :key="item.id">
+                    <v-autocomplete
+                      :items="item.values"
+                      outlined
+                      :name="item.name"
+                      :placeholder="item.name"
+                      :label="item.name"
+                      item-text="value"
+                      item-value="id"
+                      v-model="formModel[item.slug]"
+                    />
+                  </v-col>
                 </template>
-              </v-combobox>
-            </v-col>
-            <v-col :cols="6">
-              <v-text-field
-                outlined
-                label="value"
-                placeholder="Property Value"
-              />
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-form>
-    </v-card-text>
-    <v-card-actions class="py-3">
-      <v-spacer></v-spacer>
-      <v-btn @click="handleSubmit()" :loading="loading" tile color="primary">
-        save
-      </v-btn>
-    </v-card-actions>
-  </v-card>
+              </template>
+            </v-row>
+            <v-row>
+              <v-col :cols="12">
+                <v-subheader> Specs </v-subheader>
+                <div v-if="item" v-html="item.specs" />
+              </v-col>
+              <v-col :cols="12">
+                <v-btn @click="showDialog = true" icon>
+                  <v-icon>mdi-plus</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row v-if="item">
+              <template v-for="item in item.props">
+                <v-col :cols="4" :key="item.id">
+                  <v-text-field
+                    :items="item.values"
+                    outlined
+                    :name="item.property_slug"
+                    :placeholder="item.property_name"
+                    :label="item.property_name"
+                    item-text="value"
+                    item-value="id"
+                    v-model="formModel[item.property_slug]"
+                  />
+                </v-col>
+              </template>
+            </v-row>
+          </v-container>
+        </v-form>
+      </v-card-text>
+      <v-card-actions class="py-3">
+        <v-spacer></v-spacer>
+        <v-btn @click="handleSubmit()" :loading="loading" tile color="primary">
+          save
+        </v-btn>
+      </v-card-actions>
+    </v-card>
+
+    <v-dialog v-model="showDialog" v-if="!loading">
+      <v-card>
+        <v-card-title dark tile color="primary"
+          >Add direct property
+          <v-spacer />
+          <v-icon @click="showDialog = false">mdi-close</v-icon>
+        </v-card-title>
+        <v-card-text class="pa-0" v-if="item">
+          <form-direct-property :product-id="item.id" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import _groupBy from 'lodash/groupBy'
+import FormDirectProperty from '@/components/form/product/FormDirectProperty'
 export default {
   name: 'FormProductProperty',
-  components: {},
+  components: { FormDirectProperty },
   props: {
     item: Object
   },
@@ -91,11 +94,11 @@ export default {
     return {
       loading: false,
       isLoading: false,
+      showDialog: false,
       items: [],
       search: null,
       catProps: [],
-      formModel: {},
-      props: []
+      formModel: {}
     }
   },
   computed: {
@@ -131,9 +134,8 @@ export default {
       if (data.props) {
         let props = _groupBy(data.props, 'property_slug')
         for (let slug in props) {
-          props[slug] = props[slug].find((p) => p.id)
+          this.formModel[slug] = props[slug][0].id
         }
-        this.formModel = props
       } else {
         this.initModel()
       }
@@ -167,7 +169,14 @@ export default {
       }
     },
 
-    handleAddProps() {}
+    handleAddProps() {
+      console.log('here')
+      this.props.push({
+        key: null,
+        value: null
+      })
+      console.log(this.props)
+    }
   },
   created() {}
 }

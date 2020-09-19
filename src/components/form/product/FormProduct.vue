@@ -142,7 +142,7 @@ export default {
       formModel: {
         name: null,
         is_active: null,
-        is_home: null,
+        is_home: false,
         description: null,
         slug: null,
         flag: 1,

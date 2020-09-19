@@ -117,6 +117,7 @@ export default {
         .dispatch('attachDirectPropForProduct', data)
         .then(() => {
           this.loading = false
+          this.$emit('attach')
         })
         .catch(() => {
           this.loading = false
@@ -128,7 +129,7 @@ export default {
           'filter[name]': name
         })
         .then((resp) => {
-          this.values = resp.data[0].values
+          this.values = resp.data.length > 0 ? resp.data[0].values : []
         })
     }
   },

@@ -10,18 +10,18 @@
                   From Category
                 </v-subheader>
               </v-col>
-              <template v-if="catProps.length > 0">
-                <template v-for="item in catProps">
+              <template v-if="inheritedProps.length > 0">
+                <template v-for="item in inheritedProps">
                   <v-col :cols="4" :key="item.id">
                     <v-autocomplete
-                      :items="item.values"
+                      :items="item.property.values"
                       outlined
-                      :name="item.name"
-                      :placeholder="item.name"
-                      :label="item.name"
+                      :name="item.property_name"
+                      :placeholder="item.property_name"
+                      :label="item.property_name"
                       item-text="value"
                       item-value="id"
-                      v-model="formModel[item.slug]"
+                      v-model="formModel[item.property_slug]"
                     />
                   </v-col>
                 </template>
@@ -39,12 +39,12 @@
               </v-col>
             </v-row>
             <v-row v-if="item">
-              <template v-for="item in item.props">
+              <template v-for="item in directProps">
                 <v-col :cols="4" :key="item.id">
-                  <v-text-field
-                    :items="item.values"
+                  <v-autocomplete
+                    :items="item.property.values"
                     outlined
-                    :name="item.property_slug"
+                    :name="item.property_name"
                     :placeholder="item.property_name"
                     :label="item.property_name"
                     item-text="value"
@@ -73,7 +73,10 @@
           <v-icon @click="showDialog = false">mdi-close</v-icon>
         </v-card-title>
         <v-card-text class="pa-0" v-if="item">
-          <form-direct-property :product-id="item.id" />
+          <form-direct-property
+            @attach="handleAttached"
+            :product-id="item.id"
+          />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -82,7 +85,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import _groupBy from 'lodash/groupBy'
 import FormDirectProperty from '@/components/form/product/FormDirectProperty'
 export default {
   name: 'FormProductProperty',
@@ -102,13 +104,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getSpuProperties', 'getPropUnits', 'getPropTypes'])
+    ...mapGetters(['getSpuProperties', 'getPropUnits', 'getPropTypes']),
+    inheritedProps() {
+      return this.item.property_values.filter((item) => {
+        return item.property.inherited === true
+      })
+    },
+    directProps() {
+      return this.item.property_values.filter((item) => {
+        return item.property.inherited === false
+      })
+    }
   },
   watch: {
     item: {
       handler(item) {
         if (item) {
-          this.fetchCategoryProps(item)
+          this.fecthPropertyValues(item)
           this.assignModel(item)
         }
       },
@@ -124,18 +136,17 @@ export default {
       this.$store
         .dispatch('fetchProperty', { pageSize: -1 })
         .then(({ data }) => {
-          this.items = data
+          this.item.property_values = data
           this.isLoading = false
         })
     }
   },
   methods: {
     assignModel(data) {
-      if (data.props) {
-        let props = _groupBy(data.props, 'property_slug')
-        for (let slug in props) {
-          this.formModel[slug] = props[slug][0].id
-        }
+      if (data.property_values) {
+        data.property_values.forEach((item) => {
+          this.formModel[item.property_slug] = item.id
+        })
       } else {
         this.initModel()
       }
@@ -145,7 +156,6 @@ export default {
     },
     handleSubmit() {
       this.loading = true
-
       if (this.item) {
         this.$store
           .dispatch('attachPropsForProduct', {
@@ -157,25 +167,17 @@ export default {
           })
       }
     },
-    fetchCategoryProps(item) {
-      const cats = item.categories
-      if (cats.length > 0) {
-        const cat = cats[cats.length - 1]
-        this.$store
-          .dispatch('getPropertyByCategoryId', cat.category_id)
-          .then((resp) => {
-            this.catProps = resp.data
-          })
-      }
+    fecthPropertyValues(item) {
+      this.loading = true
+      this.$store
+        .dispatch('getPropertyValuesByProductId', item.id)
+        .then((resp) => {
+          this.item.property_values = resp.data
+          this.loading = false
+        })
     },
-
-    handleAddProps() {
-      console.log('here')
-      this.props.push({
-        key: null,
-        value: null
-      })
-      console.log(this.props)
+    handleAttached() {
+      this.fecthPropertyValues(this.item)
     }
   },
   created() {}

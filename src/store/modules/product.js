@@ -1,7 +1,6 @@
 import {
   fetchProducts,
   fetchQuote,
-  getProductCategoryById,
   getProductById,
   updateProduct,
   deleteProduct,
@@ -121,6 +120,12 @@ const actions = {
       url: `/mall/property/${id}/value`,
       method: 'put',
       data: data
+    })
+  },
+  getPropertyValuesByProductId({ commit }, id) {
+    return request({
+      url: `/mall/item/${id}/property`,
+      method: 'get'
     })
   },
   attachPropsForProduct({ commit }, { id, data }) {

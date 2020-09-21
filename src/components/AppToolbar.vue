@@ -4,6 +4,9 @@
       <v-app-bar-nav-icon @click="$emit('drawer:toggle')"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-toolbar-items class="align-center">
+        <v-btn icon href="https://theopticalfiber.com" target="_blank">
+          <v-icon>mdi-target</v-icon>
+        </v-btn>
         <v-menu offset-y origin="center center" transition="scale-transition">
           <template v-slot:activator="{ on }">
             <v-btn icon text slot="activator" v-on="on">
@@ -40,7 +43,6 @@
 <script>
 import Utils from '@/utils'
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'AppToolbar',
   components: {},

@@ -96,7 +96,7 @@ export default {
     handleLogut() {
       if (window.confirm('Are you sure to logout?')) {
         this.$store.dispatch('logout')
-        window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+        window._VMA.$emit('SHOW_SNACKBAR', {
           text: 'Logout successfull',
           color: 'success'
         })
@@ -104,7 +104,7 @@ export default {
       }
     },
     handleSetting() {
-      window.ELEPHANT.openThemeSettings()
+      window._VMA.openThemeSettings()
     },
     handleProfile() {}
   },

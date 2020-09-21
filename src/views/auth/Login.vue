@@ -11,10 +11,9 @@
           type="text"
           v-model="model.email"
           v-on:keyup.enter="login"
-          dense
           outlined
           class="mb-2"
-        ></v-text-field>
+        />
         <v-text-field
           append-icon="mdi-key-variant"
           autocomplete="off"
@@ -25,12 +24,11 @@
           type="password"
           v-model="model.password"
           v-on:keyup.enter="login"
-          dense
           outlined
-        ></v-text-field>
+        />
       </v-form>
     </v-card-text>
-    <v-card-actions class="flex-row-reverse pa-0">
+    <v-card-actions class="flex-row-reverse">
       <v-btn class="px-4" large dark @click="handleLogin" :loading="loading"
         ><v-icon class="mr-2">mdi-login-variant</v-icon> Login</v-btn
       >

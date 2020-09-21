@@ -11,17 +11,17 @@
                 </v-subheader>
               </v-col>
               <template v-if="item">
-                <template v-for="item in inheritedProps">
+                <template v-for="item in catProps">
                   <v-col :cols="4" :key="item.id">
                     <v-autocomplete
-                      :items="item.property.values"
+                      :items="item.values"
                       outlined
-                      :name="item.property_name"
-                      :placeholder="item.property_name"
-                      :label="item.property_name"
+                      :name="item.name"
+                      :placeholder="item.name"
+                      :label="item.name"
                       item-text="value"
                       item-value="id"
-                      v-model="formModel[item.property_slug]"
+                      v-model="formModel[item.slug]"
                     />
                   </v-col>
                 </template>
@@ -126,7 +126,10 @@ export default {
     item: {
       handler(item) {
         if (item) {
-          this.fecthPropertyValues(item)
+          // this.fecthPropertyValues(item)
+          if (item && item.categories.length > 0) {
+            this.fetchCategoryProps(item)
+          }
           this.assignModel(item)
         }
       },
@@ -171,6 +174,18 @@ export default {
           })
       }
     },
+    fetchCategoryProps(item) {
+      const categories = item.categories
+      const cat = categories[categories.length - 1]
+      this.loading = true
+      this.$store
+        .dispatch('getPropertyByCategoryId', cat.category_id)
+        .then((resp) => {
+          this.catProps = resp.data
+          this.loading = false
+        })
+    },
+
     fecthPropertyValues(item) {
       this.loading = true
       this.$store

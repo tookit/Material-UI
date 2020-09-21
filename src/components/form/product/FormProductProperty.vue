@@ -10,7 +10,7 @@
                   From Category
                 </v-subheader>
               </v-col>
-              <template v-if="inheritedProps.length > 0">
+              <template v-if="item">
                 <template v-for="item in inheritedProps">
                   <v-col :cols="4" :key="item.id">
                     <v-autocomplete
@@ -106,14 +106,20 @@ export default {
   computed: {
     ...mapGetters(['getSpuProperties', 'getPropUnits', 'getPropTypes']),
     inheritedProps() {
-      return this.item.property_values.filter((item) => {
-        return item.property.inherited === true
-      })
+      const { property_values } = this.item
+      return property_values && property_values.length > 0
+        ? property_values.filter((item) => {
+            return item.property.inherited === true
+          })
+        : []
     },
     directProps() {
-      return this.item.property_values.filter((item) => {
-        return item.property.inherited === false
-      })
+      const { property_values } = this.item
+      return property_values && property_values.length > 0
+        ? property_values.filter((item) => {
+            return item.property.inherited === false
+          })
+        : []
     }
   },
   watch: {
@@ -143,12 +149,10 @@ export default {
   },
   methods: {
     assignModel(data) {
-      if (data.property_values) {
+      if (data.property_values.length > 0) {
         data.property_values.forEach((item) => {
           this.formModel[item.property_slug] = item.id
         })
-      } else {
-        this.initModel()
       }
     },
     initModel() {

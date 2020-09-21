@@ -149,6 +149,9 @@
             </div>
           </v-menu>
           <slot name="toolbar"></slot>
+          <template v-slot:extension v-if="extended">
+            <slot name="extension"></slot>
+          </template>
         </v-toolbar>
         <v-divider></v-divider>
         <div v-show="showFilter">
@@ -220,6 +223,7 @@ export default {
       type: String
     },
     flat: Boolean,
+    extended: Boolean,
     showSelect: Boolean,
     singleSelect: Boolean,
     loading: Boolean,

@@ -14,6 +14,7 @@
             :searchValue="filter['filter[name]']"
             @input:change="handleInputChange"
             @search="handleApplyFilter"
+            extended
           >
             <div slot="filter">
               <v-card flat class="grey lighten-4">
@@ -60,6 +61,19 @@
                 </v-card-actions>
               </v-card>
             </div>
+            <v-tabs
+              @change="handleTabChange"
+              style="border-top: 1px solid #eee"
+              slot="extension"
+              v-model="filter['filter[is_active]']"
+            >
+              <v-tab>
+                Offline
+              </v-tab>
+              <v-tab>
+                Online
+              </v-tab>
+            </v-tabs>
             <v-btn slot="toolbar" icon @click="fetchRecord()">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
@@ -320,6 +334,9 @@ export default {
     handleResetFilter() {},
     handleInputChange(val) {
       this.filter['filter[name]'] = val
+    },
+    handleTabChange() {
+      this.handleApplyFilter()
     }
   },
   created() {}

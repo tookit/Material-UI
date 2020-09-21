@@ -14,12 +14,20 @@
             <v-btn slot="toolbar" icon @click="fetchRecord()">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
+            <template v-slot:item.created_at="{ item }">
+              {{ new Date(item.created_at).toLocaleString() }}
+            </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
-                <template v-slot:activator="{ on, attrs }">
-                  <v-btn v-bind="attrs" v-on="on">
-                    <v-icon>mdi-dots-vertical</v-icon>
-                  </v-btn>
+                <template v-slot:activator="{ on: menu }">
+                  <v-tooltip bottom>
+                    <template v-slot:activator="{ on: tooltip }">
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
+                    </template>
+                    <span>Action</span>
+                  </v-tooltip>
                 </template>
                 <v-list class="pa-0" dense>
                   <v-list-item
@@ -44,12 +52,13 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import { mapActions } from 'vuex'
+import TooltipMixin from '@/mixins/Tooltip'
 export default {
   name: 'PageQuote',
   components: {
     AdvanceTable
   },
+  mixins: [TooltipMixin],
   data() {
     return {
       //
@@ -59,6 +68,10 @@ export default {
         {
           text: 'ID',
           value: 'id'
+        },
+        {
+          text: 'Type',
+          value: 'type'
         },
         {
           text: 'Username',
@@ -87,6 +100,22 @@ export default {
         {
           text: 'Created',
           value: 'created_at'
+        },
+        {
+          text: 'Action',
+          value: 'action'
+        }
+      ],
+      actions: [
+        {
+          text: 'Edit Item',
+          icon: 'mdi-pencil',
+          click: this.handleEditItem
+        },
+        {
+          text: 'Delete Item',
+          icon: 'mdi-close',
+          click: this.handleDeleteItem
         }
       ],
       serverItemsLength: 0,
@@ -94,21 +123,30 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['fetchQuote']),
     fetchRecord(query) {
       this.loading = true
-      this.fetchQuote(query).then(({ data, meta }) => {
-        this.loading = false
-        this.items = data
-        this.serverItemsLength = meta.total
-      })
+      this.$store
+        .dispatch('fetchQuotes', query)
+        .then(({ data, meta }) => {
+          this.loading = false
+          this.items = data
+          this.serverItemsLength = meta.total
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
-
     handlePageChanged(page) {
       this.fetchRecord({
         page: page
       })
-    }
+    },
+    handleEditItem(item) {
+      this.$router.push({
+        path: `/mall/quote/item/${item.id}`
+      })
+    },
+    handleDeleteItem(item) {}
   },
   created() {
     this.fetchRecord()

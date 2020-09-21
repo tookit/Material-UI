@@ -132,12 +132,38 @@ export const protectedRoute = [
           {
             path: '/mall/quote',
             name: 'mall.quote',
-            component: () => import('@/views/mall/QuoteList.vue'),
+            component: RouterWrapper,
+            redirect: {
+              path: '/mall/quote/list'
+            },
             meta: {
               title: 'Quote',
               hiddenInMenu: false,
               icon: 'mdi-quora'
-            }
+            },
+            children: [
+              {
+                path: '/mall/quote/list',
+                name: 'mall.quote.list',
+                component: () => import('@/views/mall/QuoteList.vue'),
+                meta: {
+                  title: 'Quote List',
+                  hiddenInMenu: false,
+                  icon: 'mdi-quora'
+                }
+              },
+              {
+                path: '/mall/quote/item/:id',
+                name: 'mall.quote.update',
+                props: true,
+                component: () => import('@/views/mall/QuoteItem.vue'),
+                meta: {
+                  title: 'Update quote',
+                  hiddenInMenu: true,
+                  icon: 'mdi-view'
+                }
+              }
+            ]
           },
           //vendor
           {

@@ -1,6 +1,5 @@
 import {
   fetchProducts,
-  fetchQuote,
   getProductById,
   updateProduct,
   deleteProduct,
@@ -62,12 +61,6 @@ const getters = {
 const actions = {
   fetchProducts({ commit }, query) {
     return fetchProducts(query).then((resp) => {
-      return resp
-    })
-  },
-
-  fetchQuote({ commit }, query) {
-    return fetchQuote(query).then((resp) => {
       return resp
     })
   },

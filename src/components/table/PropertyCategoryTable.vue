@@ -51,7 +51,7 @@
         </v-card-title>
         <v-card-text class="pa-0">
           <form-category-property
-            @attached="fetchRecord()"
+            @attached="handleAttached"
             :category-id="categoryId"
           />
         </v-card-text>
@@ -195,6 +195,9 @@ export default {
     },
     handleInputChange(val) {
       this.filter['filter[name]'] = val
+    },
+    handleAttached() {
+      this.fetchRecord()
     }
   },
   created() {}

@@ -120,7 +120,7 @@ export default {
         .dispatch('attachPropertyForCategory', data)
         .then(() => {
           this.loading = false
-          this.$emit('attach')
+          this.$emit('attached')
         })
         .catch(() => {
           this.loading = false

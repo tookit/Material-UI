@@ -94,7 +94,6 @@ export default {
   },
   data() {
     return {
-      selectedMedia: null,
       showDialog: false,
       loading: false,
       formModel: {
@@ -168,7 +167,8 @@ export default {
       return this.$store.dispatch('fetchSlider')
     },
     handleSelectMedia(item) {
-      this.selectedMedia = item
+      // this.selectedMedia = item
+      this.formModel.img = item.cloud_url
     }
   }
 }

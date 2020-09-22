@@ -21,7 +21,7 @@
               <product-table :category-id="id" />
             </v-tab-item>
             <v-tab-item key="property" value="property">
-              <property-table :category-id="id" />
+              <property-category-table :category-id="id" />
             </v-tab-item>
             <v-tab-item key="media" value="media">
               <media @selected="handleSelectMedia" :directory="directory" />
@@ -43,7 +43,7 @@
 <script>
 import FormProductCategory from '@/components/form/product/FormProductCategory'
 import SeoForm from '@/components/form/SeoForm'
-import PropertyTable from '@/components/table/PropertyTable'
+import PropertyCategoryTable from '@/components/table/PropertyCategoryTable'
 import ProductTable from '@/components/table/ProductTable'
 import Media from '@/components/media/Index'
 import { fetchImageByCategoryId } from '@/api/service'
@@ -55,12 +55,13 @@ export default {
   components: {
     SeoForm,
     Media,
-    PropertyTable,
+    PropertyCategoryTable,
     ProductTable,
     FormProductCategory
   },
   data() {
     return {
+      showDialog: false,
       defaultTab: 'general',
       tabs: [
         {
@@ -126,7 +127,8 @@ export default {
         return value === 'general'
       }
     },
-    handleSelectMedia() {}
+    handleSelectMedia() {},
+    handleAddProp() {}
   }
 }
 </script>

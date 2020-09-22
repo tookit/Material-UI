@@ -16,31 +16,31 @@ const err = (error) => {
   }
   switch (status) {
     case 400:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: 'Bad Request ' + data.message,
         color: 'red'
       })
       break
     case 422:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: message,
         color: 'red'
       })
       break
     case 401:
-      window.ELEPHANT.$emit('AUTH_FAILED', data)
+      window._VMA.$emit('AUTH_FAILED', data)
       break
     case 403:
-      window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+      window._VMA.$emit('SHOW_SNACKBAR', {
         show: true,
         text: 'Access Denied ' + data.message,
         color: 'red'
       })
       break
     case 500:
-      window.ELEPHANT.$emit('Internal Server error', {
+      window._VMA.$emit('Internal Server error', {
         show: true,
         text: 'Server error ' + data.message,
         color: 'red'
@@ -63,13 +63,13 @@ service.interceptors.request.use((config) => {
 
 // response interceptor
 service.interceptors.response.use(({ data, config }) => {
-  if (['put', 'post', 'delete'].includes(config.method) && data.meta) {
-    window.ELEPHANT.$emit('SHOW_SNACKBAR', {
-      text: data.meta.message
+  if (['put', 'post', 'delete'].includes(config.method)) {
+    window._VMA.$emit('SHOW_SNACKBAR', {
+      text: data.meta ? data.meta.message : 'Resource updated.'
     })
   }
   if (data.error !== undefined) {
-    window.ELEPHANT.$emit('API_FAILED', data.error)
+    window._VMA.$emit('API_FAILED', data.error)
   }
   return data
 }, err)

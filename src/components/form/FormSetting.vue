@@ -4,37 +4,13 @@
       <v-form>
         <v-container fluid>
           <v-row>
-            <v-col :cols="12">
+            <v-col :cols="12" v-for="(val, key) in formModel" :key="key">
               <v-text-field
-                v-model="formModel.site_title"
+                v-model="formModel[key]"
                 outlined
-                name="site_title"
-                placeholder="Site Title"
-                label="Site Title"
-              />
-            </v-col>
-            <v-col :cols="12">
-              <v-text-field
-                v-model="formModel.site_slogan"
-                outlined
-                placeholder="Slogan"
-                label="Slogan"
-              />
-            </v-col>
-            <v-col :cols="12">
-              <v-text-field
-                v-model="formModel.twiiter"
-                outlined
-                placeholder="Twiiter"
-                label="Twiiter"
-              />
-            </v-col>
-            <v-col :cols="12">
-              <v-text-field
-                v-model="formModel.facebook"
-                outlined
-                placeholder="Facebook"
-                label="Facebook"
+                :name="key"
+                :placeholder="key"
+                :label="key"
               />
             </v-col>
           </v-row>
@@ -80,12 +56,7 @@ export default {
       showDialog: false,
       loading: false,
       setting_key: null,
-      formModel: {
-        site_title: null,
-        site_slogan: null,
-        twitter: null,
-        facebook: null
-      }
+      formModel: {}
     }
   },
   computed: {},
@@ -94,8 +65,6 @@ export default {
       handler(item) {
         if (item) {
           this.assignModel(item)
-        } else {
-          this.initModel()
         }
       },
       immediate: true
@@ -103,15 +72,10 @@ export default {
   },
   methods: {
     assignModel(data) {
-      for (let key in this.formModel) {
-        this.formModel[key] = data[key] || null
-      }
+      this.formModel = data
     },
     initModel() {
-      this.formModel = {
-        site_title: null,
-        site_slogan: null
-      }
+      this.formModel = {}
     },
     handleSubmit() {
       this.loading = true
@@ -130,6 +94,7 @@ export default {
     },
     handleConfirm() {
       this.formModel[this.setting_key] = ''
+      this.showDialog = false
     }
   }
 }

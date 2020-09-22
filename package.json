@@ -33,6 +33,7 @@
     "nprogress": "^0.2.0",
     "pusher-js": "^6.0.2",
     "register-service-worker": "^1.6.2",
+    "sanitize-html": "^1.27.4",
     "slugify": "^1.4.4",
     "sortablejs": "^1.10.2",
     "vue": "^2.6.10",

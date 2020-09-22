@@ -3,7 +3,7 @@
     <v-container fluid>
       <v-row>
         <v-col>
-          <v-tabs class="route-tab" v-model="defaultTab">
+          <v-tabs class="route-tab" v-model="defaultTab" @change="onTabChange">
             <v-tab
               v-for="(item, key) in tabs"
               :key="key"
@@ -24,6 +24,14 @@
                 :entity-id="id"
                 entity="App\Models\Mall\Product"
                 @attach="handleAttachMedia"
+                show-select
+              />
+            </v-tab-item>
+            <v-tab-item key="property" value="property">
+              <form-product-property
+                :item="item"
+                :loading="loading"
+                :action="updateProduct"
               />
             </v-tab-item>
             <v-tab-item key="seo" value="seo">
@@ -42,6 +50,7 @@
 
 <script>
 import FormProduct from '@/components/form/product/FormProduct'
+import FormProductProperty from '@/components/form/product/FormProductProperty'
 import SeoForm from '@/components/form/SeoForm'
 import Media from '@/components/media/Index'
 import { attachMediaForProduct } from '@/api/service'
@@ -53,15 +62,20 @@ export default {
   components: {
     SeoForm,
     Media,
-    FormProduct
+    FormProduct,
+    FormProductProperty
   },
   data() {
     return {
-      defaultTab: 'general',
+      defaultTab: this.$route.query ? this.$route.query.tab : 'general',
       tabs: [
         {
           text: 'General',
           value: 'general'
+        },
+        {
+          text: 'Property',
+          value: 'property'
         },
         {
           text: 'Media',
@@ -97,6 +111,15 @@ export default {
   },
   methods: {
     ...mapActions(['updateProduct']),
+    onTabChange(tab) {
+      this.$router.push({
+        path: this.$route.path,
+        query: {
+          tab: tab,
+          t: Date.now()
+        }
+      })
+    },
     fetchRecord(id) {
       this.loading = true
       this.$store.dispatch('getProductById', id).then(({ data }) => {

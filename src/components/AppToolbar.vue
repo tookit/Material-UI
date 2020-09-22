@@ -4,6 +4,9 @@
       <v-app-bar-nav-icon @click="$emit('drawer:toggle')"></v-app-bar-nav-icon>
       <v-spacer></v-spacer>
       <v-toolbar-items class="align-center">
+        <v-btn icon href="https://theopticalfiber.com" target="_blank">
+          <v-icon>mdi-target</v-icon>
+        </v-btn>
         <v-menu offset-y origin="center center" transition="scale-transition">
           <template v-slot:activator="{ on }">
             <v-btn icon text slot="activator" v-on="on">
@@ -40,7 +43,6 @@
 <script>
 import Utils from '@/utils'
 import { mapGetters } from 'vuex'
-
 export default {
   name: 'AppToolbar',
   components: {},
@@ -94,7 +96,7 @@ export default {
     handleLogut() {
       if (window.confirm('Are you sure to logout?')) {
         this.$store.dispatch('logout')
-        window.ELEPHANT.$emit('SHOW_SNACKBAR', {
+        window._VMA.$emit('SHOW_SNACKBAR', {
           text: 'Logout successfull',
           color: 'success'
         })
@@ -102,7 +104,7 @@ export default {
       }
     },
     handleSetting() {
-      window.ELEPHANT.openThemeSettings()
+      window._VMA.openThemeSettings()
     },
     handleProfile() {}
   },

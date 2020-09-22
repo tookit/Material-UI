@@ -122,12 +122,14 @@ import { mapGetters } from 'vuex'
 import VJodit from '@/components/jodit'
 import VCascader from '@/components/cascader/'
 import { fetchTags } from '@/api/service'
+import HtmlFilter from '@/mixins/HtmlFilter'
 export default {
   name: 'FormProduct',
   components: {
     VJodit,
     VCascader
   },
+  mixins: [HtmlFilter],
   props: {
     item: Object
   },
@@ -140,7 +142,7 @@ export default {
       formModel: {
         name: null,
         is_active: null,
-        is_home: null,
+        is_home: false,
         description: null,
         slug: null,
         flag: 1,
@@ -177,7 +179,7 @@ export default {
       this.formModel = {
         name: null,
         is_active: null,
-        is_home: null,
+        is_home: false,
         description: null,
         slug: null,
         flag: 1,

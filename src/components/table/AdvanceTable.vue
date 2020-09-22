@@ -4,7 +4,6 @@
       tile
       :expanded.sync="expanded"
       ref="table"
-      single-select
       @keyup.down="handleKeydown"
       :item-key="itemKey"
       :selectable-key="selectableKey"
@@ -25,6 +24,9 @@
       @update:sort-desc="handleSortDesc"
       v-model="selectedRows"
       :hide-default-header="hideDefaultHeader"
+      :single-select="singleSelect"
+      :show-select="showSelect"
+      @toggle-select-all="handleToggleAll"
       class="elevation-1"
     >
       <template v-slot:top>
@@ -147,6 +149,9 @@
             </div>
           </v-menu>
           <slot name="toolbar"></slot>
+          <template v-slot:extension v-if="extended">
+            <slot name="extension"></slot>
+          </template>
         </v-toolbar>
         <v-divider></v-divider>
         <div v-show="showFilter">
@@ -218,11 +223,15 @@ export default {
       type: String
     },
     flat: Boolean,
+    extended: Boolean,
+    showSelect: Boolean,
+    singleSelect: Boolean,
     loading: Boolean,
     serverItemsLength: [Number, String],
     itemsPerPage: [Number, String],
     page: [Number, String],
-    footerProps: Object
+    footerProps: Object,
+    value: Array
   },
   data() {
     return {
@@ -322,6 +331,9 @@ export default {
     },
     handleKeydown(e) {
       console.log(e)
+    },
+    handleToggleAll(e) {
+      this.$emit('toggle-select-all', e)
     }
   },
   created() {}

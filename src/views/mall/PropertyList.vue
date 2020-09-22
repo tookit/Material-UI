@@ -57,9 +57,9 @@
                 <template v-slot:activator="{ on: menu }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="{ ...tooltip, ...menu }">
-                        <v-icon>mdi-dots-vertical</v-icon></v-btn
-                      >
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
                     </template>
                     <span>Action</span>
                   </v-tooltip>
@@ -89,12 +89,13 @@
 import AdvanceTable from '@/components/table/AdvanceTable'
 import { mapActions, mapGetters } from 'vuex'
 import ResizeMixin from '@/mixins/Resize'
+import TooltipMixin from '@/mixins/Tooltip'
 export default {
-  name: 'PageProduct',
+  name: 'PageProperty',
   components: {
     AdvanceTable
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, TooltipMixin],
   data() {
     return {
       //

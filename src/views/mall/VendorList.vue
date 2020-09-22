@@ -9,25 +9,31 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
             @update:page="handlePageChanged"
+            :searchValue="filter['filter[name]']"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
+            <div slot="filter"></div>
             <v-btn slot="toolbar" icon @click="fetchRecord()">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
+            <v-btn slot="toolbar" icon @click="handleCreateItem">
+              <v-icon>mdi-plus</v-icon>
+            </v-btn>
+            <template v-slot:item.website="{ item }">
+              <a :href="item.website" target="_blank">{{ item.website }}</a>
+            </template>
             <template v-slot:item.created_at="{ item }">
               {{ new Date(item.created_at).toLocaleString() }}
             </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
-                <template v-slot:activator="{ on: menu }">
-                  <v-tooltip bottom>
-                    <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
-                        <v-icon>mdi-dots-vertical</v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Action</span>
-                  </v-tooltip>
+                <template v-slot:activator="{ on }">
+                  <v-btn v-on="on" icon>
+                    <v-icon>mdi-dots-vertical</v-icon>
+                  </v-btn>
                 </template>
                 <v-list class="pa-0" dense>
                   <v-list-item
@@ -52,13 +58,11 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import TooltipMixin from '@/mixins/Tooltip'
 export default {
   name: 'PageQuote',
   components: {
     AdvanceTable
   },
-  mixins: [TooltipMixin],
   data() {
     return {
       //
@@ -70,32 +74,16 @@ export default {
           value: 'id'
         },
         {
-          text: 'Type',
-          value: 'type'
+          text: 'Name',
+          value: 'name'
         },
         {
-          text: 'Username',
-          value: 'username'
+          text: 'City',
+          value: 'city'
         },
         {
-          text: 'Email',
-          value: 'email'
-        },
-        {
-          text: 'Phone',
-          value: 'mobile'
-        },
-        {
-          text: 'Product',
-          value: 'product'
-        },
-        {
-          text: 'Remark',
-          value: 'remark'
-        },
-        {
-          text: 'Ip',
-          value: 'ip'
+          text: 'Website',
+          value: 'website'
         },
         {
           text: 'Created',
@@ -106,6 +94,12 @@ export default {
           value: 'action'
         }
       ],
+      filter: {
+        page: 1,
+        'filter[name]': null
+      },
+      serverItemsLength: 0,
+      itemsPerPage: 15,
       actions: [
         {
           text: 'Edit Item',
@@ -117,16 +111,26 @@ export default {
           icon: 'mdi-close',
           click: this.handleDeleteItem
         }
-      ],
-      serverItemsLength: 0,
-      itemsPerPage: 15
+      ]
     }
   },
+  watch: {
+    '$route.query': {
+      handler(query) {
+        query.page = parseInt(query.page)
+        Object.assign(this.filter, query)
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
+  },
+
   methods: {
     fetchRecord(query) {
+      console.log(query)
       this.loading = true
       this.$store
-        .dispatch('fetchQuotes', query)
+        .dispatch('fetchVendors', query)
         .then(({ data, meta }) => {
           this.loading = false
           this.items = data
@@ -136,20 +140,35 @@ export default {
           this.loading = false
         })
     },
-    handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
+    handleCreateItem() {
+      this.$router.push({
+        path: `/mall/vendor/create`
       })
     },
     handleEditItem(item) {
       this.$router.push({
-        path: `/mall/quote/item/${item.id}`
+        path: `/mall/vendor/item/${item.id}`
       })
     },
-    handleDeleteItem(item) {}
-  },
-  created() {
-    this.fetchRecord()
+    handleDeleteItem() {},
+    handleApplyFilter() {
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handlePageChanged(page) {
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
+    }
   }
 }
 </script>

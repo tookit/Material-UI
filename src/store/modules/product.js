@@ -1,14 +1,8 @@
 import {
   fetchProducts,
-  fetchQuote,
-  fetchProductCategories,
-  fetchCategoryTree,
-  getProductCategoryById,
   getProductById,
   updateProduct,
   deleteProduct,
-  createProductCategory,
-  updateProductCategory,
   fetchImagesByProductId
 } from '@/api/service'
 import request from '@/utils/request'
@@ -71,24 +65,6 @@ const actions = {
     })
   },
 
-  fetchQuote({ commit }, query) {
-    return fetchQuote(query).then((resp) => {
-      return resp
-    })
-  },
-  fetchProductCategories({ commit }, query) {
-    return fetchProductCategories(query).then((resp) => {
-      return resp
-    })
-  },
-
-  fetchProductCategoryTree({ commit }) {
-    return fetchCategoryTree().then((resp) => {
-      commit('SET_PRODUCT_CATEGORY', resp)
-      return resp
-    })
-  },
-
   fetchImageByProductId({ commit }, id) {
     return fetchImagesByProductId(id).then((resp) => {
       return resp
@@ -100,19 +76,6 @@ const actions = {
     })
   },
 
-  getProductCategoryById({ commit }, id) {
-    return getProductCategoryById(id).then((resp) => {
-      return resp
-    })
-  },
-  getPropertyByCategoryId({ commit }, id) {
-    return request({
-      url: `/mall/category/${id}/property`,
-      method: 'get'
-    }).then((resp) => {
-      return resp
-    })
-  },
   updateProduct({ commit }, { id, data }) {
     return updateProduct(id, data).then((resp) => {
       return resp
@@ -121,55 +84,6 @@ const actions = {
   deleteProduct({ commit }, id) {
     return deleteProduct(id).then((resp) => {
       return resp
-    })
-  },
-  deleteProductCategory({ commit }, id) {
-    return request({
-      url: `/mall/category/${id}`,
-      method: 'delete'
-    }).then((resp) => {
-      return resp
-    })
-  },
-
-  updateProductCategory({ commit }, { id, data }) {
-    return updateProductCategory(id, data).then((resp) => {
-      return resp
-    })
-  },
-
-  fetchProperty({ commit }, query) {
-    return request({
-      url: '/mall/property',
-      method: 'get',
-      params: query
-    }).then((resp) => {
-      if (query && query.pageSize == -1) {
-        commit('SET_PRODUCT_PROPERTIES', resp.data)
-      }
-      return resp
-    })
-  },
-
-  createProperty({ commit }, data) {
-    return request({
-      url: '/mall/property',
-      method: 'post',
-      data: data
-    })
-  },
-  updateProperty({ commit }, { id, data }) {
-    return request({
-      url: `/mall/property/${id}`,
-      method: 'put',
-      data: data
-    })
-  },
-
-  deleteProperty({ commit }, id) {
-    return request({
-      url: `/mall/property/${id}`,
-      method: 'delete'
     })
   },
 
@@ -194,13 +108,6 @@ const actions = {
     })
   },
 
-  getProductByCategoryId({ commit }, { id, query }) {
-    return request({
-      url: `/mall/category/${id}/item`,
-      method: 'get',
-      query: query
-    })
-  },
   attachValueForProperty({ commit }, { id, data }) {
     return request({
       url: `/mall/property/${id}/value`,
@@ -208,10 +115,23 @@ const actions = {
       data: data
     })
   },
+  getPropertyValuesByProductId({ commit }, id) {
+    return request({
+      url: `/mall/item/${id}/property`,
+      method: 'get'
+    })
+  },
   attachPropsForProduct({ commit }, { id, data }) {
     return request({
       url: `/mall/item/${id}/property`,
       method: 'post',
+      data: data
+    })
+  },
+  attachDirectPropForProduct({ commit }, { id, data }) {
+    return request({
+      url: `/mall/item/${id}/property`,
+      method: 'put',
       data: data
     })
   },
@@ -227,21 +147,11 @@ const actions = {
       url: `/mall/property_value/${id}`,
       method: 'delete'
     })
-  },
-  createProductCategory({ commit }, data) {
-    return request({
-      url: `/mall/category/`,
-      method: 'post',
-      data: data
-    })
   }
 }
 const mutations = {
   SET_PRODUCT_CATEGORY(state, { data }) {
     state.categories = data
-  },
-  SET_PRODUCT_PROPERTIES(state, data) {
-    state.properties = data
   }
 }
 

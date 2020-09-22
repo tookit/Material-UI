@@ -40,9 +40,9 @@
                 <template v-slot:activator="{ on: menu }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="{ ...tooltip, ...menu }">
-                        <v-icon>mdi-dots-vertical</v-icon></v-btn
-                      >
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
                     </template>
                     <span>Action</span>
                   </v-tooltip>
@@ -76,12 +76,14 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
+import TooltipMixin from '@/mixins/Tooltip'
 import { mapActions } from 'vuex'
 export default {
   name: 'PageSlider',
   components: {
     AdvanceTable
   },
+  mixins: [TooltipMixin],
   data() {
     return {
       //slider lightbox
@@ -142,6 +144,7 @@ export default {
   },
   methods: {
     ...mapActions(['fetchSlider']),
+
     fetchRecord(query) {
       this.loading = true
       this.fetchSlider(query).then(({ data, meta }) => {
@@ -185,7 +188,7 @@ export default {
         page: page
       })
     },
-    handleViewImage(item) {
+    handleViewImage() {
       this.showLightbox = true
     },
     handleHideLightbox() {

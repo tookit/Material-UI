@@ -14,6 +14,7 @@
             :searchValue="filter['filter[name]']"
             @input:change="handleInputChange"
             @search="handleApplyFilter"
+            extended
           >
             <div slot="filter">
               <v-card flat class="grey lighten-4">
@@ -49,12 +50,6 @@
                         v-model="filter['filter[is_home]']"
                       />
                     </v-col>
-                    <v-col cols="3">
-                      <v-switch
-                        label="Has Image"
-                        v-model="filter['filter[imaged]']"
-                      />
-                    </v-col>
                   </v-row>
                 </v-card-text>
                 <v-card-actions>
@@ -66,6 +61,19 @@
                 </v-card-actions>
               </v-card>
             </div>
+            <v-tabs
+              @change="handleTabChange"
+              style="border-top: 1px solid #eee"
+              slot="extension"
+              v-model="filter['filter[is_active]']"
+            >
+              <v-tab>
+                Offline
+              </v-tab>
+              <v-tab>
+                Online
+              </v-tab>
+            </v-tabs>
             <v-btn slot="toolbar" icon @click="fetchRecord()">
               <v-icon>mdi-refresh</v-icon>
             </v-btn>
@@ -112,9 +120,9 @@
                 <template v-slot:activator="{ on: menu }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="{ ...tooltip, ...menu }">
-                        <v-icon>mdi-dots-vertical</v-icon></v-btn
-                      >
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
                     </template>
                     <span>Action</span>
                   </v-tooltip>
@@ -151,13 +159,14 @@ import AdvanceTable from '@/components/table/AdvanceTable'
 import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
 import ResizeMixin from '@/mixins/Resize'
+import TooltipMixin from '@/mixins/Tooltip'
 export default {
   name: 'PageProduct',
   components: {
     AdvanceTable,
     VCascader
   },
-  mixins: [ResizeMixin],
+  mixins: [ResizeMixin, TooltipMixin],
   data() {
     return {
       //
@@ -169,9 +178,8 @@ export default {
         page: 1,
         'filter[name]': null,
         'filter[flag]': 1,
-        'filter[is_active]': null,
+        'filter[is_active]': true,
         'filter[is_home]': null,
-        'filter[imaged]': true,
         'filter[categories.id]': []
       },
       categories: [],
@@ -236,7 +244,10 @@ export default {
       let temp = []
       this.items.forEach((item) => {
         item.media.forEach((m) => {
-          temp.push(m.cloud_url)
+          temp.push({
+            src: m.cloud_url,
+            title: item.name
+          })
         })
       })
       return temp
@@ -245,21 +256,18 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        console.log(query)
-        query.page = parseInt(query.page)
-        Object.assign(this.filter, query)
-        if (query['filter[categories.id]']) {
-          const cids = query['filter[categories.id]']
-          this.categories =
-            cids.length > 0 ? cids.join(',').map((item) => parseInt(item)) : []
-          query['filter[categories.id]'] = cids.join(',').slice(-1)
-        }
-        this.fetchRecord(query)
+        // query.page = parseInt(query.page)
+        const filter = this.updateFilterQuery(query)
+        filter.page = parseInt(filter.page)
+        this.fetchRecord(filter)
       },
       immediate: true
     }
   },
   methods: {
+    updateFilterQuery(query) {
+      return Object.assign(this.filter, query)
+    },
     ...mapActions(['fetchProducts', 'deleteProduct']),
     fetchRecord(query) {
       this.loading = true
@@ -326,6 +334,9 @@ export default {
     handleResetFilter() {},
     handleInputChange(val) {
       this.filter['filter[name]'] = val
+    },
+    handleTabChange() {
+      this.handleApplyFilter()
     }
   },
   created() {}

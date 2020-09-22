@@ -37,6 +37,7 @@ export default {
   computed: {
     breadcrumbs() {
       const { matched } = this.$route
+      console.log(this.$route)
       return matched.map((route, index) => {
         const to =
           index === matched.length - 1

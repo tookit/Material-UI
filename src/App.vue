@@ -50,8 +50,8 @@ export default {
     }
   },
   mounted() {
-    if (typeof window !== undefined && window.ELEPHANT === undefined) {
-      window.ELEPHANT = this
+    if (typeof window !== undefined && window._VMA === undefined) {
+      window._VMA = this
     }
   },
   created() {

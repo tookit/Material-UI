@@ -66,13 +66,17 @@
     </v-container>
     <v-dialog v-model="showDialog">
       <v-card>
-        <v-card-title dark tile color="primary">Move to Category</v-card-title>
+        <v-card-title dark tile color="primary"
+          >Move Items to Category</v-card-title
+        >
         <v-card-text>
           <v-cascader
             :items="getProductCategories"
             name="Category"
             label="Category"
             placeholder="Category"
+            @change="handleCategoriesChange"
+            width="60vh"
           />
         </v-card-text>
         <v-card-actions>
@@ -97,6 +101,7 @@ export default {
   data() {
     return {
       //
+      selectedCategory: null,
       showDialog: false,
       catgoryId: 0,
       tree: [],
@@ -171,7 +176,8 @@ export default {
         path: `/mall/category/item/${item.id}`
       })
     },
-    handleMoveItem() {
+    handleMoveItem(item) {
+      this.selectedCategory = item
       this.showDialog = true
     },
     handleDeleteItem(item) {
@@ -191,7 +197,23 @@ export default {
         page: page
       })
     },
-    handleConfirm() {}
+    handleConfirm() {
+      this.$store
+        .dispatch('moveItemsToCategory', {
+          id: this.selectedCategory.id,
+          data: {
+            categoryId: this.categoryId
+          }
+        })
+        .then(() => {
+          this.fetchRecord()
+        })
+    },
+    handleCategoriesChange(categories) {
+      const cats = categories.filter((item) => item !== 0)
+      const catId = cats[cats.length - 1]
+      this.categoryId = catId
+    }
   },
   mounted() {
     this.fetchRecord()

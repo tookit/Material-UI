@@ -9,8 +9,15 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
+            :searchValue="filter['filter[name]']"
             @update:page="handlePageChanged"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
+            <v-btn slot="toolbar" icon @click="fetchRecord()">
+              <v-icon>mdi-refresh</v-icon>
+            </v-btn>
             <v-btn slot="toolbar" icon @click="handleCreate">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
@@ -77,7 +84,6 @@
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
 import TooltipMixin from '@/mixins/Tooltip'
-import { mapActions } from 'vuex'
 export default {
   name: 'PageSlider',
   components: {
@@ -90,7 +96,11 @@ export default {
       showDialog: false,
       showLightbox: false,
       index: 0,
-
+      filter: {
+        page: 1,
+        'filter[is_active]': true,
+        'filter[name]': null
+      },
       //
       loading: false,
       items: [],
@@ -142,16 +152,29 @@ export default {
       return this.items.map((item) => item.img)
     }
   },
+  watch: {
+    '$route.query': {
+      handler(query) {
+        const filter = Object.assign(this.filter, query)
+        filter.page = parseInt(filter.page)
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
+  },
   methods: {
-    ...mapActions(['fetchSlider']),
-
     fetchRecord(query) {
       this.loading = true
-      this.fetchSlider(query).then(({ data, meta }) => {
-        this.loading = false
-        this.items = data
-        this.serverItemsLength = meta.total
-      })
+      this.$store
+        .dispatch('fetchSlider', query)
+        .then(({ data, meta }) => {
+          this.loading = false
+          this.items = data
+          this.serverItemsLength = meta.total
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     handleCreate() {
       this.$router.push({
@@ -183,11 +206,7 @@ export default {
         })
       }
     },
-    handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
-      })
-    },
+
     handleViewImage() {
       this.showLightbox = true
     },
@@ -196,11 +215,27 @@ export default {
     },
     computeImage(url) {
       return url
+    },
+    handleApplyFilter() {
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handlePageChanged(page) {
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
     }
   },
-  created() {
-    this.fetchRecord()
-  }
+  created() {}
 }
 </script>
 

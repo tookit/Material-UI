@@ -9,7 +9,11 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
+            :searchValue="filter['filter[name]']"
             @update:page="handlePageChanged"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
             <div slot="filter">
               <v-card flat class="grey lighten-4">
@@ -90,7 +94,9 @@ export default {
       loading: false,
       items: [],
       filter: {
-        'filter[type]': null
+        page: 1,
+        'filter[type]': null,
+        'filter[name]': null
       },
       categories: [],
       headers: [
@@ -139,7 +145,8 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        Object.assign(this.filter, query)
+        const filter = Object.assign(this.filter, query)
+        filter.page = parseInt(filter.page)
         this.fetchRecord(query)
       },
       immediate: true
@@ -186,11 +193,6 @@ export default {
         })
         .then(() => {})
     },
-    handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
-      })
-    },
     handleCategoryChange(val) {
       this.filter['filter[categories.id]'] = val
         .filter((item) => item !== 0)
@@ -205,7 +207,18 @@ export default {
       })
     },
 
-    handleResetFilter() {}
+    handleResetFilter() {},
+    handlePageChanged(page) {
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
+    }
   },
   created() {
     this.fetchRecord()

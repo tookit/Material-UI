@@ -10,10 +10,10 @@
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
-              <v-treeview
-                v-model="tree"
-                :items="items"
+              <draggable-treeview
+                :value="items"
                 activatable
+                group="hoge"
                 item-key="id"
                 ref="tree"
                 open-on-click
@@ -58,7 +58,7 @@
                   </v-menu>
                   <span v-else>Action</span>
                 </template>
-              </v-treeview>
+              </draggable-treeview>
             </v-card-text>
           </v-card>
         </v-col>
@@ -68,12 +68,7 @@
       <v-card>
         <v-card-title dark tile color="primary">Move to Category</v-card-title>
         <v-card-text>
-          <v-cascader
-            :items="getProductCategories"
-            name="Category"
-            label="Category"
-            placeholder="Category"
-          />
+          <v-cascader name="Category" label="Category" placeholder="Category" />
         </v-card-text>
         <v-card-actions>
           <v-spacer />
@@ -88,11 +83,13 @@
 import { mapGetters, mapActions } from 'vuex'
 import Sortable from 'sortablejs'
 import VCascader from '@/components/cascader/'
+import DraggableTreeview from '@/components/tree/DraggableTreeview'
 
 export default {
   name: 'PageCategory',
   components: {
-    VCascader
+    VCascader,
+    DraggableTreeview
   },
   data() {
     return {
@@ -130,9 +127,6 @@ export default {
         }
       ]
     }
-  },
-  computed: {
-    ...mapGetters(['getProductCategories', 'getProductFlags'])
   },
   methods: {
     ...mapActions(['fetchProductCategoryTree']),
@@ -195,11 +189,11 @@ export default {
   },
   mounted() {
     this.fetchRecord()
-    const sortable = new Sortable(
-      document.querySelector('.v-treeview', {
-        draggable: '.v-treeview__leaf'
-      })
-    )
+    // const sortable = new Sortable(
+    //   document.querySelector('.v-treeview', {
+    //     draggable: '.v-treeview-node'
+    //   })
+    // )
   }
 }
 </script>

@@ -117,8 +117,8 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        query.page = parseInt(query.page)
-        Object.assign(this.filter, query)
+        const filter = Object.assign(this.filter, query)
+        filter.page = parseInt(filter.page)
         this.fetchRecord(query)
       },
       immediate: true
@@ -127,7 +127,6 @@ export default {
 
   methods: {
     fetchRecord(query) {
-      console.log(query)
       this.loading = true
       this.$store
         .dispatch('fetchVendors', query)

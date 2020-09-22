@@ -204,8 +204,11 @@ export default {
       this.fetchRecord()
     },
     handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
       })
     },
     handleCategoryChange(val) {

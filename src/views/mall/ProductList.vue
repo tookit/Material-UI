@@ -256,7 +256,6 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        // query.page = parseInt(query.page)
         const filter = this.updateFilterQuery(query)
         filter.page = parseInt(filter.page)
         this.fetchRecord(filter)

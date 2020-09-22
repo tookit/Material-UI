@@ -1,5 +1,5 @@
 <template>
-  <div class="page-product-list">
+  <div class="page-cms-news-list">
     <v-container>
       <v-row>
         <v-col>
@@ -9,7 +9,11 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
+            :searchValue="filter['filter[name]']"
             @update:page="handlePageChanged"
+            @input:change="handleInputChange"
+            @search="handleApplyFilter"
           >
             <div slot="filter">
               <v-card flat class="grey lighten-4">
@@ -93,7 +97,6 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
-import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'PageNews',
   components: {
@@ -105,9 +108,9 @@ export default {
       loading: false,
       items: [],
       filter: {
-        'filter[is_active]': null,
-        'filter[imaged]': null,
-        'filter[categories.id]': []
+        page: 1,
+        'filter[is_active]': true,
+        'filter[name]': null
       },
       categories: [],
       headers: [
@@ -154,19 +157,30 @@ export default {
       ]
     }
   },
-  computed: {
-    ...mapGetters(['getProductCategories'])
+  computed: {},
+  watch: {
+    '$route.query': {
+      handler(query) {
+        const filter = Object.assign(this.filter, query)
+        filter.page = parseInt(filter.page)
+        this.fetchRecord(query)
+      },
+      immediate: true
+    }
   },
   methods: {
-    ...mapActions(['fetchNews']),
     fetchRecord(query) {
       this.loading = true
-      this.items = []
-      this.fetchNews(query).then(({ data, meta }) => {
-        this.loading = false
-        this.items = data
-        this.serverItemsLength = meta.total
-      })
+      this.$store
+        .dispatch('fetchNews', query)
+        .then(({ data, meta }) => {
+          this.loading = false
+          this.items = data
+          this.serverItemsLength = meta.total
+        })
+        .catch(() => {
+          this.loading = false
+        })
     },
     handleCreateItem() {
       this.$router.push({
@@ -192,11 +206,6 @@ export default {
         })
         .then(() => {})
     },
-    handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
-      })
-    },
     handleCategoryChange(val) {
       this.filter['filter[categories.id]'] = val
         .filter((item) => item !== 0)
@@ -205,13 +214,25 @@ export default {
     },
     // filter
     handleApplyFilter() {
-      this.fetchRecord(this.filter)
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
     },
 
-    handleResetFilter() {}
-  },
-  created() {
-    this.fetchRecord()
+    handleResetFilter() {},
+    handlePageChanged(page) {
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
+      })
+    },
+    handleInputChange(val) {
+      this.filter['filter[name]'] = val
+    }
   }
 }
 </script>

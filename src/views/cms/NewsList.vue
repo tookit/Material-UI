@@ -56,6 +56,11 @@
                 {{ item.category.name }}
               </span>
             </template>
+            <template v-slot:item.created_at="{ item }">
+              <span>
+                {{ new Date(item.created_at).toLocaleString() }}
+              </span>
+            </template>
             <template v-slot:item.is_active="{ item }">
               <v-switch
                 v-model="item.is_active"
@@ -130,6 +135,10 @@ export default {
         {
           text: 'Active',
           value: 'is_active'
+        },
+        {
+          text: 'Created',
+          value: 'created_at'
         },
         {
           text: 'Action',

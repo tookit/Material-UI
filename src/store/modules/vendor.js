@@ -2,13 +2,26 @@ import request from '@/utils/request'
 const state = {
   vendors: []
 }
-const getters = {}
+const getters = {
+  getVendors: (state) =>
+    state.vendors.map((item) => {
+      return {
+        text: item.name,
+        value: item.id
+      }
+    })
+}
 const actions = {
   fetchVendors({ commit }, query) {
     return request({
       url: `/mall/vendor`,
       method: 'get',
       params: query
+    }).then((resp) => {
+      if (query && query.pageSize == -1) {
+        commit('SET_VENDORS', resp.data)
+      }
+      return resp
     })
   },
   getVendorById({ commit }, id) {
@@ -32,7 +45,11 @@ const actions = {
     })
   }
 }
-const mutations = {}
+const mutations = {
+  SET_VENDORS(state, data) {
+    state.vendors = data
+  }
+}
 
 export default {
   namespace: true,

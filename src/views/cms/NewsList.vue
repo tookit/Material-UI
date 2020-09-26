@@ -58,14 +58,17 @@
                 @change="handleItemStatus(item)"
               />
             </template>
+            <template v-slot:item.created_at="{ item }">
+              {{ new Date(item.created_at).toLocaleString() }}
+            </template>
             <template v-slot:item.action="{ item }">
               <v-menu>
                 <template v-slot:activator="{ on: menu }">
                   <v-tooltip bottom>
                     <template v-slot:activator="{ on: tooltip }">
-                      <v-btn icon v-on="{ ...tooltip, ...menu }">
-                        <v-icon>mdi-dots-vertical</v-icon></v-btn
-                      >
+                      <v-btn icon v-on="onTooltip({ ...tooltip, ...menu })">
+                        <v-icon>mdi-dots-vertical</v-icon>
+                      </v-btn>
                     </template>
                     <span>Action</span>
                   </v-tooltip>
@@ -94,11 +97,13 @@
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
 import { mapActions, mapGetters } from 'vuex'
+import TooltipMixin from '@/mixins/Tooltip'
 export default {
   name: 'PageNews',
   components: {
     AdvanceTable
   },
+  mixins: [TooltipMixin],
   data() {
     return {
       //
@@ -127,6 +132,10 @@ export default {
         {
           text: 'Active',
           value: 'is_active'
+        },
+        {
+          text: 'Created',
+          value: 'created_at'
         },
         {
           text: 'Action',

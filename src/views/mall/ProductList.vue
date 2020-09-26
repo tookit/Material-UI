@@ -30,7 +30,7 @@
                         clearable
                       />
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                       <v-select
                         label="Flag"
                         :items="getProductFlags"
@@ -38,13 +38,21 @@
                         clearable
                       />
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
+                      <v-autocomplete
+                        label="Vendor"
+                        placeholdder="Vendor"
+                        :items="getVendors"
+                        v-model="filter['filter[vendor_id]']"
+                      />
+                    </v-col>
+                    <v-col cols="6">
                       <v-switch
                         label="Active"
                         v-model="filter['filter[is_active]']"
                       />
                     </v-col>
-                    <v-col cols="3">
+                    <v-col cols="6">
                       <v-switch
                         label="Home"
                         v-model="filter['filter[is_home]']"
@@ -83,7 +91,7 @@
             <template v-slot:item.media="{ item }">
               <v-img
                 v-if="item.media.length > 0"
-                @click.stop="showLightbox = true"
+                @click="handleShowLightBox(item)"
                 class="ma-3"
                 :src="resize(item.media[0].cloud_url, 50, 50)"
                 width="50"
@@ -147,7 +155,7 @@
     </v-container>
     <vue-easy-lightbox
       :visible="showLightbox"
-      :imgs="imgs"
+      :imgs="images"
       :index="index"
       @hide="showLightbox = false"
     />
@@ -160,6 +168,7 @@ import VCascader from '@/components/cascader/'
 import { mapActions, mapGetters } from 'vuex'
 import ResizeMixin from '@/mixins/Resize'
 import TooltipMixin from '@/mixins/Tooltip'
+import isEmpty from 'lodash/isEmpty'
 export default {
   name: 'PageProduct',
   components: {
@@ -171,13 +180,14 @@ export default {
     return {
       //
       showLightbox: false,
+      images: [],
       index: 0,
       loading: false,
       items: [],
       filter: {
         page: 1,
         'filter[name]': null,
-        'filter[flag]': 1,
+        'filter[flag]': null,
         'filter[is_active]': true,
         'filter[is_home]': null,
         'filter[categories.id]': []
@@ -195,6 +205,10 @@ export default {
         {
           text: 'Name',
           value: 'name'
+        },
+        {
+          text: 'Vendor',
+          value: 'vendor.name'
         },
         {
           text: 'Category',
@@ -239,7 +253,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getProductCategories', 'getProductFlags', 'getFlagLabel']),
+    ...mapGetters([
+      'getProductCategories',
+      'getProductFlags',
+      'getFlagLabel',
+      'getVendors'
+    ]),
     imgs() {
       let temp = []
       this.items.forEach((item) => {
@@ -256,17 +275,17 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        // query.page = parseInt(query.page)
-        const filter = this.updateFilterQuery(query)
-        filter.page = parseInt(filter.page)
+        const filter = isEmpty(query) ? null : this.updateFilterQuery(query)
         this.fetchRecord(filter)
-      },
-      immediate: true
+      }
+      // immediate: true
     }
   },
   methods: {
     updateFilterQuery(query) {
-      return Object.assign(this.filter, query)
+      const filter = Object.assign(this.filter, query)
+      filter.page = parseInt(filter.page)
+      return filter
     },
     ...mapActions(['fetchProducts', 'deleteProduct']),
     fetchRecord(query) {
@@ -337,9 +356,20 @@ export default {
     },
     handleTabChange() {
       this.handleApplyFilter()
+    },
+    handleShowLightBox(item) {
+      this.images = item.media.map((m) => {
+        return {
+          src: m.cloud_url,
+          title: item.name
+        }
+      })
+      this.showLightbox = true
     }
   },
-  created() {}
+  created() {
+    this.$store.dispatch('fetchVendors', { pageSize: -1 })
+  }
 }
 </script>
 

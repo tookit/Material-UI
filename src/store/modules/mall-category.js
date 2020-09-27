@@ -66,6 +66,16 @@ const actions = {
     }).then((resp) => {
       return resp
     })
+  },
+  moveItemsToCategory({ commit }, { id, data }) {
+    console.log(id, data)
+    return request({
+      url: `/mall/category/${id}/move_item`,
+      method: 'post',
+      data: data
+    }).then((resp) => {
+      return resp
+    })
   }
 }
 const mutations = {

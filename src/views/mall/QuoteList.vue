@@ -9,6 +9,7 @@
             :loading="loading"
             :server-items-length="serverItemsLength"
             :items-per-page="itemsPerPage"
+            :page.sync="filter['page']"
             @update:page="handlePageChanged"
           >
             <v-btn slot="toolbar" icon @click="fetchRecord()">
@@ -64,6 +65,10 @@ export default {
       //
       loading: false,
       items: [],
+      filter: {
+        page: 1,
+        'filter[name]': null
+      },
       headers: [
         {
           text: 'ID',
@@ -137,8 +142,11 @@ export default {
         })
     },
     handlePageChanged(page) {
-      this.fetchRecord({
-        page: page
+      this.filter.page = page
+      this.filter.t = Date.now()
+      this.$router.replace({
+        path: this.$route.path,
+        query: this.filter
       })
     },
     handleEditItem(item) {

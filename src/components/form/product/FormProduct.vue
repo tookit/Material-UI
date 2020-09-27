@@ -167,7 +167,7 @@ export default {
   methods: {
     assignModel(data) {
       for (let key in this.formModel) {
-        this.formModel[key] = data[key] || null
+        this.formModel[key] = data[key]
       }
       this.formModel.tags = data.tags.map((item) => item.name)
       this.formModel.categories =

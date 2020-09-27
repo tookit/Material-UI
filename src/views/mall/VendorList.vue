@@ -58,6 +58,7 @@
 
 <script>
 import AdvanceTable from '@/components/table/AdvanceTable'
+import isEmpty from 'lodash/isEmpty'
 export default {
   name: 'PageQuote',
   components: {
@@ -117,17 +118,20 @@ export default {
   watch: {
     '$route.query': {
       handler(query) {
-        query.page = parseInt(query.page)
-        Object.assign(this.filter, query)
-        this.fetchRecord(query)
+        const filter = isEmpty(query) ? null : this.updateFilterQuery(query)
+        this.fetchRecord(filter)
       },
       immediate: true
     }
   },
 
   methods: {
+    updateFilterQuery(query) {
+      const filter = Object.assign(this.filter, query)
+      filter.page = parseInt(filter.page)
+      return filter
+    },
     fetchRecord(query) {
-      console.log(query)
       this.loading = true
       this.$store
         .dispatch('fetchVendors', query)
